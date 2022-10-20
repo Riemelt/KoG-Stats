@@ -8,7 +8,7 @@ const path = require('path');
 const srcPath = path.resolve(__dirname, "./src");
 
 const entryPoints = {
-  index: "./index.ts",
+  index: "./pages/index/index.ts",
 };
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
