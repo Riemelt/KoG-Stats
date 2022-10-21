@@ -1,6 +1,7 @@
 import "../../components/container";
 import { LandingOptions } from "./types";
 import CategoryMenu from "../../components/category-menu";
+import Leaderboard from "../../components/leaderboard";
 
 class Landing {
   private className: string;
@@ -13,8 +14,18 @@ class Landing {
     this.options = options;
     this.className = "landing";
     this.$component = $element;
+
     this.$categoryMenu = this.$component.find(`.js-${this.className}__category-menu`);
-    this.categoryMenu = new CategoryMenu(this.$component, options.categoryMenu);
+    const categoryMenuOptions = {
+      sortBy: this.options.sortBy,
+      ...this.options.categoryMenu,
+    };
+    this.categoryMenu = new CategoryMenu(this.$component, categoryMenuOptions);
+    
+    new Leaderboard(this.$component, {
+      sortBy: this.options.sortBy,
+      players: this.options.players,
+    });
     console.log("Landing created");
   }
 }

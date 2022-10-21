@@ -7,12 +7,11 @@ $className: 'category-menu';
   flex-wrap: wrap;
   gap: .9375rem;
 
-  &__item {
+  &__item-link {
     position: relative;
     font-size: 1.25rem;
     font-weight: 700;
     cursor: pointer;
-    transition: color 0.2s;
     min-width: 6.25rem;
     min-height: 3.125rem;
     display: flex;
@@ -32,8 +31,8 @@ $className: 'category-menu';
 
     &_active,
     &:hover {
-      transition: color 0.2s;
       color: $primary;
+      transition: color 0.2s;
 
       &::before {
         transition: transform 0.3s;

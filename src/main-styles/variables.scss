@@ -5,3 +5,27 @@ $dark: rgb(27, 27, 35);
 $headerColor: rgb(17, 17, 25);
 
 $primary: rgb(235, 92, 43);
+
+
+$grey: #F4F4F6;
+
+$purple: #BC9CFF;
+$purple-50: #BC9CFF50;
+$purple-25: #BC9CFF25;
+$purple-10: #BC9CFF10;
+
+$green: #6FCF97;
+
+$jordy-blue: #8BA4F9;
+$jordy-blue-50: #8BA4F950;
+$jordy-blue-25: #8BA4F925;
+$jordy-blue-10: #8BA4F910;
+
+$sky-blue: #66D2EA;
+
+$primary-gradient: linear-gradient(180deg, $purple 0%, $jordy-blue 100%);
+$primary-gradient-50: linear-gradient(180deg, $purple-50 0%, $jordy-blue-50 100%);
+$primary-gradient-25: linear-gradient(180deg, $purple-25 0%, $jordy-blue-25 100%);
+$primary-gradient-10: linear-gradient(180deg, $purple-10 0%, $jordy-blue-10 100%);
+
+$secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);

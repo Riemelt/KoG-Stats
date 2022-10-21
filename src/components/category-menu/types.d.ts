@@ -1,5 +1,6 @@
 import { MapType } from "../../types/types";
 
 interface CategoryMenuOptions {
-  categories: Array<MapType>
+  categories: Array<MapType>,
+  sortBy: MapType,
 }

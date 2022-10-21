@@ -28,4 +28,5 @@ export {
   RANK_TYPES,
   MAP_TYPES,
   comparePlayers,
+  comparePlayersRanks,
 }

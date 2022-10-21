@@ -1,0 +1,35 @@
+mixin leaderboard(vars)
+  -
+    const {
+      topRanks = [],
+    } = vars
+
+    const className = "leaderboard"
+    const classNames = `${className} js-${className}`
+
+  div(class=classNames)
+    table(class=`${className}__table`)
+      thead(class=`${className}__table-head`)
+        tr(class=`${className}__table-row ${className}__table-row_head`)
+          th(class=`${className}__table-cell-rank`) #
+          th(class=`${className}__table-cell-name ${className}__table-cell-name_header`) Player
+          th(class=`${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank1`) I
+          th(class=`${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank2`) II
+          th(class=`${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank3`) III
+          th(class=`${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank4`) IV
+          th(class=`${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank5`) V
+      tbody(class=`${className}__table-body js-${className}__table-body`)
+        - for (let i = 0; i < topRanks.length; i++)
+          tr(class=`${className}__table-row js-${className}__table-row ${className}__table-row_body`)
+            td(class=`${className}__table-cell-rank js-${className}__table-cell-rank`)= i + 1
+            td(class=`${className}__table-cell-name`)
+              a(
+                class=`${className}__table-cell-name-link`
+                href="/mock-address/change-me"
+              )= topRanks[i].name
+            td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank1`)= topRanks[i].categories.Total["rank 1"]
+            td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank2`)= topRanks[i].categories.Total["rank 2"]
+            td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank3`)= topRanks[i].categories.Total["rank 3"]
+            td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank4`)= topRanks[i].categories.Total["rank 4"]
+            td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank5`)= topRanks[i].categories.Total["rank 5"]
+        

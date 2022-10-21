@@ -11,14 +11,23 @@ class CategoryMenu {
     this.options = data;
     this.className = "category-menu";
     this.$component = $parent.find(`.js-${this.className}`);
-    this.$items = this.$component.find(`.js-${this.className}__item`);
-    this.setActiveItem($(this.$items.get(0)));
+    this.$items = this.$component.find(`.js-${this.className}__item-link`);
+
+    let activeItemIndex = 0;
+    for (let i = 0; i < this.options.categories.length; i++) {
+      if (this.options.categories[i] === this.options.sortBy) {
+        activeItemIndex = i;
+        break;
+      }
+    }
+
+    this.setActiveItem($(this.$items.get(activeItemIndex)));
     this.setHandlers();
   }
 
   public setActiveItem($item: JQuery<HTMLElement>) {
-    this.$currentActiveItem?.removeClass(`${this.className}__item_active`);
-    $item.addClass(`${this.className}__item_active`);
+    this.$currentActiveItem?.removeClass(`${this.className}__item-link_active`);
+    $item.addClass(`${this.className}__item-link_active`);
     this.$currentActiveItem = $item;
   }
 

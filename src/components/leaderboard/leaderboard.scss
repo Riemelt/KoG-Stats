@@ -1,0 +1,94 @@
+$className: 'leaderboard';
+
+.#{$className} {
+  font-size: 1.25rem;
+
+  @media (max-width: 735px) {
+    font-size: .75rem;
+  }
+
+  &__table {
+    border-collapse: separate;
+    border-spacing: .625rem;
+
+    @media (max-width: 735px) {
+      border-spacing: .125rem;
+    }
+  }
+
+  &__table-body {
+    border-spacing: 0;
+  }
+
+  &__table-row,
+  &__table-cell-name-link {
+    height: 3.75rem;
+
+    @media (max-width: 735px) {
+      height: 1.875rem;
+    }
+  }
+
+  &__table-cell-rank,
+  &__table-cell-total-ranks {
+    max-width: 3.125rem;
+    min-width: 3.125rem;
+    text-align: center;
+
+    @media (max-width: 735px) {
+      max-width: 1.25rem;
+      min-width: 1.25rem;
+    }
+  }
+
+
+  &__table-cell-total-ranks,
+  &__table-cell-name,
+  &__table-cell-rank {
+    background-image: $primary-gradient-10;
+  }
+
+  &__table-cell-name {
+    width: 100%;
+    text-align: left;
+  }
+
+  &__table-cell-name_header,
+  &__table-cell-name-link {
+    padding: 0 1.25rem;
+
+    @media (max-width: 735px) {
+      padding: 0 .625rem;
+    }
+  }
+
+  &__table-cell-name-link {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      transition: box-shadow 0.2s;
+      box-shadow: 0 0 .9375rem rgba(0, 0, 0, 0.7);
+      background-image: $primary-gradient-25;
+    }
+  }
+
+  &__table-cell-total-ranks {
+    color: grey;
+    font-weight: 700;
+
+    &_rank1 {
+      color: gold;
+    }
+
+    &_rank2 {
+      color: silver;
+    }
+
+    &_rank3 {
+      color: rgb(205, 127, 50);
+    }
+  }
+}

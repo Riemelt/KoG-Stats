@@ -2,16 +2,24 @@ extends ../../layout/layout
 
 include ../../components/container/container
 include ../../components/category-menu/category-menu
+include ../../components/leaderboard/leaderboard
 
 block vars
-  - const title = "KoG Stats"
+  - const title = "KoG map record holders"
 
 block main
   -
     const className = "landing"
     const data = require("./data.json")
+    const topRanks = require("../../data/topRanks.json")
+    const players = topRanks.topRanks
     
   div(class=`${className} js-${className}`)
     +container()
-     div(class=`${className}__category-menu js-${className}__category-menu`)
-      +category-menu(data.categoryMenu)
+      div(class=`${className}__main`)
+        div(class=`${className}__category-menu js-${className}__category-menu`)
+         +category-menu(data.categoryMenu)
+        div(class=`${className}__leaderboard js-${className}__leaderboard`)
+         +leaderboard({
+          topRanks: players,
+         })

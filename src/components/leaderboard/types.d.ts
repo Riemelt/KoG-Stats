@@ -1,9 +1,6 @@
 import { MapType, PlayerRanks } from "../../types/types";
 
-interface LandingOptions {
+interface LeaderboardOptions {
   sortBy: MapType,
   players: Array<PlayerRanks>,
-  categoryMenu: {
-    categories: Array<MapType>
-  } 
 }

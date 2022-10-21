@@ -2,5 +2,12 @@ $className: 'landing';
 
 .#{$className} {
   flex-grow: 1;
-  padding: 3.125rem .9375rem 0;
+
+  &__main {
+    padding: 3.125rem 0;
+  }
+
+  &__leaderboard {
+    padding-top: 3.125rem;
+  }
 }
