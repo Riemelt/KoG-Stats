@@ -1,0 +1,44 @@
+$className: 'category-menu';
+
+.#{$className} {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: .9375rem;
+
+  &__item {
+    position: relative;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.2s;
+    min-width: 6.25rem;
+    min-height: 3.125rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 2px;
+      width: 100%;
+      background-color: $primary;
+      bottom: 0;
+      transform: scale(0, 0);
+      transition: transform 0.5s;
+    }
+
+    &_active,
+    &:hover {
+      transition: color 0.2s;
+      color: $primary;
+
+      &::before {
+        transition: transform 0.3s;
+        transform: scale(100%, 100%);
+      }
+    }
+  }
+}

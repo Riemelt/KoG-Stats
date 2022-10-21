@@ -1,0 +1,15 @@
+{
+  "header": {
+    "title": {
+      "link": {
+        "content": "KoG",
+        "href": "https://kog.tw/"
+      },
+      "rest": " map record holders"
+    },
+    "updateTitle": "Latest update:"
+  },
+  "footer": {
+    "year": 2022
+  }
+}

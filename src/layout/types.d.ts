@@ -1,0 +1,3 @@
+interface LayoutOptions {
+  header: HeaderOptions,
+}

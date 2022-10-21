@@ -1,0 +1,27 @@
+$className: 'header';
+
+.#{$className} {
+  background-color: $headerColor;
+
+  &__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    min-height: 6.25rem;
+    padding: .9375rem;
+    font-family: Segoe, Arial, 'sans-serif';
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  &__title {
+    font-size: 1.875rem;
+
+  }
+
+  &__title-highlighted {
+    color: $primary;
+  }
+}

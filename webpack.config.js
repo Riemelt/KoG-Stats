@@ -29,7 +29,7 @@ module.exports = {
     }),
     require('autoprefixer'),
     new HtmlWebpackPlugin({
-      template: "./index.pug", // relative path to the HTML files
+      template: "./pages/index/index.pug", // relative path to the HTML files
       filename: "./index.html", // output HTML files
       chunks: ["index"],
     }),
@@ -50,6 +50,30 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.(svg|png|ico|xml|json|webmanifest)$/i,
+        include: /favicons/,
+        type: "asset/resource",
+        generator: {
+          filename: 'assets/favicons/[name][hash][ext][query]',
+        },
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        exclude: /fonts|favicons/,
+        type: "asset/resource",
+        generator: {
+          filename: 'assets/images/[name][hash][ext][query]',
+        },
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|svg)$/i,
+        include: /fonts/,
+        type: "asset/resource",
+        generator: {
+          filename: 'assets/fonts/[name][hash][ext][query]',
+        },
+      },
       {
         test: /\.html$/i,
         loader: "html-loader",
@@ -94,6 +118,12 @@ module.exports = {
             }
           },
           "sass-loader",
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: path.resolve(__dirname, "./src/main-styles/variables.scss")
+            }
+          }
         ]
       },
     ]

@@ -1,0 +1,32 @@
+include ../container/container
+
+mixin header(vars)
+  -
+    const {
+      title = {
+        link: {
+          content: "",
+          href: "/mock-address/change-me"
+        },
+        rest: "",
+      },
+      updateTitle = "",
+    } = vars
+
+    const className = "header"
+    const classNames = `${className} js-${className}`
+
+  div(class=classNames)
+    +container()
+      div(class=`${className}__main`)
+        div(class=`${className}__title`)
+          a(
+            class=`${className}__title-highlighted`
+            href=title.link.href
+            target="_blank"
+            rel="noopener noreferrer"
+          )= title.link.content
+          span(class=`${className}__title-rest`)= title.rest
+        div(class=`${className}__update`)
+          div(class=`${className}__update-title`)= updateTitle
+          div(class=`${className}__update-date js-${className}__update-date`)

@@ -1,0 +1,22 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  min-width: $big;
+  max-width: $fullhd;
+  margin: 0 auto;
+  font-family: Segoe, Arial, 'sans-serif';
+  background-color: $dark;
+  color: white;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  color: orange;
+}

@@ -1,0 +1,22 @@
+include ../components/head/head
+include ../components/header/header
+include ../components/footer/footer
+
+block vars
+
+-
+  const layoutClassName = "layout"
+  const layoutClassNames = `${layoutClassName} js-${layoutClassName}`
+  const layoutData = require("./data.json")
+
+doctype html
+html
+  +head({ title })
+  body
+    div(class=layoutClassNames)
+      header(class=`${layoutClassName}__header js-${layoutClassName}__header`)
+        +header(layoutData.header)
+      main(class=`${layoutClassName}__main`)
+        block main
+      footer(class=`${layoutClassName}__footer`)
+        +footer(layoutData.footer)

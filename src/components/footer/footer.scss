@@ -1,0 +1,12 @@
+$className: 'footer';
+
+.#{$className} {
+  background-color: $headerColor;
+
+  &__main {
+    height: 6.25rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

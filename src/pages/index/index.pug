@@ -1,5 +1,17 @@
-doctype html
-html
-  title KOG
-  body
-    p hello
+extends ../../layout/layout
+
+include ../../components/container/container
+include ../../components/category-menu/category-menu
+
+block vars
+  - const title = "KoG Stats"
+
+block main
+  -
+    const className = "landing"
+    const data = require("./data.json")
+    
+  div(class=`${className} js-${className}`)
+    +container()
+     div(class=`${className}__category-menu js-${className}__category-menu`)
+      +category-menu(data.categoryMenu)
