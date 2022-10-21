@@ -32,6 +32,19 @@ class Leaderboard {
     }
   }
 
+  public getPlayerEntries() {
+    return this.playerEntries.filter(playerEntry => playerEntry.hasAnyRanks(this.options.sortBy));
+  }
+
+  public render(data: Array<PlayerEntry>) {
+    this.$tableBody.empty();
+
+    data.forEach((playerEntry) => {
+      const $playerEntry = playerEntry.getHtml();
+      this.$tableBody.append($playerEntry);
+    });
+  }
+
   private initLeaderboard() {
     this.$tableBody.empty();
     const mapType = this.options.sortBy;

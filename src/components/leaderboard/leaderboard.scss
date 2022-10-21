@@ -22,7 +22,7 @@ $className: 'leaderboard';
 
   &__table-row,
   &__table-cell-name-link {
-    height: 3.75rem;
+    height: 3.125rem;
 
     @media (max-width: 735px) {
       height: 1.875rem;
@@ -36,8 +36,8 @@ $className: 'leaderboard';
     text-align: center;
 
     @media (max-width: 735px) {
-      max-width: 1.25rem;
-      min-width: 1.25rem;
+      max-width: 1.5625rem;
+      min-width: 1.5625rem;
     }
   }
 

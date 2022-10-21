@@ -3,6 +3,7 @@ extends ../../layout/layout
 include ../../components/container/container
 include ../../components/category-menu/category-menu
 include ../../components/leaderboard/leaderboard
+include ../../components/pagination/pagination
 
 block vars
   - const title = "KoG map record holders"
@@ -23,3 +24,6 @@ block main
          +leaderboard({
           topRanks: players,
          })
+        
+        div(class=`${className}__pagination js-${className}__pagination`)
+          +pagination({})
