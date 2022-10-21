@@ -29,6 +29,10 @@ class Leaderboard {
 
     if (this.options.sortBy !== "Total") {
       this.initLeaderboard();
+    } else {
+      this.playerEntries[0].update("Total", 1);
+      this.playerEntries[1].update("Total", 2);
+      this.playerEntries[2].update("Total", 3);
     }
   }
 

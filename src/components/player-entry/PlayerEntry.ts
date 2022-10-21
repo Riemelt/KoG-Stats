@@ -40,8 +40,19 @@ class PlayerEntry {
     this.setRanks(ranks);
   }
 
+  public makeActive(rank: number) {
+    this.$rank.addClass(`${this.className}__table-cell-rank_rank${rank}`);
+  }
+
+  public removeActive(rank: number) {
+    this.$rank.removeClass(`${this.className}__table-cell-rank_rank${rank}`);
+  }
+
   private setRank(rank: number) {
     this.$rank.html(rank.toString());
+    if (rank >= 1 && rank <= 3) {
+      this.makeActive(rank);
+    }
   }
 
   private setRanks(ranks: Category) {

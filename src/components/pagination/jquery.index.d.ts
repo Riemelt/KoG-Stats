@@ -1,5 +1,5 @@
 interface PaginationjsOptions {
-  dataSource: Array<any>,
+  dataSource?: Array<any>,
   pageSize?: number,
   pageRange?: number,
   autoHidePrevious?: boolean,

@@ -1,0 +1,26 @@
+$className: 'player-profile';
+
+.#{$className} {
+  flex-grow: 1;
+
+  &__main {
+    padding: 3.125rem 0;
+  }
+
+  &__title {
+    font-size: 1.875rem;
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  &__category-menu {
+    margin-top: 1.87rem;
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+}

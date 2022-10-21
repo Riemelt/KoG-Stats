@@ -9,8 +9,4 @@ mixin category-menu(vars)
 
   ul(class=classNames)
     each item in categories
-      li(class=`${className}__item`)
-        a(
-          class=`${className}__item-link js-${className}__item-link`
-          href=`?sortBy=${item}`
-        )= item
+      li(class=`${className}__item js-${className}__item`)= item

@@ -6,6 +6,8 @@ $className: 'footer';
   &__main {
     height: 6.25rem;
     display: flex;
+    flex-direction: column;
+    gap: .625rem;
     justify-content: center;
     align-items: center;
   }

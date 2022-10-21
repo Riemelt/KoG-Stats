@@ -28,6 +28,17 @@ interface KoGMap extends KoGMapEntity {
   topFinishes: Array<Finish>;
 }
 
+interface PlayersMapRecords {
+  [key: string]: Array<MapRecord>,
+}
+
+interface MapRecord {
+  name: string,
+  category: MapType,
+  time: number,
+  rank: number,
+}
+
 export {
   Rank,
   MapType,
@@ -37,4 +48,6 @@ export {
   Finish,
   KoGMapEntity,
   KoGMap,
+  PlayersMapRecords,
+  MapRecord,
 }

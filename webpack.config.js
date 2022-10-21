@@ -9,6 +9,7 @@ const srcPath = path.resolve(__dirname, "./src");
 
 const entryPoints = {
   index: "./pages/index/index.ts",
+  "player-profile": "./pages/player-profile/index.ts",
 };
 
 const mode = process.env.NODE_ENV === "production" ? "production" : "development";
@@ -32,6 +33,11 @@ module.exports = {
       template: "./pages/index/index.pug", // relative path to the HTML files
       filename: "./index.html", // output HTML files
       chunks: ["index"],
+    }),
+    new HtmlWebpackPlugin({
+      template: "./pages/player-profile/player-profile.pug", // relative path to the HTML files
+      filename: "./player-profile.html", // output HTML files
+      chunks: ["player-profile"],
     }),
   ],
   entry: entryPoints,

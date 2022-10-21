@@ -25,7 +25,7 @@ mixin leaderboard(vars)
             td(class=`${className}__table-cell-name`)
               a(
                 class=`${className}__table-cell-name-link`
-                href="/mock-address/change-me"
+                href=`player-profile.html?player=${topRanks[i].name}`
               )= topRanks[i].name
             td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank1`)= topRanks[i].categories.Total["rank 1"]
             td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank2`)= topRanks[i].categories.Total["rank 2"]

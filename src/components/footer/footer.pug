@@ -4,6 +4,7 @@ mixin footer(vars)
   -
     const {
       year = 1900,
+      credits = "",
     } = vars
 
     const className = "footer"
@@ -13,3 +14,4 @@ mixin footer(vars)
     +container()
       div(class=`${className}__main`)
         div(class=`${className}__year`)= year
+        div(class=`${className}__credits`)= credits

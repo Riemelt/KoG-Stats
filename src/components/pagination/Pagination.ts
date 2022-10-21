@@ -1,5 +1,4 @@
 import "paginationjs";
-import { PaginationOptions } from "./types";
 
 class Pagination {
   private options: PaginationOptions;
@@ -12,12 +11,12 @@ class Pagination {
     this.$component = $parent.find(`.js-${this.className}`);
 
     this.$component.pagination({
-      dataSource: this.options.dataSource,
+      dataSource: this.options?.dataSource,
       pageSize: 25,
       pageRange: 1,
       autoHidePrevious: true,
       autoHideNext: true,
-      callback: this.options.render,
+      callback: this.options?.render,
     });
   }
 }

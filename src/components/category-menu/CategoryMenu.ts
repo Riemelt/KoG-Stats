@@ -1,3 +1,4 @@
+import { MapType } from "../../types/types";
 import { CategoryMenuOptions } from "./types";
 
 class CategoryMenu {
@@ -11,7 +12,7 @@ class CategoryMenu {
     this.options = data;
     this.className = "category-menu";
     this.$component = $parent.find(`.js-${this.className}`);
-    this.$items = this.$component.find(`.js-${this.className}__item-link`);
+    this.$items = this.$component.find(`.js-${this.className}__item`);
 
     let activeItemIndex = 0;
     for (let i = 0; i < this.options.categories.length; i++) {
@@ -26,8 +27,8 @@ class CategoryMenu {
   }
 
   public setActiveItem($item: JQuery<HTMLElement>) {
-    this.$currentActiveItem?.removeClass(`${this.className}__item-link_active`);
-    $item.addClass(`${this.className}__item-link_active`);
+    this.$currentActiveItem?.removeClass(`${this.className}__item_active`);
+    $item.addClass(`${this.className}__item_active`);
     this.$currentActiveItem = $item;
   }
 
@@ -39,6 +40,10 @@ class CategoryMenu {
     if (event.target instanceof HTMLElement) {
       const $clickedItem = $(event.currentTarget as HTMLElement);
       this.setActiveItem($clickedItem);
+
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      urlSearchParams.set("sortBy", this.options.categories[this.$items.index($clickedItem)]);
+      location.search = urlSearchParams.toString();
     }
   }
 }

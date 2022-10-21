@@ -41,7 +41,6 @@ $className: 'leaderboard';
     }
   }
 
-
   &__table-cell-total-ranks,
   &__table-cell-name,
   &__table-cell-rank {
@@ -77,6 +76,10 @@ $className: 'leaderboard';
 
   &__table-cell-total-ranks {
     color: grey;
+  }
+
+  &__table-cell-rank,
+  &__table-cell-total-ranks {
     font-weight: 700;
 
     &_rank1 {
@@ -89,6 +92,20 @@ $className: 'leaderboard';
 
     &_rank3 {
       color: rgb(205, 127, 50);
+    }
+  }
+
+  &__table-cell-rank {
+    &_rank1 {
+      border: .125rem solid gold;
+    }
+
+    &_rank2 {
+      border: .125rem solid silver;
+    }
+
+    &_rank3 {
+      border: .125rem solid rgb(205, 127, 50);
     }
   }
 }

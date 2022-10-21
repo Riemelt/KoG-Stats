@@ -1,0 +1,22 @@
+extends ../../layout/layout
+
+include ../../components/container/container
+include ../../components/category-menu/category-menu
+include ../../components/pagination/pagination
+
+block vars
+  - const title = "Player profile"
+
+block main
+  -
+    const className = "player-profile"
+    const data = require("./data.json")
+    
+  div(class=`${className} js-${className}`)
+    +container()
+      div(class=`${className}__main`)
+        h1(class=`${className}__title js-${className}__title`)
+        div(class=`${className}__category-menu js-${className}__category-menu`)
+         +category-menu(data.categoryMenu)
+        div(class=`${className}__pagination js-${className}__pagination`)
+          +pagination({})

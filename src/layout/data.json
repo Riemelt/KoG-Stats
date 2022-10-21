@@ -3,13 +3,14 @@
     "title": {
       "link": {
         "content": "KoG",
-        "href": "https://kog.tw/"
+        "href": "/"
       },
       "rest": " map record holders"
     },
     "updateTitle": "Latest update:"
   },
   "footer": {
-    "year": 2022
+    "year": 2022,
+    "credits": "Made by KOF"
   }
 }
