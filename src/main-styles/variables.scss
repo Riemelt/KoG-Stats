@@ -29,3 +29,31 @@ $primary-gradient-25: linear-gradient(180deg, $purple-25 0%, $jordy-blue-25 100%
 $primary-gradient-10: linear-gradient(180deg, $purple-10 0%, $jordy-blue-10 100%);
 
 $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
+
+@mixin tableProperties() {
+  border-collapse: separate;
+  border-spacing: .625rem;
+
+  @media (max-width: 735px) {
+    border-spacing: .125rem;
+  }
+}
+
+@mixin tableCellProperties() {
+  max-width: 3.125rem;
+  min-width: 3.125rem;
+  text-align: center;
+
+  @media (max-width: 735px) {
+    max-width: 1.5625rem;
+    min-width: 1.5625rem;
+  }
+}
+
+@mixin tableRowProperties() {
+  height: 3.125rem;
+
+  @media (max-width: 735px) {
+    height: 1.875rem;
+  }
+}

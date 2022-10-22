@@ -1,0 +1,131 @@
+$className: 'map-records';
+
+.#{$className} {
+  font-size: 1.25rem;
+
+  @media (max-width: 735px) {
+    font-size: .6875rem;
+  }
+
+  &__table {
+    @include tableProperties;
+  }
+
+  &__table-body {
+    border-spacing: 0;
+  }
+
+  &__table-row,
+  &__table-cell-name-link {
+    @include tableRowProperties;
+  }
+
+  &__table-cell-rank {
+    @include tableCellProperties;
+  }
+
+  &__table-cell-rank,
+  &__table-cell-name,
+  &__table-cell-category,
+  &__table-cell-time {
+    background-image: $primary-gradient-10;
+  }
+
+  &__table-cell-rank,
+  &__table-cell-category {
+    font-weight: 700;
+  }
+
+  &__table-cell-rank {
+    color: grey;
+
+    &_rank1 {
+      color: gold;
+      border: .125rem solid gold;
+    }
+
+    &_rank2 {
+      color: silver;
+      border: .125rem solid silver;
+    }
+
+    &_rank3 {
+      color: rgb(205, 127, 50);
+      border: .125rem solid rgb(205, 127, 50);
+    }
+  }
+
+  &__table-cell-category {
+    max-width: 9.375rem;
+    min-width: 9.375rem;
+    text-align: center;
+
+    &_insane {
+      color: rgb(244, 63, 94);
+      border: .125rem solid rgb(244, 63, 94);
+    }
+
+    &_hard {
+      color: rgb(251, 191, 36);
+      border: .125rem solid rgb(251, 191, 36);
+    }
+
+    &_main {
+      color: rgb(56, 189, 248);
+      border: .125rem solid rgb(56, 189, 248);
+    }
+
+    &_easy {
+      color: rgb(52, 211, 153);
+      border: .125rem solid rgb(52, 211, 153);
+    }
+
+    &_mod {
+      color: white;
+      border: .125rem solid white;
+    }
+  
+    @media (max-width: 735px) {
+      max-width: 3.75rem;
+      min-width: 3.75rem;
+    }
+  }
+
+  &__table-cell-time {
+    max-width: 6.875rem;
+    min-width: 6.875rem;
+    text-align: center;
+  
+    @media (max-width: 735px) {
+      max-width: 3.75rem;
+      min-width: 3.75rem;
+    }
+  }
+
+  &__table-cell-name {
+    width: 100%;
+    text-align: left;
+  }
+
+  &__table-cell-name_header,
+  &__table-cell-name-link {
+    padding: 0 1.25rem;
+
+    @media (max-width: 735px) {
+      padding: 0 .625rem;
+    }
+  }
+
+  &__table-cell-name-link {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      transition: box-shadow 0.2s;
+      box-shadow: 0 0 .9375rem rgba(0, 0, 0, 0.7);
+      background-image: $primary-gradient-25;
+    }
+  }
+}

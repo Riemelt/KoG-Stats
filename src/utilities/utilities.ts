@@ -24,9 +24,28 @@ function comparePlayers(mapType: MapType) {
   }
 }
 
+function convertTime(time: number) {
+  const ms       = Math.round((time * 100) % 100);
+  const secCount = Math.floor(time);
+  const hours    = Math.floor(secCount / 3600);
+  const minutes  = Math.floor(secCount / 60) % 60;
+  const seconds  = secCount % 60;
+
+  const result = [hours,minutes,seconds, ms]
+                 .map(v => v < 10 ? "0" + v : v)
+                 .filter((v,i) => v !== "00" || i > 0)
+                 .reduce((acc, value, index, array) => {
+                   const separator = (index + 1) !== array.length ? ":" : ".";
+                   return index === 0 ? `${value}` : `${acc}${separator}${value}`;
+                 }, "");
+
+  return result;
+}
+
 export {
   RANK_TYPES,
   MAP_TYPES,
   comparePlayers,
   comparePlayersRanks,
+  convertTime,
 }

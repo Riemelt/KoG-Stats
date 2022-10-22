@@ -8,12 +8,7 @@ $className: 'leaderboard';
   }
 
   &__table {
-    border-collapse: separate;
-    border-spacing: .625rem;
-
-    @media (max-width: 735px) {
-      border-spacing: .125rem;
-    }
+    @include tableProperties;
   }
 
   &__table-body {
@@ -22,23 +17,12 @@ $className: 'leaderboard';
 
   &__table-row,
   &__table-cell-name-link {
-    height: 3.125rem;
-
-    @media (max-width: 735px) {
-      height: 1.875rem;
-    }
+    @include tableRowProperties;
   }
 
   &__table-cell-rank,
   &__table-cell-total-ranks {
-    max-width: 3.125rem;
-    min-width: 3.125rem;
-    text-align: center;
-
-    @media (max-width: 735px) {
-      max-width: 1.5625rem;
-      min-width: 1.5625rem;
-    }
+    @include tableCellProperties;
   }
 
   &__table-cell-total-ranks,

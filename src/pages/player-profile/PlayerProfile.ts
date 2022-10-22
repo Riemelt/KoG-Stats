@@ -2,6 +2,7 @@ import "../../components/container";
 import { PlayerProfileOptions } from "./types";
 import CategoryMenu from "../../components/category-menu";
 import Pagination from "../../components/pagination";
+import MapRecords from "../../components/map-records";
 
 class PlayerProfile {
   private className: string;
@@ -10,6 +11,7 @@ class PlayerProfile {
   private $categoryMenu: JQuery<HTMLElement>;
   private $title: JQuery<HTMLElement>;
   private categoryMenu: CategoryMenu;
+  private mapRecords: MapRecords;
 
   constructor($element: JQuery<HTMLElement>, options: PlayerProfileOptions) {
     this.options = options;
@@ -25,7 +27,14 @@ class PlayerProfile {
     };
     this.categoryMenu = new CategoryMenu(this.$component, categoryMenuOptions);
 
+    this.mapRecords = new MapRecords(this.$component.find(`.js-${this.className}__map-records`), {
+      sortBy: this.options.sortBy,
+      records: this.options.playerRecords,
+    });
+
     new Pagination(this.$component.find(`.js-${this.className}__pagination`), {
+      dataSource: this.mapRecords.getRecordEntries(),
+      render: this.mapRecords.render.bind(this.mapRecords),
     });
   }
 
