@@ -1,7 +1,7 @@
 {
   "name": "kogstats",
   "version": "1.0.0",
-  "description": "",
+  "description": "Kog map record holders",
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=development&&webpack serve --open",
@@ -11,9 +11,16 @@
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "Kog",
+    "Teeworlds",
+    "DDnet"
+  ],
+  "author": "KOFTW <reignofinsomnia@gmail.com> (https://github.com/KOFTW)",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KOFTW/KoG-Stats/issues"
+  },
   "devDependencies": {
     "@babel/core": "^7.19.3",
     "@babel/preset-env": "^7.19.3",

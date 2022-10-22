@@ -53,6 +53,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@favicons": path.resolve(__dirname, "./src/assets/favicons/"),
+    },
   },
   module: {
     rules: [
