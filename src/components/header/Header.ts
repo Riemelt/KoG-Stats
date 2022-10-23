@@ -11,7 +11,9 @@ class Header {
     this.$component = $parent.find(`.js-${this.className}`);
 
     this.$updateDate = this.$component.find(`.js-${this.className}__update-date`);
-    const dateConverted = new Date(this.options.date).toLocaleDateString("en-GB");
+    const updateDate = new Date(this.options.date)
+    const dateConverted = updateDate.toLocaleDateString("en-GB");
+    this.$updateDate.attr("title", updateDate.toString());
     this.$updateDate.html(dateConverted);
   }
 }
