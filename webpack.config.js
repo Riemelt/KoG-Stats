@@ -42,7 +42,7 @@ module.exports = {
   ],
   entry: entryPoints,
   output: {
-    filename: "./[name].js",
+    filename: "./[name].[contenthash].js",
     clean: true,
   },
   devtool: (mode === "development") ? "eval-source-map" : false,
