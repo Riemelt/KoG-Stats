@@ -58,7 +58,7 @@ class PlayerEntry {
   private handleNameClick() {
     const urlSearchParams = new URLSearchParams(window.location.search);
     urlSearchParams.set("player", this.options.player.name);
-    location.href = `/player-profile.html?${urlSearchParams.toString()}`;
+    location.href = `player-profile.html?${urlSearchParams.toString()}`;
   }
 
   private setRank(rank: number) {
