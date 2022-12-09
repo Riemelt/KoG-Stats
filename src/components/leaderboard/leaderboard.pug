@@ -22,11 +22,7 @@ mixin leaderboard(vars)
         - for (let i = 0; i < topRanks.length; i++)
           tr(class=`${className}__table-row js-${className}__table-row ${className}__table-row_body`)
             td(class=`${className}__table-cell-rank js-${className}__table-cell-rank`)= i + 1
-            td(class=`${className}__table-cell-name`)
-              a(
-                class=`${className}__table-cell-name-link`
-                href=`player-profile.html?player=${topRanks[i].name}`
-              )= topRanks[i].name
+            td(class=`${className}__table-cell-name ${className}__table-cell-name_body js-${className}__table-cell-name`)= topRanks[i].name
             td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank1`)= topRanks[i].categories.Total["rank 1"]
             td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank2`)= topRanks[i].categories.Total["rank 2"]
             td(class=`${className}__table-cell-total-ranks js-${className}__table-cell-total-ranks ${className}__table-cell-total-ranks_rank3`)= topRanks[i].categories.Total["rank 3"]

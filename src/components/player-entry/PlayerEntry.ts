@@ -8,6 +8,7 @@ class PlayerEntry {
   private $component: JQuery<HTMLElement>;
   private $rank: JQuery<HTMLElement>;
   private $ranks: JQuery<HTMLElement>;
+  private $name: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: PlayerEntryOptions) {
     this.options = options;
@@ -15,6 +16,8 @@ class PlayerEntry {
     this.$component = $element;
     this.$rank = this.$component.find(`.js-${this.className}__table-cell-rank`);
     this.$ranks = this.$component.find(`.js-${this.className}__table-cell-total-ranks`);
+
+    this.$name = this.$component.find(`.js-${this.className}__table-cell-name`);
   }
 
   public getOptions() {
@@ -23,6 +26,10 @@ class PlayerEntry {
 
   public getHtml() {
     return this.$component;
+  }
+
+  public setHandlers() {
+    this.$name.on("click.player-entry-name", this.handleNameClick.bind(this));
   }
 
   public hasAnyRanks(mapType: MapType): boolean {
@@ -46,6 +53,12 @@ class PlayerEntry {
 
   public removeActive(rank: number) {
     this.$rank.removeClass(`${this.className}__table-cell-rank_rank${rank}`);
+  }
+
+  private handleNameClick() {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set("player", this.options.player.name);
+    location.href = `/player-profile.html?${urlSearchParams.toString()}`;
   }
 
   private setRank(rank: number) {

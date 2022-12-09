@@ -8,6 +8,7 @@ class Leaderboard {
   private className: string;
   private $component: JQuery<HTMLElement>;
   private $playerEntries: JQuery<HTMLElement>;
+  private $playerLabels: JQuery<HTMLElement>;
   private $tableBody: JQuery<HTMLElement>;
   private playerEntries: Array<PlayerEntry>;
 
@@ -46,6 +47,7 @@ class Leaderboard {
     data.forEach((playerEntry) => {
       const $playerEntry = playerEntry.getHtml();
       this.$tableBody.append($playerEntry);
+      playerEntry.setHandlers();
     });
   }
 
@@ -60,6 +62,7 @@ class Leaderboard {
         playerEntry.update(mapType, index + 1);
         const $playerEntry = playerEntry.getHtml();
         this.$tableBody.append($playerEntry);
+        playerEntry.setHandlers();
       }
     })
   }

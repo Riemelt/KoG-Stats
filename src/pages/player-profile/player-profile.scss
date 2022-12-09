@@ -8,9 +8,19 @@ $className: 'player-profile';
   }
 
   &__title {
+    width: fit-content;
+    display: block;
+    margin: 0 auto;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $primary;
+      transition: color 0.2s;
+    }
+  }
+
+  &__title-text {
     font-size: 1.875rem;
-    display: flex;
-    justify-content: center;
     font-weight: 700;
   }
 

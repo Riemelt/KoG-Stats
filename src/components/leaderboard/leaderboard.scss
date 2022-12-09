@@ -37,7 +37,7 @@ $className: 'leaderboard';
   }
 
   &__table-cell-name_header,
-  &__table-cell-name-link {
+  &__table-cell-name {
     padding: 0 1.25rem;
 
     @media (max-width: 735px) {
@@ -45,8 +45,8 @@ $className: 'leaderboard';
     }
   }
 
-  &__table-cell-name-link {
-    display: flex;
+  &__table-cell-name_body {
+    cursor: pointer;
     width: 100%;
     align-items: center;
     transition: box-shadow 0.2s;

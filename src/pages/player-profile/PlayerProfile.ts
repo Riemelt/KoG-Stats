@@ -10,6 +10,7 @@ class PlayerProfile {
   private $component: JQuery<HTMLElement>;
   private $categoryMenu: JQuery<HTMLElement>;
   private $title: JQuery<HTMLElement>;
+  private $titlePlayerName: JQuery<HTMLElement>;
   private categoryMenu: CategoryMenu;
   private mapRecords: MapRecords;
 
@@ -17,8 +18,12 @@ class PlayerProfile {
     this.options = options;
     this.className = "player-profile";
     this.$component = $element;
+    
     this.$title = this.$component.find(`.js-${this.className}__title`);
-    this.$title.html(`${this.options.playerName}'s map records`);
+    this.$title.attr("href", `https://kog.tw/#p=players&player=${this.options.playerName}`);
+
+    this.$titlePlayerName = this.$title.find(`.js-${this.className}__title-text`);
+    this.$titlePlayerName.html(`${this.options.playerName}'s map records`);
 
     this.$categoryMenu = this.$component.find(`.js-${this.className}__category-menu`);
     const categoryMenuOptions = {
