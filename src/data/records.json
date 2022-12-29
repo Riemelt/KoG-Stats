@@ -1,1 +1,24 @@
-{"dateFrom":"2022-12-29T14:03:17.242Z","dateTo":"2022-12-29T14:41:10.756Z","data":[]}
+{
+  "data": [
+    {
+      "players": [
+        "Ziinox",
+        "Neø"
+      ],
+      "time": 691.24,
+      "category": "Insane",
+      "name": "bzw4",
+      "rank": 1
+    },
+    {
+      "players": [
+        "Neø",
+        "Ziinox"
+      ],
+      "time": 433.26,
+      "category": "Insane",
+      "name": "ghosttown",
+      "rank": 1
+    }
+  ]
+}

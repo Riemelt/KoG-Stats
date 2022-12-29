@@ -9,20 +9,16 @@ import { RecordsOptions } from "./types";
 (function($) {
   const records: {
     data: Array<MapRecord>,
-    dateFrom: Date,
-    dateTo: Date,
   } = require("../../data/records.json");
 
   const data = require ("./data.json");
 
   const recordsOptions: RecordsOptions = {
     mapRecords: {
-      records: records.data,
+      records: records.data.reverse(),
       sortBy: "Total",
       ...data.mapRecords,
     },
-    dateFrom: records.dateFrom,
-    dateTo: records.dateTo,
   }
 
   const className = "records";

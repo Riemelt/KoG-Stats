@@ -3,7 +3,7 @@ exports.__esModule = true;
 exports.convertTime = exports.comparePlayersRanks = exports.comparePlayers = exports.MAP_TYPES = exports.RANK_TYPES = void 0;
 var RANK_TYPES = ["rank 1", "rank 2", "rank 3", "rank 4", "rank 5"];
 exports.RANK_TYPES = RANK_TYPES;
-var MAP_TYPES = ["Total", "Insane", "Hard", "Main", "Easy", "Mod"];
+var MAP_TYPES = ["Total", "Insane", "Hard", "Main", "Easy", "Mod", "Unknown"];
 exports.MAP_TYPES = MAP_TYPES;
 function comparePlayersRanks(a, b, mapType, rank) {
     if (rank >= RANK_TYPES.length)
