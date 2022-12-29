@@ -18,10 +18,10 @@ class MapRecords {
     const mapTypeA = a.getOptions().category;
     const mapTypeB = b.getOptions().category;
 
-    const mapTypeComparion = MAP_TYPES.indexOf(mapTypeA) - MAP_TYPES.indexOf(mapTypeB);
+    const mapTypeComparison = MAP_TYPES.indexOf(mapTypeA) - MAP_TYPES.indexOf(mapTypeB);
 
-    if (mapTypeComparion !== 0)
-      return mapTypeComparion;
+    if (mapTypeComparison !== 0)
+      return mapTypeComparison;
 
     return 0;
   }

@@ -1,0 +1,26 @@
+$className: 'records';
+
+.#{$className} {
+  flex-grow: 1;
+
+  &__main {
+    padding: 3.125rem 0;
+  }
+
+  &__title-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__map-records {
+    padding-top: 3.125rem;
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+  }
+}

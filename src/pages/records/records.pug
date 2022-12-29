@@ -1,0 +1,22 @@
+extends ../../layout/layout
+
+include ../../components/container/container
+include ../../components/pagination/pagination
+include ../../components/map-records/map-records
+
+block vars
+  - const title = "Latest records"
+
+block main
+  -
+    const className = "records"
+    const data = require("./data.json")
+    
+  div(class=`${className} js-${className}`)
+    +container()
+      div(class=`${className}__main`)
+        h1(class=`${className}__title-text js-${className}__title-text`)
+        div(class=`${className}__map-records js-${className}__map-records`)
+          +map-records(data.mapRecords)
+        div(class=`${className}__pagination js-${className}__pagination`)
+          +pagination({})

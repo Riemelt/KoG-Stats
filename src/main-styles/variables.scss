@@ -51,9 +51,11 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
 }
 
 @mixin tableRowProperties() {
+  min-height: 3.125rem;
   height: 3.125rem;
 
   @media (max-width: 735px) {
+    min-height: 1.875rem;
     height: 1.875rem;
   }
 }

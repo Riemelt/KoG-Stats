@@ -10,6 +10,10 @@ mixin header(vars)
         },
         rest: "",
       },
+      latestRecords = {
+        href: "/mock-address/change-me",
+        title: "Default",
+      },
       updateTitle = "",
     } = vars
 
@@ -25,6 +29,11 @@ mixin header(vars)
             href=title.link.href
           )= title.link.content
           span(class=`${className}__title-rest`)= title.rest
-        div(class=`${className}__update`)
-          div(class=`${className}__update-title`)= updateTitle
-          div(class=`${className}__update-date js-${className}__update-date`)
+        div(class=`${className}__menu`)
+          a(
+            class=`${className}__latest-records`
+            href=latestRecords.href
+          )= latestRecords.title
+          div(class=`${className}__update`)
+            div(class=`${className}__update-title`)= updateTitle
+            div(class=`${className}__update-date js-${className}__update-date`)

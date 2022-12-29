@@ -16,6 +16,17 @@ $className: 'header';
     font-size: 1.25rem;
   }
 
+  &__menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.875rem;
+  }
+
+  &__latest-records {
+    color: $primary;
+  }
+
   &__title {
     font-size: 1.875rem;
   }

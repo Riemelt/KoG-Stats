@@ -1,10 +1,14 @@
 mixin map-records(vars)
   -
     const {
+      withPlayers = false,
     } = vars
 
     const className = "map-records"
-    const classNames = `${className} js-${className}`
+    let classNames = `${className} js-${className}`
+
+  if (withPlayers)
+    - classNames += ` ${className}_with-players`
 
   div(class=classNames)
     table(class=`${className}__table`)
@@ -12,6 +16,8 @@ mixin map-records(vars)
         tr(class=`${className}__table-row ${className}__table-row_head`)
           th(class=`${className}__table-cell-rank`) #
           th(class=`${className}__table-cell-name ${className}__table-cell-name_header`) Map
+          if (withPlayers)
+            th(class=`${className}__table-cell-players`) Players
           th(class=`${className}__table-cell-category`) Category
           th(class=`${className}__table-cell-time`) Time
       tbody(class=`${className}__table-body js-${className}__table-body`)

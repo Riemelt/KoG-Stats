@@ -24,6 +24,15 @@ class RecordEntry {
     const kogLink = `https://kog.tw/#p=maps&map=${this.options.record.name}`;
     const mapCategory = this.options.record.category.toLowerCase();
     const timeConverted = convertTime(this.options.record.time);
+    let playersTd = '';
+
+    if (this.options.record.players !== undefined) {
+      playersTd += `
+        <td class="${this.className}__table-cell-players">
+          ${this.options.record.players.join(', ')}
+        </td>
+      `;
+    }
 
     return $(`
       <tr class="${this.className}__table-row js-${this.className}__table-row ${this.className}__table-row_body">
@@ -35,6 +44,7 @@ class RecordEntry {
             ${this.options.record.name}
           </a>
         </td>
+        ${playersTd}
         <td class="${this.className}__table-cell-category ${this.className}__table-cell-category_${mapCategory} js-${this.className}__table-cell-category">
           ${this.options.record.category}
         </td>

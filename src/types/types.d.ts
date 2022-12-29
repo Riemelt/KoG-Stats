@@ -1,5 +1,5 @@
 type Rank = "rank 1" | "rank 2" | "rank 3" | "rank 4" | "rank 5";
-type MapType = "Easy" | "Main" | "Hard" | "Insane" | "Mod" | "Total";
+type MapType = "Easy" | "Main" | "Hard" | "Insane" | "Mod" | "Unknown" | "Total";
 
 type Category = {
   [key in Rank]: number;
@@ -37,6 +37,7 @@ interface MapRecord {
   category: MapType,
   time: number,
   rank: number,
+  players?: Array<string>,
 }
 
 export {

@@ -7,6 +7,10 @@
       },
       "rest": " map record holders"
     },
+    "latestRecords": {
+      "href": "records.html",
+      "title": "Latest records"
+    },
     "updateTitle": "Latest update:"
   },
   "footer": {
