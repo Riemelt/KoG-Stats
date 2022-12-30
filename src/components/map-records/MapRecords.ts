@@ -41,7 +41,12 @@ class MapRecords {
       }
     });
 
-    this.sortRecordEntries();
+
+    const { withPlayers } = this.options;
+
+    if (!withPlayers) {
+      this.sortRecordEntries();
+    }
   }
 
   public getRecordEntries() {
