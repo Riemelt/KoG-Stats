@@ -2,18 +2,18 @@
 exports.__esModule = true;
 var utilities_1 = require("../src/utilities/utilities");
 (function () {
-    var jsonData = require("./data/topFinishes.json");
+    var jsonData = require('./data/topFinishes.json');
     var lastUpdateDate = jsonData.date;
     var maps = jsonData.data;
     var playerRecords = {};
     var playersTopRanks = {};
     function initRankTypes() {
         return {
-            "rank 1": 0,
-            "rank 2": 0,
-            "rank 3": 0,
-            "rank 4": 0,
-            "rank 5": 0
+            'rank 1': 0,
+            'rank 2': 0,
+            'rank 3': 0,
+            'rank 4': 0,
+            'rank 5': 0
         };
     }
     function initMapTypes() {
@@ -23,6 +23,7 @@ var utilities_1 = require("../src/utilities/utilities");
             Hard: initRankTypes(),
             Insane: initRankTypes(),
             Mod: initRankTypes(),
+            Extreme: initRankTypes(),
             Total: initRankTypes(),
             Unknown: initRankTypes()
         };
@@ -53,7 +54,7 @@ var utilities_1 = require("../src/utilities/utilities");
                 rank: currentRank + 1
             });
             playersTopRanks[name_1][category][utilities_1.RANK_TYPES[currentRank]] += 1;
-            playersTopRanks[name_1]["Total"][utilities_1.RANK_TYPES[currentRank]] += 1;
+            playersTopRanks[name_1]['Total'][utilities_1.RANK_TYPES[currentRank]] += 1;
             previousTime = time;
         }
     }
@@ -72,16 +73,16 @@ var utilities_1 = require("../src/utilities/utilities");
     var playersTopRanksArray = convertPlayersTopRanksToArray();
     var result = {
         date: lastUpdateDate,
-        topRanks: playersTopRanksArray.sort((0, utilities_1.comparePlayers)("Total")).reverse()
+        topRanks: playersTopRanksArray.sort((0, utilities_1.comparePlayers)('Total')).reverse()
     };
-    var fs = require("fs");
+    var fs = require('fs');
     var json = JSON.stringify(result);
     var playerRecordsJson = JSON.stringify(playerRecords);
-    fs.writeFile("../src/data/topRanks.json", json, function (error) {
+    fs.writeFile('../src/data/topRanks.json', json, function (error) {
         if (error)
             return error;
     });
-    fs.writeFile("../src/data/playerRecords.json", playerRecordsJson, function (error) {
+    fs.writeFile('../src/data/playerRecords.json', playerRecordsJson, function (error) {
         if (error)
             return error;
     });

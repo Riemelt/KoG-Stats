@@ -1,13 +1,21 @@
-type Rank = "rank 1" | "rank 2" | "rank 3" | "rank 4" | "rank 5";
-type MapType = "Easy" | "Main" | "Hard" | "Insane" | "Mod" | "Unknown" | "Total";
+type Rank = 'rank 1' | 'rank 2' | 'rank 3' | 'rank 4' | 'rank 5';
+type MapType =
+  | 'Easy'
+  | 'Main'
+  | 'Hard'
+  | 'Insane'
+  | 'Mod'
+  | 'Unknown'
+  | 'Total'
+  | 'Extreme';
 
 type Category = {
   [key in Rank]: number;
-}
+};
 
 type Categories = {
   [key in MapType]: Category;
-}
+};
 
 interface PlayerRanks {
   name: string;
@@ -29,15 +37,15 @@ interface KoGMap extends KoGMapEntity {
 }
 
 interface PlayersMapRecords {
-  [key: string]: Array<MapRecord>,
+  [key: string]: Array<MapRecord>;
 }
 
 interface MapRecord {
-  name: string,
-  category: MapType,
-  time: number,
-  rank: number,
-  players?: Array<string>,
+  name: string;
+  category: MapType;
+  time: number;
+  rank: number;
+  players?: Array<string>;
 }
 
 export {
@@ -51,4 +59,4 @@ export {
   KoGMap,
   PlayersMapRecords,
   MapRecord,
-}
+};

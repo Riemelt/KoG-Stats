@@ -37,12 +37,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 (function () {
-    var _this = this;
-    var JSDOM = require("jsdom").JSDOM;
-    var window = new JSDOM("").window;
-    var $ = require("jquery")(window);
+    var JSDOM = require('jsdom').JSDOM;
+    var window = new JSDOM('').window;
+    var $ = require('jquery')(window);
+    var jsonData = require('./data/topFinishes.json');
+    var previousTopFinishes = jsonData.data;
+    var jsonRecords = require('../src/data/records.json');
+    var records = jsonRecords.data;
     function getData(url) {
-        if (url === void 0) { url = ""; }
+        if (url === void 0) { url = ''; }
         return __awaiter(this, void 0, void 0, function () {
             var response, html;
             return __generator(this, function (_a) {
@@ -56,8 +59,8 @@ exports.__esModule = true;
                         html = _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        console.log("error HTTP: " + response.status);
-                        throw new Error("Error on http request");
+                        console.log('error HTTP: ' + response.status);
+                        throw new Error('Error on http request');
                     case 4: return [2 /*return*/, html];
                 }
             });
@@ -69,7 +72,7 @@ exports.__esModule = true;
             var name_1 = $(items[i + 1].innerHTML).html();
             var time = Number(items[i].innerHTML);
             if (name_1 === undefined || time === undefined) {
-                throw new Error("Parsing td error");
+                throw new Error('Parsing td error');
             }
             topFinishes.push({
                 name: name_1,
@@ -84,13 +87,13 @@ exports.__esModule = true;
     }
     function parseCard(_, element) {
         var $card = $(element);
-        var $name = $card.find("h4");
+        var $name = $card.find('h4');
         var name = $name.html();
-        var $listGroupItems = $card.find(".list-group-item");
+        var $listGroupItems = $card.find('.list-group-item');
         var items = $listGroupItems.toArray();
         var category = items[1].innerHTML;
         if (name === undefined || category === undefined) {
-            throw new Error("Parsing card error");
+            throw new Error('Parsing card error');
         }
         mapsData.push({
             name: name,
@@ -104,40 +107,88 @@ exports.__esModule = true;
             data: topData
         };
         var json = JSON.stringify(result);
-        fs.writeFile("./data/topFinishes.json", json, function (error) {
+        fs.writeFile('./data/topFinishes.json', json, function (error) {
             if (error) {
                 console.log("saveJson error: ".concat(error));
                 return;
             }
-            console.log("topFinishes.json saved");
+            console.log('topFinishes.json saved');
         });
+    }
+    function saveRecords(records) {
+        var fs = require('fs');
+        var result = {
+            data: records
+        };
+        var json = JSON.stringify(result);
+        fs.writeFile('../src/data/records.json', json, function (error) {
+            if (error) {
+                console.log("saveRecords error: ".concat(error));
+                return;
+            }
+            console.log('records.json saved');
+        });
+    }
+    function update(topData) {
+        topData.forEach(function (_a) {
+            var _b, _c;
+            var name = _a.name, category = _a.category, topFinishes = _a.topFinishes;
+            if (topFinishes.length <= 0)
+                return;
+            var previousFinishes = (_c = (_b = previousTopFinishes.find(function (map) { return map.name === name; })) === null || _b === void 0 ? void 0 : _b.topFinishes) !== null && _c !== void 0 ? _c : [];
+            var previousRankOne = previousFinishes[0];
+            var isNewRank = previousRankOne === undefined ||
+                previousRankOne.time > topFinishes[0].time;
+            if (isNewRank) {
+                var time = topFinishes[0].time;
+                var rank = 1;
+                var players = [topFinishes[0].name];
+                for (var i = 1; i < topFinishes.length; i += 1) {
+                    if (topFinishes[i].time === time) {
+                        players.push(topFinishes[i].name);
+                        continue;
+                    }
+                    break;
+                }
+                records.push({
+                    rank: rank,
+                    players: players,
+                    name: name,
+                    category: category,
+                    time: time
+                });
+            }
+        });
+        saveRecords(records);
+        saveJson(topData);
     }
     var mapsData = [];
     var topData = [];
     var count = 0;
     var total = 0;
     try {
-        getData("https://kog.tw/get.php?p=maps&p=maps").then(function (dataMaps) {
+        getData('https://kog.tw/get.php?p=maps&p=maps').then(function (dataMaps) {
             var $dataMaps = $(dataMaps);
-            var $cardBodies = $dataMaps.find(".card");
+            var $cardBodies = $dataMaps.find('.card');
             if ($cardBodies.length === 0)
-                throw new Error("HTML parsing map cards erorr");
-            $cardBodies.each(parseCard.bind(_this));
+                throw new Error('HTML parsing map cards erorr');
+            $cardBodies.each(parseCard);
             total = mapsData.length;
             mapsData.forEach(function (map) {
                 var url = "https://kog.tw/get.php?p=maps&p=maps&map=".concat(map.name);
                 getData(url).then(function (data) {
                     var $data = $(data);
-                    var $td = $data.find("td");
+                    var $td = $data.find('td');
                     if ($td.length > 198) {
-                        throw new Error("Unexpected td length");
+                        throw new Error('Unexpected td length');
                     }
                     var tdArray = $td.toArray();
                     parseTd(tdArray, map);
                     count++;
                     console.log("Parsed ".concat(count, "/").concat(total, ": ").concat(map.name));
-                    if (count >= total)
-                        saveJson(topData);
+                    if (count >= total) {
+                        update(topData);
+                    }
                 });
             });
         });

@@ -4,12 +4,12 @@ import {
   PlayerRanks,
   KoGMap,
   PlayersMapRecords,
-} from "../src/types/types";
+} from '../src/types/types';
 
-import { RANK_TYPES, comparePlayers } from "../src/utilities/utilities";
+import { RANK_TYPES, comparePlayers } from '../src/utilities/utilities';
 
 (function () {
-  const jsonData = require("./data/topFinishes.json");
+  const jsonData = require('./data/topFinishes.json');
 
   const lastUpdateDate: Date = jsonData.date;
   const maps: Array<KoGMap> = jsonData.data;
@@ -22,11 +22,11 @@ import { RANK_TYPES, comparePlayers } from "../src/utilities/utilities";
 
   function initRankTypes(): Category {
     return {
-      "rank 1": 0,
-      "rank 2": 0,
-      "rank 3": 0,
-      "rank 4": 0,
-      "rank 5": 0,
+      'rank 1': 0,
+      'rank 2': 0,
+      'rank 3': 0,
+      'rank 4': 0,
+      'rank 5': 0,
     };
   }
 
@@ -37,6 +37,7 @@ import { RANK_TYPES, comparePlayers } from "../src/utilities/utilities";
       Hard: initRankTypes(),
       Insane: initRankTypes(),
       Mod: initRankTypes(),
+      Extreme: initRankTypes(),
       Total: initRankTypes(),
       Unknown: initRankTypes(),
     };
@@ -74,7 +75,7 @@ import { RANK_TYPES, comparePlayers } from "../src/utilities/utilities";
       });
 
       playersTopRanks[name][category][RANK_TYPES[currentRank]] += 1;
-      playersTopRanks[name]["Total"][RANK_TYPES[currentRank]] += 1;
+      playersTopRanks[name]['Total'][RANK_TYPES[currentRank]] += 1;
       previousTime = time;
     }
   }
@@ -99,19 +100,19 @@ import { RANK_TYPES, comparePlayers } from "../src/utilities/utilities";
     convertPlayersTopRanksToArray();
   const result = {
     date: lastUpdateDate,
-    topRanks: playersTopRanksArray.sort(comparePlayers("Total")).reverse(),
+    topRanks: playersTopRanksArray.sort(comparePlayers('Total')).reverse(),
   };
 
-  const fs = require("fs");
+  const fs = require('fs');
   const json = JSON.stringify(result);
   const playerRecordsJson = JSON.stringify(playerRecords);
 
-  fs.writeFile("../src/data/topRanks.json", json, function (error: Error) {
+  fs.writeFile('../src/data/topRanks.json', json, function (error: Error) {
     if (error) return error;
   });
 
   fs.writeFile(
-    "../src/data/playerRecords.json",
+    '../src/data/playerRecords.json',
     playerRecordsJson,
     function (error: Error) {
       if (error) return error;

@@ -1,5 +1,14 @@
 {
   "categoryMenu": {
-    "categories": ["Total", "Insane", "Hard", "Main", "Easy", "Mod", "Unknown"]
+    "categories": [
+      "Total",
+      "Extreme",
+      "Insane",
+      "Hard",
+      "Main",
+      "Easy",
+      "Mod",
+      "Unknown"
+    ]
   }
 }

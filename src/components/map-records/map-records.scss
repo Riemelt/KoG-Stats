@@ -4,7 +4,7 @@ $className: 'map-records';
   font-size: 1.25rem;
 
   @media (max-width: 735px) {
-    font-size: .6875rem;
+    font-size: 0.6875rem;
   }
 
   &__table {
@@ -42,17 +42,17 @@ $className: 'map-records';
 
     &_rank1 {
       color: gold;
-      border: .125rem solid gold;
+      border: 0.125rem solid gold;
     }
 
     &_rank2 {
       color: silver;
-      border: .125rem solid silver;
+      border: 0.125rem solid silver;
     }
 
     &_rank3 {
       color: rgb(205, 127, 50);
-      border: .125rem solid rgb(205, 127, 50);
+      border: 0.125rem solid rgb(205, 127, 50);
     }
   }
 
@@ -63,29 +63,39 @@ $className: 'map-records';
 
     &_insane {
       color: rgb(244, 63, 94);
-      border: .125rem solid rgb(244, 63, 94);
+      border: 0.125rem solid rgb(244, 63, 94);
     }
 
     &_hard {
       color: rgb(251, 191, 36);
-      border: .125rem solid rgb(251, 191, 36);
+      border: 0.125rem solid rgb(251, 191, 36);
     }
 
     &_main {
       color: rgb(56, 189, 248);
-      border: .125rem solid rgb(56, 189, 248);
+      border: 0.125rem solid rgb(56, 189, 248);
     }
 
     &_easy {
       color: rgb(52, 211, 153);
-      border: .125rem solid rgb(52, 211, 153);
+      border: 0.125rem solid rgb(52, 211, 153);
     }
 
     &_mod {
       color: white;
-      border: .125rem solid white;
+      border: 0.125rem solid white;
     }
-  
+
+    &_extreme {
+      color: rgb(217 70 239);
+      border: 0.125rem solid rgb(217 70 239);
+    }
+
+    &_unknown {
+      color: rgb(249 115 22);
+      border: 0.125rem solid rgb(249 115 22);
+    }
+
     @media (max-width: 735px) {
       max-width: 3.75rem;
       min-width: 3.75rem;
@@ -96,13 +106,12 @@ $className: 'map-records';
     max-width: 6.875rem;
     min-width: 6.875rem;
     text-align: center;
-  
+
     @media (max-width: 735px) {
       max-width: 3.75rem;
       min-width: 3.75rem;
     }
   }
-
 
   &__table-cell-name {
     width: 100%;
@@ -124,10 +133,10 @@ $className: 'map-records';
   &__table-cell-name_header,
   &__table-cell-name-link,
   &__table-cell-players {
-    padding: .3125rem 1.25rem;
+    padding: 0.3125rem 1.25rem;
 
     @media (max-width: 735px) {
-      padding: 0 .625rem;
+      padding: 0 0.625rem;
     }
   }
 
@@ -138,13 +147,12 @@ $className: 'map-records';
     align-items: center;
   }
 
-  &__table-body
-  &__table-cell-name {
+  &__table-body &__table-cell-name {
     transition: box-shadow 0.2s;
 
     &:hover {
       transition: box-shadow 0.2s;
-      box-shadow: 0 0 .9375rem rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.7);
       background-image: $primary-gradient-25;
     }
   }

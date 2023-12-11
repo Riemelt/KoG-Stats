@@ -3,24 +3,32 @@ import {
   KoGMap,
   Finish,
   MapType,
-} from "../src/types/types";
+  MapRecord,
+} from '../src/types/types';
 
-(function() {
-  const { JSDOM } = require("jsdom");
-  const { window } = new JSDOM("");
-  const $ = require("jquery")(window);
+(function () {
+  const { JSDOM } = require('jsdom');
+  const { window } = new JSDOM('');
+  const $ = require('jquery')(window);
 
-  async function getData(url = "") {
+  const jsonData = require('./data/topFinishes.json');
+
+  const previousTopFinishes: Array<KoGMap> = jsonData.data;
+
+  const jsonRecords = require('../src/data/records.json');
+  const records: MapRecord[] = jsonRecords.data;
+
+  async function getData(url = '') {
     const response = await fetch(url);
     let html;
-  
+
     if (response.ok) {
       html = await response.text();
     } else {
-      console.log("error HTTP: " + response.status);
-      throw new Error("Error on http request");
+      console.log('error HTTP: ' + response.status);
+      throw new Error('Error on http request');
     }
-  
+
     return html;
   }
 
@@ -28,11 +36,11 @@ import {
     const topFinishes: Array<Finish> = [];
 
     for (let i = 0; i < items.length; i = i + 2) {
-      const name = $(items[i+1].innerHTML).html();
+      const name = $(items[i + 1].innerHTML).html();
       const time = Number(items[i].innerHTML);
 
       if (name === undefined || time === undefined) {
-        throw new Error("Parsing td error");
+        throw new Error('Parsing td error');
       }
 
       topFinishes.push({
@@ -50,14 +58,14 @@ import {
 
   function parseCard(_: unknown, element: HTMLElement) {
     const $card = $(element);
-    const $name = $card.find("h4");
+    const $name = $card.find('h4');
     const name = $name.html();
-    const $listGroupItems = $card.find(".list-group-item");
+    const $listGroupItems = $card.find('.list-group-item');
     const items = $listGroupItems.toArray();
     const category: MapType = items[1].innerHTML;
 
     if (name === undefined || category === undefined) {
-      throw new Error("Parsing card error");
+      throw new Error('Parsing card error');
     }
 
     mapsData.push({
@@ -72,16 +80,72 @@ import {
       date: new Date(),
       data: topData,
     };
-    
+
     const json = JSON.stringify(result);
-    fs.writeFile("./data/topFinishes.json", json, function(error: Error) {
+    fs.writeFile('./data/topFinishes.json', json, function (error: Error) {
       if (error) {
         console.log(`saveJson error: ${error}`);
         return;
       }
 
-      console.log("topFinishes.json saved");
+      console.log('topFinishes.json saved');
     });
+  }
+
+  function saveRecords(records: MapRecord[]) {
+    const fs = require('fs');
+    const result = {
+      data: records,
+    };
+
+    const json = JSON.stringify(result);
+    fs.writeFile('../src/data/records.json', json, function (error: Error) {
+      if (error) {
+        console.log(`saveRecords error: ${error}`);
+        return;
+      }
+
+      console.log('records.json saved');
+    });
+  }
+
+  function update(topData: KoGMap[]) {
+    topData.forEach(({ name, category, topFinishes }) => {
+      if (topFinishes.length <= 0) return;
+      const previousFinishes =
+        previousTopFinishes.find((map) => map.name === name)?.topFinishes ?? [];
+      const previousRankOne = previousFinishes[0];
+
+      const isNewRank =
+        previousRankOne === undefined ||
+        previousRankOne.time > topFinishes[0].time;
+
+      if (isNewRank) {
+        const { time } = topFinishes[0];
+        const rank = 1;
+        const players = [topFinishes[0].name];
+
+        for (let i = 1; i < topFinishes.length; i += 1) {
+          if (topFinishes[i].time === time) {
+            players.push(topFinishes[i].name);
+            continue;
+          }
+
+          break;
+        }
+
+        records.push({
+          rank,
+          players,
+          name,
+          category,
+          time,
+        });
+      }
+    });
+
+    saveRecords(records);
+    saveJson(topData);
   }
 
   const mapsData: Array<KoGMapEntity> = [];
@@ -91,33 +155,36 @@ import {
   let total = 0;
 
   try {
-    getData("https://kog.tw/get.php?p=maps&p=maps").then((dataMaps) => {
+    getData('https://kog.tw/get.php?p=maps&p=maps').then((dataMaps) => {
       const $dataMaps = $(dataMaps);
-      const $cardBodies = $dataMaps.find(".card");
-      if ($cardBodies.length === 0) throw new Error("HTML parsing map cards erorr");
+      const $cardBodies = $dataMaps.find('.card');
+      if ($cardBodies.length === 0)
+        throw new Error('HTML parsing map cards erorr');
 
-      $cardBodies.each(parseCard.bind(this));
+      $cardBodies.each(parseCard);
       total = mapsData.length;
-  
-      mapsData.forEach(map => {
+
+      mapsData.forEach((map) => {
         const url = `https://kog.tw/get.php?p=maps&p=maps&map=${map.name}`;
         getData(url).then((data) => {
           const $data = $(data);
-          const $td = $data.find("td");
+          const $td = $data.find('td');
 
           if ($td.length > 198) {
-            throw new Error("Unexpected td length");
+            throw new Error('Unexpected td length');
           }
-          
+
           const tdArray = $td.toArray();
           parseTd(tdArray, map);
           count++;
           console.log(`Parsed ${count}/${total}: ${map.name}`);
-          if (count >= total) saveJson(topData);
+          if (count >= total) {
+            update(topData);
+          }
         });
       });
     });
-  } catch(error) {
+  } catch (error) {
     let errorMessage = 'Unknown Error';
     if (error instanceof Error) {
       errorMessage = error.message;

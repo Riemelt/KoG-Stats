@@ -1,13 +1,29 @@
-import {
-  PlayerRanks,
-  Rank,
-  MapType
-} from "../types/types";
+import { PlayerRanks, Rank, MapType } from '../types/types';
 
-const RANK_TYPES: Array<Rank> = ["rank 1", "rank 2", "rank 3", "rank 4", "rank 5"];
-const MAP_TYPES: Array<MapType> = ["Total", "Insane", "Hard", "Main", "Easy", "Mod", "Unknown"];
+const RANK_TYPES: Array<Rank> = [
+  'rank 1',
+  'rank 2',
+  'rank 3',
+  'rank 4',
+  'rank 5',
+];
+const MAP_TYPES: Array<MapType> = [
+  'Total',
+  'Insane',
+  'Hard',
+  'Main',
+  'Easy',
+  'Mod',
+  'Unknown',
+  'Extreme',
+];
 
-function comparePlayersRanks(a: PlayerRanks, b: PlayerRanks, mapType: MapType, rank: number): number {
+function comparePlayersRanks(
+  a: PlayerRanks,
+  b: PlayerRanks,
+  mapType: MapType,
+  rank: number
+): number {
   if (rank >= RANK_TYPES.length) return 0;
   const rankType = RANK_TYPES[rank];
 
@@ -19,25 +35,25 @@ function comparePlayersRanks(a: PlayerRanks, b: PlayerRanks, mapType: MapType, r
 }
 
 function comparePlayers(mapType: MapType) {
-  return function(a: PlayerRanks, b: PlayerRanks) {
+  return function (a: PlayerRanks, b: PlayerRanks) {
     return comparePlayersRanks(a, b, mapType, 0);
-  }
+  };
 }
 
 function convertTime(time: number) {
-  const ms       = Math.round((time * 100) % 100);
+  const ms = Math.round((time * 100) % 100);
   const secCount = Math.floor(time);
-  const hours    = Math.floor(secCount / 3600);
-  const minutes  = Math.floor(secCount / 60) % 60;
-  const seconds  = secCount % 60;
+  const hours = Math.floor(secCount / 3600);
+  const minutes = Math.floor(secCount / 60) % 60;
+  const seconds = secCount % 60;
 
-  const result = [hours,minutes,seconds, ms]
-                 .map(v => v < 10 ? "0" + v : v)
-                 .filter((v,i) => v !== "00" || i > 0)
-                 .reduce((acc, value, index, array) => {
-                   const separator = (index + 1) !== array.length ? ":" : ".";
-                   return index === 0 ? `${value}` : `${acc}${separator}${value}`;
-                 }, "");
+  const result = [hours, minutes, seconds, ms]
+    .map((v) => (v < 10 ? '0' + v : v))
+    .filter((v, i) => v !== '00' || i > 0)
+    .reduce((acc, value, index, array) => {
+      const separator = index + 1 !== array.length ? ':' : '.';
+      return index === 0 ? `${value}` : `${acc}${separator}${value}`;
+    }, '');
 
   return result;
 }
@@ -48,4 +64,4 @@ export {
   comparePlayers,
   comparePlayersRanks,
   convertTime,
-}
+};
