@@ -1,1 +1,1 @@
-# [KoG-Stats](https://koftw.github.io/KoG-Stats/)
+# [KoG-Stats](https://riemelt.github.io/KoG-Stats/)
