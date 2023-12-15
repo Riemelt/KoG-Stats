@@ -58,6 +58,8 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@babel/parser": "^7.23.6",
+    "@babel/types": "^7.23.6",
     "jquery": "^3.6.1",
     "jsdom": "^20.0.1",
     "paginationjs": "^2.1.5"

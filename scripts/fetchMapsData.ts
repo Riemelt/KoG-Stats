@@ -6,7 +6,7 @@ import {
   MapRecord,
 } from '../src/types/types';
 
-(function () {
+(async function () {
   const { JSDOM } = require('jsdom');
   const { window } = new JSDOM('');
   const $ = require('jquery')(window);
@@ -17,6 +17,12 @@ import {
 
   const jsonRecords = require('../src/data/records.json');
   const records: MapRecord[] = jsonRecords.data;
+
+  const waitFor = (ms: number) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  };
 
   async function getData(url = '') {
     const response = await fetch(url);
@@ -155,35 +161,53 @@ import {
   let total = 0;
 
   try {
-    getData('https://kog.tw/get.php?p=maps&p=maps').then((dataMaps) => {
-      const $dataMaps = $(dataMaps);
-      const $cardBodies = $dataMaps.find('.card');
-      if ($cardBodies.length === 0)
-        throw new Error('HTML parsing map cards erorr');
+    const dataMaps = await getData('https://kog.tw/get.php?p=maps&p=maps');
 
-      $cardBodies.each(parseCard);
-      total = mapsData.length;
+    const $dataMaps = $(dataMaps);
+    const $cardBodies = $dataMaps.find('.card');
+    if ($cardBodies.length === 0)
+      throw new Error('HTML parsing map cards error');
 
-      mapsData.forEach((map) => {
-        const url = `https://kog.tw/get.php?p=maps&p=maps&map=${map.name}`;
-        getData(url).then((data) => {
-          const $data = $(data);
-          const $td = $data.find('td');
+    $cardBodies.each(parseCard);
+    total = mapsData.length;
 
-          if ($td.length > 198) {
-            throw new Error('Unexpected td length');
-          }
+    const mapsLeft = new Set(mapsData);
 
-          const tdArray = $td.toArray();
-          parseTd(tdArray, map);
-          count++;
-          console.log(`Parsed ${count}/${total}: ${map.name}`);
-          if (count >= total) {
-            update(topData);
-          }
-        });
-      });
-    });
+    while (mapsLeft.size > 0) {
+      await Promise.all(
+        Array.from(mapsLeft).map((map) => {
+          const url = `https://kog.tw/get.php?p=maps&p=maps&map=${map.name}`;
+          return getData(url).then(
+            (data) => {
+              const $data = $(data);
+              const $td = $data.find('td');
+
+              if ($td.length > 198) {
+                throw new Error('Unexpected td length');
+              }
+
+              const tdArray = $td.toArray();
+              parseTd(tdArray, map);
+              count++;
+              mapsLeft.delete(map);
+
+              console.log(`Parsed ${count}/${total}: ${map.name}`);
+            },
+            (error) => {
+              console.log(`${error.message}. Failed to load ${map.name}`);
+            }
+          );
+        })
+      );
+
+      if (mapsLeft.size > 0) {
+        await waitFor(2000);
+      }
+    }
+
+    if (count >= total) {
+      update(topData);
+    }
   } catch (error) {
     let errorMessage = 'Unknown Error';
     if (error instanceof Error) {
