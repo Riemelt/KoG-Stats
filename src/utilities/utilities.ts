@@ -9,13 +9,13 @@ const RANK_TYPES: Array<Rank> = [
 ];
 const MAP_TYPES: Array<MapType> = [
   'Total',
+  'Extreme',
   'Insane',
   'Hard',
   'Main',
   'Easy',
   'Mod',
   'Unknown',
-  'Extreme',
 ];
 
 function comparePlayersRanks(
