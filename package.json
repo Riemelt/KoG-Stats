@@ -16,10 +16,10 @@
     "Teeworlds",
     "DDnet"
   ],
-  "author": "KOFTW <reignofinsomnia@gmail.com> (https://github.com/KOFTW)",
+  "author": "Riemelt <n.lychenkov@gmail.com> (https://github.com/Riemelt)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KOFTW/KoG-Stats/issues"
+    "url": "https://github.com/Riemelt/KoG-Stats/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
