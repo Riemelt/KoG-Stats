@@ -134,6 +134,10 @@ $className: 'map-records';
     }
   }
 
+  &__player-separator {
+    color: $primary;
+  }
+
   &__table-cell-players {
     width: 100%;
     text-align: left;

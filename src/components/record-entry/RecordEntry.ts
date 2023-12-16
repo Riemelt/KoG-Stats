@@ -47,15 +47,17 @@ class RecordEntry {
     if (this.options.record.players !== undefined) {
       playersTd += `
         <td class="${this.className}__table-cell-players">
-          ${this.options.record.players
-            .map(
-              (player) => `
+          ${this.options.record.players.map(
+            (player) => `
             <a class="${this.className}__player-link js-${this.className}__player-link">
               ${player}
             </a>
           `
-            )
-            .join('&')}
+          ).join(`
+            <span class="${this.className}__player-separator">
+              &
+            </span>
+            `)}
         </td>
       `;
     }
