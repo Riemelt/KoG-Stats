@@ -125,6 +125,13 @@ $className: 'map-records';
     }
   }
 
+  &__player-link {
+    transition: color 0.3s;
+    &:hover {
+      color: $primary;
+    }
+  }
+
   &__table-cell-players {
     width: 100%;
     text-align: left;

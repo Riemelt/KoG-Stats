@@ -1,5 +1,5 @@
-import { RecordEntryOptions } from "./types";
-import { convertTime } from "../../utilities/utilities";
+import { RecordEntryOptions } from './types';
+import { convertTime } from '../../utilities/utilities';
 
 class RecordEntry {
   private options: RecordEntryOptions;
@@ -8,7 +8,7 @@ class RecordEntry {
 
   constructor(options: RecordEntryOptions) {
     this.options = options;
-    this.className = "map-records";
+    this.className = 'map-records';
     this.$component = this.initHtml();
   }
 
@@ -29,7 +29,15 @@ class RecordEntry {
     if (this.options.record.players !== undefined) {
       playersTd += `
         <td class="${this.className}__table-cell-players">
-          ${this.options.record.players.join(', ')}
+          ${this.options.record.players
+            .map(
+              (player) => `
+            <a class="${this.className}__player-link" href="/player-profile.html?player=${player}">
+              ${player}
+            </a>
+          `
+            )
+            .join('&')}
         </td>
       `;
     }
