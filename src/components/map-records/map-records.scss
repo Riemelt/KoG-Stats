@@ -127,6 +127,8 @@ $className: 'map-records';
 
   &__player-link {
     transition: color 0.3s;
+    cursor: pointer;
+
     &:hover {
       color: $primary;
     }
