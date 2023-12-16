@@ -1,7 +1,8 @@
-import { MapRecord, MapType } from "../../types/types";
+import { MapRecord, MapType } from '../../types/types';
 
 interface MapRecordsOptions {
-  sortBy: MapType,
+  sortBy: MapType;
   records: Array<MapRecord>;
   withPlayers?: boolean;
+  withDate?: boolean;
 }

@@ -146,6 +146,7 @@ import {
           name,
           category,
           time,
+          date: new Date(),
         });
       }
     });

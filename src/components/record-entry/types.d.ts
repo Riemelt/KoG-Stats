@@ -1,5 +1,6 @@
-import { MapRecord } from "../../types/types";
+import { MapRecord } from '../../types/types';
 
 interface RecordEntryOptions {
-  record: MapRecord,
+  record: MapRecord;
+  withDate: boolean;
 }

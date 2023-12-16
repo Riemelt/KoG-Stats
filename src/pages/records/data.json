@@ -1,5 +1,6 @@
 {
   "mapRecords": {
-    "withPlayers": true
+    "withPlayers": true,
+    "withDate": true
   }
 }

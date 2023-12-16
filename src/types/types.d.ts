@@ -46,6 +46,7 @@ interface MapRecord {
   time: number;
   rank: number;
   players?: Array<string>;
+  date?: Date;
 }
 
 export {

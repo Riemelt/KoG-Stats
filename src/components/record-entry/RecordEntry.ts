@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { RecordEntryOptions } from './types';
 import { convertTime } from '../../utilities/utilities';
 
@@ -62,6 +64,22 @@ class RecordEntry {
       `;
     }
 
+    const dateString = this.options.record.date ?? '2023-12-16';
+    const date = new Date(dateString);
+    const dateTd = this.options.withDate
+      ? `
+      <td
+        class="${this.className}__table-cell-date js-${
+          this.className
+        }__table-cell-date"
+        title="${date.toString()}"
+      >
+        ${moment(Date.parse(date.toString())).fromNow()}
+      </td>
+    `
+      : '';
+
+    // prettier-ignore
     return $(`
       <tr class="${this.className}__table-row js-${this.className}__table-row ${this.className}__table-row_body">
         <td class="${this.className}__table-cell-rank js-${this.className}__table-cell-rank ${this.className}__table-cell-rank_rank${this.options.record.rank}">
@@ -76,6 +94,7 @@ class RecordEntry {
         <td class="${this.className}__table-cell-category ${this.className}__table-cell-category_${mapCategory} js-${this.className}__table-cell-category">
           ${this.options.record.category}
         </td>
+        ${dateTd}
         <td class="${this.className}__table-cell-time js-${this.className}__table-cell-time">
           ${timeConverted}
         </td>

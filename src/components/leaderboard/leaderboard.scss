@@ -3,8 +3,8 @@ $className: 'leaderboard';
 .#{$className} {
   font-size: 1.25rem;
 
-  @media (max-width: 735px) {
-    font-size: .75rem;
+  @media (max-width: 1100px) {
+    font-size: 0.75rem;
   }
 
   &__table {
@@ -40,8 +40,8 @@ $className: 'leaderboard';
   &__table-cell-name {
     padding: 0 1.25rem;
 
-    @media (max-width: 735px) {
-      padding: 0 .625rem;
+    @media (max-width: 1100px) {
+      padding: 0 0.625rem;
     }
   }
 
@@ -53,7 +53,7 @@ $className: 'leaderboard';
 
     &:hover {
       transition: box-shadow 0.2s;
-      box-shadow: 0 0 .9375rem rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.7);
       background-image: $primary-gradient-25;
     }
   }
@@ -81,15 +81,15 @@ $className: 'leaderboard';
 
   &__table-cell-rank {
     &_rank1 {
-      border: .125rem solid gold;
+      border: 0.125rem solid gold;
     }
 
     &_rank2 {
-      border: .125rem solid silver;
+      border: 0.125rem solid silver;
     }
 
     &_rank3 {
-      border: .125rem solid rgb(205, 127, 50);
+      border: 0.125rem solid rgb(205, 127, 50);
     }
   }
 }

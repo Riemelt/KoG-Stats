@@ -2,6 +2,7 @@ mixin map-records(vars)
   -
     const {
       withPlayers = false,
+      withDate = false,
     } = vars
 
     const className = "map-records"
@@ -19,5 +20,7 @@ mixin map-records(vars)
           if (withPlayers)
             th(class=`${className}__table-cell-players`) Players
           th(class=`${className}__table-cell-category`) Category
+          if (withDate)
+            th(class=`${className}__table-cell-date`) Updated
           th(class=`${className}__table-cell-time`) Time
       tbody(class=`${className}__table-body js-${className}__table-body`)

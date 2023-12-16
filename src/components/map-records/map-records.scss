@@ -3,7 +3,7 @@ $className: 'map-records';
 .#{$className} {
   font-size: 1.25rem;
 
-  @media (max-width: 735px) {
+  @media (max-width: 1100px) {
     font-size: 0.6875rem;
   }
 
@@ -28,7 +28,8 @@ $className: 'map-records';
   &__table-cell-name,
   &__table-cell-category,
   &__table-cell-time,
-  &__table-cell-players {
+  &__table-cell-players,
+  &__table-cell-date {
     background-image: $primary-gradient-10;
   }
 
@@ -96,20 +97,38 @@ $className: 'map-records';
       border: 0.125rem solid rgb(249 115 22);
     }
 
-    @media (max-width: 735px) {
+    @media (max-width: 1100px) {
       max-width: 3.75rem;
       min-width: 3.75rem;
     }
   }
 
-  &__table-cell-time {
-    max-width: 6.875rem;
+  &__table-cell-time,
+  &__table-cell-date {
+    padding: 0 0.625rem;
     min-width: 6.875rem;
     text-align: center;
+    white-space: nowrap;
 
-    @media (max-width: 735px) {
-      max-width: 3.75rem;
+    @media (max-width: 1100px) {
+      padding: 0 0.3125rem;
       min-width: 3.75rem;
+    }
+
+    @media (max-width: 500px) {
+      padding: 0 0.125rem;
+    }
+  }
+
+  &__table-cell-category {
+    @media (max-width: 400px) {
+      display: none;
+    }
+  }
+
+  &__table-cell-date {
+    @media (max-width: 500px) {
+      display: none;
     }
   }
 
@@ -148,8 +167,12 @@ $className: 'map-records';
   &__table-cell-players {
     padding: 0.3125rem 1.25rem;
 
-    @media (max-width: 735px) {
+    @media (max-width: 1100px) {
       padding: 0 0.625rem;
+    }
+
+    @media (max-width: 500px) {
+      padding: 0 0.3125rem;
     }
   }
 

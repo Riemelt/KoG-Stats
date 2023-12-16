@@ -6,36 +6,47 @@ $headerColor: rgb(17, 17, 25);
 
 $primary: rgb(235, 92, 43);
 
+$grey: #f4f4f6;
 
-$grey: #F4F4F6;
+$purple: #bc9cff;
+$purple-50: #bc9cff50;
+$purple-25: #bc9cff25;
+$purple-10: #bc9cff10;
 
-$purple: #BC9CFF;
-$purple-50: #BC9CFF50;
-$purple-25: #BC9CFF25;
-$purple-10: #BC9CFF10;
+$green: #6fcf97;
 
-$green: #6FCF97;
+$jordy-blue: #8ba4f9;
+$jordy-blue-50: #8ba4f950;
+$jordy-blue-25: #8ba4f925;
+$jordy-blue-10: #8ba4f910;
 
-$jordy-blue: #8BA4F9;
-$jordy-blue-50: #8BA4F950;
-$jordy-blue-25: #8BA4F925;
-$jordy-blue-10: #8BA4F910;
-
-$sky-blue: #66D2EA;
+$sky-blue: #66d2ea;
 
 $primary-gradient: linear-gradient(180deg, $purple 0%, $jordy-blue 100%);
-$primary-gradient-50: linear-gradient(180deg, $purple-50 0%, $jordy-blue-50 100%);
-$primary-gradient-25: linear-gradient(180deg, $purple-25 0%, $jordy-blue-25 100%);
-$primary-gradient-10: linear-gradient(180deg, $purple-10 0%, $jordy-blue-10 100%);
+$primary-gradient-50: linear-gradient(
+  180deg,
+  $purple-50 0%,
+  $jordy-blue-50 100%
+);
+$primary-gradient-25: linear-gradient(
+  180deg,
+  $purple-25 0%,
+  $jordy-blue-25 100%
+);
+$primary-gradient-10: linear-gradient(
+  180deg,
+  $purple-10 0%,
+  $jordy-blue-10 100%
+);
 
 $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
 
 @mixin tableProperties() {
   border-collapse: separate;
-  border-spacing: .625rem;
+  border-spacing: 0.625rem;
 
-  @media (max-width: 735px) {
-    border-spacing: .125rem;
+  @media (max-width: 1100px) {
+    border-spacing: 0.125rem;
   }
 }
 
@@ -44,7 +55,7 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
   min-width: 3.125rem;
   text-align: center;
 
-  @media (max-width: 735px) {
+  @media (max-width: 1100px) {
     max-width: 1.5625rem;
     min-width: 1.5625rem;
   }
@@ -54,7 +65,7 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
   min-height: 3.125rem;
   height: 3.125rem;
 
-  @media (max-width: 735px) {
+  @media (max-width: 1100px) {
     min-height: 1.875rem;
     height: 1.875rem;
   }
