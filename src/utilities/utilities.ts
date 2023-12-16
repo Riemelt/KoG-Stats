@@ -14,8 +14,8 @@ const MAP_TYPES: Array<MapType> = [
   'Hard',
   'Main',
   'Easy',
+  'Solo',
   'Mod',
-  'Unknown',
 ];
 
 function comparePlayersRanks(

@@ -5,7 +5,7 @@ type MapType =
   | 'Hard'
   | 'Insane'
   | 'Mod'
-  | 'Unknown'
+  | 'Solo'
   | 'Total'
   | 'Extreme';
 

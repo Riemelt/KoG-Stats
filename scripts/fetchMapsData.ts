@@ -76,7 +76,7 @@ import {
 
     mapsData.push({
       name,
-      category,
+      category: category.trim().toLowerCase() === 'unknown' ? 'Solo' : category,
     });
   }
 

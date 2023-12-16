@@ -16,7 +16,6 @@ class RecordEntry {
     this.$playerLinks = this.$component.find(
       `.js-${this.className}__player-link`
     );
-    this.setHandlers();
   }
 
   public getOptions() {

@@ -1,6 +1,6 @@
-import { Category, MapType } from "../../types/types";
-import { RANK_TYPES, MAP_TYPES } from "../../utilities/utilities";
-import { PlayerEntryOptions } from "./types";
+import { Category, MapType } from '../../types/types';
+import { RANK_TYPES } from '../../utilities/utilities';
+import { PlayerEntryOptions } from './types';
 
 class PlayerEntry {
   private options: PlayerEntryOptions;
@@ -12,11 +12,12 @@ class PlayerEntry {
 
   constructor($element: JQuery<HTMLElement>, options: PlayerEntryOptions) {
     this.options = options;
-    this.className = "leaderboard";
+    this.className = 'leaderboard';
     this.$component = $element;
     this.$rank = this.$component.find(`.js-${this.className}__table-cell-rank`);
-    this.$ranks = this.$component.find(`.js-${this.className}__table-cell-total-ranks`);
-
+    this.$ranks = this.$component.find(
+      `.js-${this.className}__table-cell-total-ranks`
+    );
     this.$name = this.$component.find(`.js-${this.className}__table-cell-name`);
   }
 
@@ -29,12 +30,11 @@ class PlayerEntry {
   }
 
   public setHandlers() {
-    this.$name.on("click.player-entry-name", this.handleNameClick.bind(this));
+    this.$name.on('click.player-entry-name', this.handleNameClick.bind(this));
   }
 
   public hasAnyRanks(mapType: MapType): boolean {
-    for (let i = 0; i < RANK_TYPES.length; i++)
-    {
+    for (let i = 0; i < RANK_TYPES.length; i++) {
       const ranks = this.options.player.categories[mapType][RANK_TYPES[i]];
       if (ranks > 0) return true;
     }
@@ -57,7 +57,7 @@ class PlayerEntry {
 
   private handleNameClick() {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set("player", this.options.player.name);
+    urlSearchParams.set('player', this.options.player.name);
     location.href = `player-profile.html?${urlSearchParams.toString()}`;
   }
 

@@ -25,7 +25,7 @@ var utilities_1 = require("../src/utilities/utilities");
             Mod: initRankTypes(),
             Extreme: initRankTypes(),
             Total: initRankTypes(),
-            Unknown: initRankTypes()
+            Solo: initRankTypes()
         };
     }
     function addNewPlayer(name) {

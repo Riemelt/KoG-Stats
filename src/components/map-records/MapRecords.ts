@@ -75,6 +75,7 @@ class MapRecords {
     recordEntries.forEach((entry) => {
       const $entry = entry.getHtml();
       this.$tableBody.append($entry);
+      entry.setHandlers();
     });
   }
 

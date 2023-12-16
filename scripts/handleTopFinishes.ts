@@ -39,7 +39,7 @@ import { RANK_TYPES, comparePlayers } from '../src/utilities/utilities';
       Mod: initRankTypes(),
       Extreme: initRankTypes(),
       Total: initRankTypes(),
-      Unknown: initRankTypes(),
+      Solo: initRankTypes(),
     };
   }
 

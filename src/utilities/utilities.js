@@ -11,13 +11,13 @@ var RANK_TYPES = [
 exports.RANK_TYPES = RANK_TYPES;
 var MAP_TYPES = [
     'Total',
+    'Extreme',
     'Insane',
     'Hard',
     'Main',
     'Easy',
+    'Solo',
     'Mod',
-    'Unknown',
-    'Extreme',
 ];
 exports.MAP_TYPES = MAP_TYPES;
 function comparePlayersRanks(a, b, mapType, rank) {
