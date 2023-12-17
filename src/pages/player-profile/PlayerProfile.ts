@@ -1,9 +1,11 @@
 import '../../components/container';
-import { PlayerProfileOptions } from './types';
+
 import CategoryMenu from '../../components/category-menu';
 import Pagination from '../../components/pagination';
 import MapRecords from '../../components/map-records';
 import { MapType } from '../../types/types';
+
+import { PlayerProfileOptions } from './types';
 
 class PlayerProfile {
   private className: string;
@@ -12,7 +14,6 @@ class PlayerProfile {
   private $categoryMenu: JQuery<HTMLElement>;
   private $title: JQuery<HTMLElement>;
   private $titlePlayerName: JQuery<HTMLElement>;
-  private categoryMenu: CategoryMenu;
   private mapRecords: MapRecords;
   private pagination: Pagination;
 
@@ -35,14 +36,15 @@ class PlayerProfile {
     this.$categoryMenu = this.$component.find(
       `.js-${this.className}__category-menu`
     );
+
     const categoryMenuOptions = {
-      sortBy: this.options.sortBy,
       ...this.options.categoryMenu,
-    };
-    this.categoryMenu = new CategoryMenu(this.$component, {
-      ...categoryMenuOptions,
+      sortBy: this.options.sortBy,
+
       onChange: this.handleMenuChange.bind(this),
-    });
+    };
+
+    new CategoryMenu(this.$categoryMenu, categoryMenuOptions);
 
     this.mapRecords = new MapRecords(
       this.$component.find(`.js-${this.className}__map-records`),

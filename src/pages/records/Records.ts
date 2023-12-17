@@ -1,10 +1,10 @@
 import '../../components/container';
 import Pagination from '../../components/pagination';
 import MapRecords from '../../components/map-records';
+import CategoryMenu from '../../components/category-menu';
 import { MapType } from '../../types/types';
 
 import { RecordsOptions } from './types';
-import CategoryMenu from '../../components/category-menu';
 
 class Records {
   private className: string;
@@ -12,7 +12,6 @@ class Records {
   private $component: JQuery<HTMLElement>;
   private mapRecords: MapRecords;
   private pagination: Pagination;
-  private categoryMenu: CategoryMenu;
   private $categoryMenu: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: RecordsOptions) {
@@ -30,14 +29,12 @@ class Records {
     );
 
     const categoryMenuOptions = {
-      sortBy: this.options.sortBy,
       ...this.options.categoryMenu,
+      sortBy: this.options.sortBy,
+      onChange: this.handleMenuChange.bind(this),
     };
 
-    this.categoryMenu = new CategoryMenu(this.$categoryMenu, {
-      ...categoryMenuOptions,
-      onChange: this.handleMenuChange.bind(this),
-    });
+    new CategoryMenu(this.$categoryMenu, categoryMenuOptions);
 
     this.pagination = new Pagination(
       this.$component.find(`.js-${this.className}__pagination`)
