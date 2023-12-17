@@ -64,6 +64,18 @@ function buildUrlPath(path: string) {
   return newPath.join('/');
 }
 
+const debounceLast = (f: Function, ms: number) => {
+  let timer: ReturnType<typeof setTimeout>;
+
+  return function (this: unknown, ...args: unknown[]) {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      f.call(this, ...args);
+      clearTimeout(timer);
+    }, ms);
+  };
+};
+
 export {
   RANK_TYPES,
   MAP_TYPES,
@@ -71,4 +83,5 @@ export {
   comparePlayersRanks,
   convertTime,
   buildUrlPath,
+  debounceLast,
 };

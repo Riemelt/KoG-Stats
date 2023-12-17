@@ -29,19 +29,33 @@ class Leaderboard {
     );
   }
 
-  public generatePlayerEntries(category: MapType) {
+  public generatePlayerEntries(
+    category: MapType,
+    name: string,
+    shouldUpdate = true
+  ) {
     this.activeCategory = category;
 
     const entries = this.playerEntries
-      .filter((player) => player.hasAnyRanks(this.activeCategory))
       .sort(Leaderboard.comparePlayerEntries(this.activeCategory))
       .reverse();
 
-    entries.forEach((playerEntry, index) => {
-      playerEntry.update(this.activeCategory, index + 1);
-    });
+    if (shouldUpdate) {
+      entries.forEach((playerEntry, index) => {
+        playerEntry.update(this.activeCategory, index + 1);
+      });
+    }
 
-    return entries;
+    return entries.filter((player) => {
+      const hasAnyRanks = player.hasAnyRanks(this.activeCategory);
+      return (
+        hasAnyRanks &&
+        player
+          .getOptions()
+          .name.toLowerCase()
+          .includes(name.trim().toLowerCase())
+      );
+    });
   }
 
   public render(data: Array<PlayerEntry>) {

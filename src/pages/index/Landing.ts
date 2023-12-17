@@ -7,6 +7,8 @@ import { MapType } from '../../types/types';
 
 import { LandingOptions } from './types';
 import Expander from '../../components/expander';
+import InputField from '../../components/input-field';
+import { debounceLast } from '../../utilities/utilities';
 
 class Landing {
   private className: string;
@@ -16,6 +18,11 @@ class Landing {
   private $pagination: JQuery<HTMLElement>;
   private leaderboard: Leaderboard;
   private pagination: Pagination;
+  private category: MapType = 'Total';
+  private name = '';
+  private $resetButton: JQuery<HTMLElement>;
+  private categoryMenu: CategoryMenu;
+  private inputName: InputField;
 
   constructor($element: JQuery<HTMLElement>, options: LandingOptions) {
     this.options = options;
@@ -29,6 +36,12 @@ class Landing {
       `.js-${this.className}__category-menu`
     );
 
+    this.category = this.options.sortBy;
+
+    this.$resetButton = this.$component.find(
+      `.js-${this.className}__reset-button`
+    );
+
     const categoryMenuOptions = {
       ...this.options.categoryMenu,
       sortBy: this.options.sortBy,
@@ -36,8 +49,17 @@ class Landing {
     };
 
     new Expander(this.$component.find(`.js-${this.className}__expander`));
+    this.inputName = new InputField(
+      this.$component.find(`.js-${this.className}__input-name`),
+      {
+        onChange: debounceLast(this.handleInputNameChange.bind(this), 250),
+      }
+    );
 
-    new CategoryMenu(this.$categoryMenu, categoryMenuOptions);
+    this.categoryMenu = new CategoryMenu(
+      this.$categoryMenu,
+      categoryMenuOptions
+    );
 
     this.leaderboard = new Leaderboard(
       this.$component.find(`.js-${this.className}__leaderboard`),
@@ -49,16 +71,42 @@ class Landing {
 
     this.pagination = new Pagination(this.$pagination);
 
-    this.render(this.options.sortBy);
+    this.setHandlers();
+    this.render();
+  }
+
+  private setHandlers() {
+    this.$resetButton.on(
+      'click.resetButton',
+      this.handleResetButtonClick.bind(this)
+    );
+  }
+
+  private handleResetButtonClick() {
+    this.name = '';
+    this.category = 'Total';
+    this.inputName.setValue(this.name);
+    this.categoryMenu.setCategory(this.category);
+    this.render();
+  }
+
+  private handleInputNameChange(value: string) {
+    this.name = value;
+    this.render(false);
   }
 
   private handleMenuChange(category: MapType) {
-    this.render(category);
+    this.category = category;
+    this.render();
   }
 
-  private render(category: MapType) {
+  private render(shouldUpdate = true) {
     this.pagination.render(
-      this.leaderboard.generatePlayerEntries(category),
+      this.leaderboard.generatePlayerEntries(
+        this.category,
+        this.name,
+        shouldUpdate
+      ),
       this.leaderboard.render.bind(this.leaderboard)
     );
   }

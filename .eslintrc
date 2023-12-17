@@ -8,27 +8,28 @@
     "jquery": true,
     "node": true
   },
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "rules": { 
-    "prefer-const": ["error",
-    {
-      "destructuring": "any",
-      "ignoreReadBeforeAssign": false
-    }],
+  "rules": {
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
     "no-new-object": "error",
     "no-var": "error",
     "no-array-constructor": "error",
     "object-shorthand": ["error", "always"],
     "quote-props": ["error", "as-needed"],
     "prefer-object-spread": "error",
-    "prefer-destructuring": ["error",
+    "prefer-destructuring": [
+      "error",
       {
         "VariableDeclarator": {
           "array": false,
@@ -40,9 +41,10 @@
         }
       },
       {
-      "enforceForRenamedProperties": false
+        "enforceForRenamedProperties": false
       }
     ],
+    "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/no-var-requires": 0
   }
 }

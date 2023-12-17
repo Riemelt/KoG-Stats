@@ -2,6 +2,9 @@ import '../../components/container';
 import Pagination from '../../components/pagination';
 import MapRecords from '../../components/map-records';
 import CategoryMenu from '../../components/category-menu';
+import Expander from '../../components/expander';
+import InputField from '../../components/input-field';
+import { debounceLast } from '../../utilities/utilities';
 import { MapType } from '../../types/types';
 
 import { RecordsOptions } from './types';
@@ -13,11 +16,17 @@ class Records {
   private mapRecords: MapRecords;
   private pagination: Pagination;
   private $categoryMenu: JQuery<HTMLElement>;
+  private category: MapType = 'Total';
+  private mapName = '';
+  private categoryMenu: CategoryMenu;
+  private inputMapName: InputField;
+  private $resetButton: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: RecordsOptions) {
     this.options = options;
     this.className = 'records';
     this.$component = $element;
+    this.category = this.options.sortBy;
 
     this.mapRecords = new MapRecords(
       this.$component.find(`.js-${this.className}__map-records`),
@@ -28,28 +37,65 @@ class Records {
       `.js-${this.className}__category-menu`
     );
 
+    this.$resetButton = this.$component.find(
+      `.js-${this.className}__reset-button`
+    );
+
     const categoryMenuOptions = {
       ...this.options.categoryMenu,
       sortBy: this.options.sortBy,
       onChange: this.handleMenuChange.bind(this),
     };
 
-    new CategoryMenu(this.$categoryMenu, categoryMenuOptions);
+    this.categoryMenu = new CategoryMenu(
+      this.$categoryMenu,
+      categoryMenuOptions
+    );
+
+    new Expander(this.$component.find(`.js-${this.className}__expander`));
+    this.inputMapName = new InputField(
+      this.$component.find(`.js-${this.className}__input-map-name`),
+      {
+        onChange: debounceLast(this.handleInputMapNameChange.bind(this), 250),
+      }
+    );
 
     this.pagination = new Pagination(
       this.$component.find(`.js-${this.className}__pagination`)
     );
 
-    this.render(this.options.sortBy);
+    this.setHandlers();
+    this.render();
+  }
+
+  private setHandlers() {
+    this.$resetButton.on(
+      'click.resetButton',
+      this.handleResetButtonClick.bind(this)
+    );
+  }
+
+  private handleResetButtonClick() {
+    this.mapName = '';
+    this.category = 'Total';
+    this.inputMapName.setValue(this.mapName);
+    this.categoryMenu.setCategory(this.category);
+    this.render();
+  }
+
+  private handleInputMapNameChange(value: string) {
+    this.mapName = value;
+    this.render();
   }
 
   private handleMenuChange(category: MapType) {
-    this.render(category);
+    this.category = category;
+    this.render();
   }
 
-  private render(category: MapType) {
+  private render() {
     this.pagination.render(
-      this.mapRecords.generateRecordEntries(category),
+      this.mapRecords.generateRecordEntries(this.category, this.mapName),
       this.mapRecords.render.bind(this.mapRecords)
     );
   }

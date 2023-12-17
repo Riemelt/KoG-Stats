@@ -10,5 +10,13 @@
       "Solo",
       "Mod"
     ]
+  },
+  "expander": {
+    "title": "Filtering options"
+  },
+  "inputName": {
+    "title": "Filter by map name",
+    "placeholder": "Name",
+    "icon": "search"
   }
 }

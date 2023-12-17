@@ -12,6 +12,11 @@
     ]
   },
   "expander": {
-    "title": "Filter options"
+    "title": "Filtering options"
+  },
+  "inputName": {
+    "title": "Filter by player name",
+    "placeholder": "Name",
+    "icon": "search"
   }
 }

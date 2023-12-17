@@ -5,6 +5,7 @@ include ../../components/category-menu/category-menu
 include ../../components/leaderboard/leaderboard
 include ../../components/pagination/pagination
 include ../../components/expander/expander
+include ../../components/input-field/input-field
 
 block vars
   - const title = "KoG map record holders"
@@ -23,11 +24,10 @@ block main
           +category-menu(data.categoryMenu)
         div(class=`${className}__expander js-${className}__expander`)
           +expander(data.expander)
-            p test test test test
-            p test test test test
-            p test test test test
-            p test test test test
-            p test test test test
+            div(class=`${className}__filters`)
+              div(class=`${className}__input-name js-${className}__input-name`)
+                +input-field(data.inputName)
+            button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__leaderboard js-${className}__leaderboard`)
           +leaderboard()
         div(class=`${className}__pagination js-${className}__pagination`)

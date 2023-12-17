@@ -4,6 +4,8 @@ include ../../components/container/container
 include ../../components/category-menu/category-menu
 include ../../components/pagination/pagination
 include ../../components/map-records/map-records
+include ../../components/expander/expander
+include ../../components/input-field/input-field
 
 block vars
   - const title = "Player profile"
@@ -20,6 +22,12 @@ block main
           h1(class=`${className}__title-text js-${className}__title-text`)
         div(class=`${className}__category-menu js-${className}__category-menu`)
          +category-menu(data.categoryMenu)
+        div(class=`${className}__expander js-${className}__expander`)
+          +expander(data.expander)
+            div(class=`${className}__filters`)
+              div(class=`${className}__input-name js-${className}__input-name`)
+                +input-field(data.inputName)
+            button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__map-records js-${className}__map-records`)
           +map-records({})
         div(class=`${className}__pagination js-${className}__pagination`)

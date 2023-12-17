@@ -53,11 +53,15 @@ class MapRecords {
     }
   }
 
-  public generateRecordEntries(category: MapType) {
-    const entries = this.recordEntries.filter(
-      (record) =>
-        category === 'Total' || record.getOptions().category === category
-    );
+  public generateRecordEntries(mapCategory: MapType, mapName: string) {
+    const entries = this.recordEntries.filter((record) => {
+      const { category, name } = record.getOptions();
+
+      return (
+        (mapCategory === 'Total' || category === mapCategory) &&
+        name.toLowerCase().includes(mapName.trim().toLowerCase())
+      );
+    });
 
     return entries;
   }

@@ -1,0 +1,21 @@
+mixin input-field(vars = {})
+  -
+    const {
+      title = '',
+      type = 'text',
+      placeholder = '',
+      icon = '',
+    } = vars
+
+    const className = 'input-field'
+    let classNames = `${className} js-${className}`
+
+  if (icon)
+    - classNames += ` ${className}_with-icon`
+
+  label(class=classNames)
+    div(class=`${className}__title`)= title
+    div(class=`${className}__input-wrapper`)
+      if (icon)
+        span(class=`${className}__icon material-icons-outlined`)= icon
+      input(class=`${className}__input js-${className}__input` type=type placeholder=placeholder)
