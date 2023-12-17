@@ -7,8 +7,16 @@ $className: 'landing';
     padding: 3.125rem 0;
   }
 
+  &__expander {
+    margin: 1.875rem 0.625rem 0;
+
+    @media (max-width: 1100px) {
+      margin: 1.875rem 0.125rem 0;
+    }
+  }
+
   &__leaderboard {
-    padding-top: 3.125rem;
+    padding-top: 0.625rem;
   }
 
   &__pagination {

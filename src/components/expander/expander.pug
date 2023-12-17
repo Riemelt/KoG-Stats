@@ -1,0 +1,18 @@
+mixin expander(vars = {})
+  -
+    const {
+      title = '',
+    } = vars
+
+    const className = 'expander'
+    const classNames = `${className} js-${className}`
+
+  div(class=classNames)
+    div(class=`${className}__header js-${className}__header`)
+      div(class=`${className}__title`)= title
+      button(class=`${className}__button`)
+        span(class=`${className}__icon material-icons-outlined`) expand_less
+    div(class=`${className}__body-wrapper`)
+      div(class=`${className}__body`)
+        div(class=`${className}__body-inside`)
+          block

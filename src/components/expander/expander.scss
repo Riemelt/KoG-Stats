@@ -1,0 +1,80 @@
+$className: 'expander';
+
+.#{$className} {
+  &__header {
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem;
+
+    &:hover {
+      transition: box-shadow 0.2s;
+      box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.7);
+      background-image: $primary-gradient-25;
+    }
+  }
+
+  &__header,
+  &__body-wrapper {
+    background-image: $primary-gradient-10;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    transition: color 0.4s;
+  }
+
+  &__button {
+    cursor: pointer;
+    background: 0;
+    border: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__icon {
+    color: white;
+    font-size: 1.875rem;
+    transition: transform 0.4s, color 0.4s;
+  }
+
+  &__body-wrapper {
+    margin-top: 0.9375rem;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s;
+  }
+
+  &__body {
+    grid-row: 1 / span 2;
+  }
+
+  &__body-wrapper > &__body {
+    overflow: hidden;
+  }
+
+  &__body-inside {
+    padding: 0.875rem;
+  }
+
+  &_open {
+    .#{$className} {
+      &__title {
+        color: $primary;
+      }
+
+      &__body-wrapper {
+        grid-template-rows: 1fr;
+      }
+
+      &__icon {
+        color: $primary;
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

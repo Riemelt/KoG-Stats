@@ -10,5 +10,8 @@
       "Solo",
       "Mod"
     ]
+  },
+  "expander": {
+    "title": "Filter options"
   }
 }

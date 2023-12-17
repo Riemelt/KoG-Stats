@@ -4,6 +4,7 @@ include ../../components/container/container
 include ../../components/category-menu/category-menu
 include ../../components/leaderboard/leaderboard
 include ../../components/pagination/pagination
+include ../../components/expander/expander
 
 block vars
   - const title = "KoG map record holders"
@@ -19,8 +20,15 @@ block main
     +container()
       div(class=`${className}__main`)
         div(class=`${className}__category-menu js-${className}__category-menu`)
-         +category-menu(data.categoryMenu)
+          +category-menu(data.categoryMenu)
+        div(class=`${className}__expander js-${className}__expander`)
+          +expander(data.expander)
+            p test test test test
+            p test test test test
+            p test test test test
+            p test test test test
+            p test test test test
         div(class=`${className}__leaderboard js-${className}__leaderboard`)
-         +leaderboard()
+          +leaderboard()
         div(class=`${className}__pagination js-${className}__pagination`)
           +pagination({})

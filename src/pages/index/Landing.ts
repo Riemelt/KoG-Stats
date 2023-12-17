@@ -6,6 +6,7 @@ import Pagination from '../../components/pagination';
 import { MapType } from '../../types/types';
 
 import { LandingOptions } from './types';
+import Expander from '../../components/expander';
 
 class Landing {
   private className: string;
@@ -33,6 +34,8 @@ class Landing {
       sortBy: this.options.sortBy,
       onChange: this.handleMenuChange.bind(this),
     };
+
+    new Expander(this.$component.find(`.js-${this.className}__expander`));
 
     new CategoryMenu(this.$categoryMenu, categoryMenuOptions);
 
