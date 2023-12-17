@@ -1,21 +1,17 @@
 import moment from 'moment';
 
 import { RecordEntryOptions } from './types';
-import { convertTime } from '../../utilities/utilities';
+import { buildUrlPath, convertTime } from '../../utilities/utilities';
 
 class RecordEntry {
   private options: RecordEntryOptions;
   private className: string;
   private $component: JQuery<HTMLElement>;
-  private $playerLinks: JQuery<HTMLElement>;
 
   constructor(options: RecordEntryOptions) {
     this.options = options;
     this.className = 'map-records';
     this.$component = this.initHtml();
-    this.$playerLinks = this.$component.find(
-      `.js-${this.className}__player-link`
-    );
   }
 
   public getOptions() {
@@ -26,17 +22,10 @@ class RecordEntry {
     return this.$component;
   }
 
-  public setHandlers() {
-    this.$playerLinks.each((_, element) => {
-      const name = element.innerHTML.trim();
-      $(element).on('click', this.handleNameClick.bind(this, name));
-    });
-  }
-
-  private handleNameClick(name: string) {
+  private getPlayerProfileUrl(name: string) {
     const urlSearchParams = new URLSearchParams(window.location.search);
     urlSearchParams.set('player', name);
-    location.href = `player-profile.html?${urlSearchParams.toString()}`;
+    return buildUrlPath(`player-profile.html?${urlSearchParams.toString()}`);
   }
 
   private initHtml() {
@@ -50,7 +39,10 @@ class RecordEntry {
         <td class="${this.className}__table-cell-players">
           ${this.options.record.players.map(
             (player) => `
-            <a class="${this.className}__player-link js-${this.className}__player-link">
+            <a
+              class="${this.className}__player-link"
+              href="${this.getPlayerProfileUrl(player)}"
+            >
               ${player}
             </a>
           `

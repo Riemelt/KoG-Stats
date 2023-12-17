@@ -49,6 +49,11 @@ interface MapRecord {
   date?: Date;
 }
 
+type HTMLElementEvent<T extends HTMLElement> = JQuery.Event & {
+  target: T;
+  currentTarget: T;
+};
+
 export {
   Rank,
   MapType,
@@ -60,4 +65,5 @@ export {
   KoGMap,
   PlayersMapRecords,
   MapRecord,
+  HTMLElementEvent,
 };

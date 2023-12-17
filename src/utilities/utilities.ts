@@ -58,10 +58,17 @@ function convertTime(time: number) {
   return result;
 }
 
+function buildUrlPath(path: string) {
+  const newPath = location.pathname.split('/');
+  newPath[newPath.length - 1] = path;
+  return newPath.join('/');
+}
+
 export {
   RANK_TYPES,
   MAP_TYPES,
   comparePlayers,
   comparePlayersRanks,
   convertTime,
+  buildUrlPath,
 };
