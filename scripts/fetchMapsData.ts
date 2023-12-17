@@ -56,8 +56,7 @@ import {
     }
 
     topData.push({
-      name: map.name,
-      category: map.category,
+      ...map,
       topFinishes,
     });
   }
@@ -68,13 +67,23 @@ import {
     const name = $name.html();
     const $listGroupItems = $card.find('.list-group-item');
     const items = $listGroupItems.toArray();
+    const stars = $(items[0]).find('.bi-star-fill').length;
     const category: MapType = items[1].innerHTML;
+    const points = Number.parseInt(`${items[2].innerHTML}`.trim());
+    const authors = `${items[3].innerHTML}`.trim().split(', ');
+    const releaseDate = `${$card.find('.card-footer').html()}`
+      .trim()
+      .slice(-10);
 
     if (name === undefined || category === undefined) {
       throw new Error('Parsing card error');
     }
 
     mapsData.push({
+      stars,
+      points,
+      authors,
+      releaseDate,
       name,
       category: category.trim().toLowerCase() === 'unknown' ? 'Solo' : category,
     });
@@ -116,35 +125,38 @@ import {
   }
 
   function update(topData: KoGMap[]) {
-    topData.forEach(({ name, category, topFinishes }) => {
-      if (topFinishes.length <= 0) return;
+    topData.forEach((kogMap) => {
+      if (kogMap.topFinishes.length <= 0) return;
       const previousFinishes =
-        previousTopFinishes.find((map) => map.name === name)?.topFinishes ?? [];
+        previousTopFinishes.find((map) => map.name === kogMap.name)
+          ?.topFinishes ?? [];
       const previousRankOne = previousFinishes[0];
 
       const isNewRank =
         previousRankOne === undefined ||
-        previousRankOne.time > topFinishes[0].time;
+        previousRankOne.time > kogMap.topFinishes[0].time;
 
       if (isNewRank) {
-        const { time } = topFinishes[0];
+        const { time } = kogMap.topFinishes[0];
         const rank = 1;
-        const players = [topFinishes[0].name];
+        const players = [kogMap.topFinishes[0].name];
 
-        for (let i = 1; i < topFinishes.length; i += 1) {
-          if (topFinishes[i].time === time) {
-            players.push(topFinishes[i].name);
+        for (let i = 1; i < kogMap.topFinishes.length; i += 1) {
+          if (kogMap.topFinishes[i].time === time) {
+            players.push(kogMap.topFinishes[i].name);
             continue;
           }
 
           break;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { topFinishes, ...rest } = kogMap;
+
         records.push({
+          ...rest,
           rank,
           players,
-          name,
-          category,
           time,
           date: new Date(),
         });

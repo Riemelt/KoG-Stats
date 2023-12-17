@@ -51,7 +51,7 @@ import { RANK_TYPES, comparePlayers } from '../src/utilities/utilities';
   }
 
   function handleMap(map: KoGMap) {
-    const { topFinishes, category } = map;
+    const { topFinishes, ...rest } = map;
     let currentRank = 0;
     let previousTime = -1;
 
@@ -68,13 +68,12 @@ import { RANK_TYPES, comparePlayers } from '../src/utilities/utilities';
       }
 
       playerRecords[name].push({
+        ...rest,
         time,
-        category,
-        name: map.name,
         rank: currentRank + 1,
       });
 
-      playersTopRanks[name][category][RANK_TYPES[currentRank]] += 1;
+      playersTopRanks[name][map.category][RANK_TYPES[currentRank]] += 1;
       playersTopRanks[name]['Total'][RANK_TYPES[currentRank]] += 1;
       previousTime = time;
     }

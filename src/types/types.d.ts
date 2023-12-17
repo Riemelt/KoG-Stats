@@ -30,6 +30,10 @@ interface Finish {
 interface KoGMapEntity {
   name: string;
   category: MapType;
+  releaseDate: string;
+  authors: string[];
+  stars: number;
+  points: number;
 }
 
 interface KoGMap extends KoGMapEntity {
@@ -40,9 +44,7 @@ interface PlayersMapRecords {
   [key: string]: Array<MapRecord>;
 }
 
-interface MapRecord {
-  name: string;
-  category: MapType;
+interface MapRecord extends KoGMapEntity {
   time: number;
   rank: number;
   players?: Array<string>;

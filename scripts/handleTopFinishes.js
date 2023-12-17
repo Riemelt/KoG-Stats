@@ -1,4 +1,26 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 exports.__esModule = true;
 var utilities_1 = require("../src/utilities/utilities");
 (function () {
@@ -34,7 +56,7 @@ var utilities_1 = require("../src/utilities/utilities");
         playerRecords[name] = [];
     }
     function handleMap(map) {
-        var topFinishes = map.topFinishes, category = map.category;
+        var topFinishes = map.topFinishes, rest = __rest(map, ["topFinishes"]);
         var currentRank = 0;
         var previousTime = -1;
         for (var i = 0; i < topFinishes.length; i++) {
@@ -47,13 +69,8 @@ var utilities_1 = require("../src/utilities/utilities");
             if (playersTopRanks[name_1] === undefined) {
                 addNewPlayer(name_1);
             }
-            playerRecords[name_1].push({
-                time: time,
-                category: category,
-                name: map.name,
-                rank: currentRank + 1
-            });
-            playersTopRanks[name_1][category][utilities_1.RANK_TYPES[currentRank]] += 1;
+            playerRecords[name_1].push(__assign(__assign({}, rest), { time: time, rank: currentRank + 1 }));
+            playersTopRanks[name_1][map.category][utilities_1.RANK_TYPES[currentRank]] += 1;
             playersTopRanks[name_1]['Total'][utilities_1.RANK_TYPES[currentRank]] += 1;
             previousTime = time;
         }

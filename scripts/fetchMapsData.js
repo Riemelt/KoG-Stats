@@ -46,6 +46,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 exports.__esModule = true;
 (function () {
     return __awaiter(this, void 0, void 0, function () {
@@ -84,11 +95,7 @@ exports.__esModule = true;
                     time: time
                 });
             }
-            topData.push({
-                name: map.name,
-                category: map.category,
-                topFinishes: topFinishes
-            });
+            topData.push(__assign(__assign({}, map), { topFinishes: topFinishes }));
         }
         function parseCard(_, element) {
             var $card = $(element);
@@ -96,11 +103,21 @@ exports.__esModule = true;
             var name = $name.html();
             var $listGroupItems = $card.find('.list-group-item');
             var items = $listGroupItems.toArray();
+            var stars = $(items[0]).find('.bi-star-fill').length;
             var category = items[1].innerHTML;
+            var points = Number.parseInt("".concat(items[2].innerHTML).trim());
+            var authors = "".concat(items[3].innerHTML).trim().split(', ');
+            var releaseDate = "".concat($card.find('.card-footer').html())
+                .trim()
+                .slice(-10);
             if (name === undefined || category === undefined) {
                 throw new Error('Parsing card error');
             }
             mapsData.push({
+                stars: stars,
+                points: points,
+                authors: authors,
+                releaseDate: releaseDate,
                 name: name,
                 category: category.trim().toLowerCase() === 'unknown' ? 'Solo' : category
             });
@@ -135,34 +152,28 @@ exports.__esModule = true;
             });
         }
         function update(topData) {
-            topData.forEach(function (_a) {
-                var _b, _c;
-                var name = _a.name, category = _a.category, topFinishes = _a.topFinishes;
-                if (topFinishes.length <= 0)
+            topData.forEach(function (kogMap) {
+                var _a, _b;
+                if (kogMap.topFinishes.length <= 0)
                     return;
-                var previousFinishes = (_c = (_b = previousTopFinishes.find(function (map) { return map.name === name; })) === null || _b === void 0 ? void 0 : _b.topFinishes) !== null && _c !== void 0 ? _c : [];
+                var previousFinishes = (_b = (_a = previousTopFinishes.find(function (map) { return map.name === kogMap.name; })) === null || _a === void 0 ? void 0 : _a.topFinishes) !== null && _b !== void 0 ? _b : [];
                 var previousRankOne = previousFinishes[0];
                 var isNewRank = previousRankOne === undefined ||
-                    previousRankOne.time > topFinishes[0].time;
+                    previousRankOne.time > kogMap.topFinishes[0].time;
                 if (isNewRank) {
-                    var time = topFinishes[0].time;
+                    var time = kogMap.topFinishes[0].time;
                     var rank = 1;
-                    var players = [topFinishes[0].name];
-                    for (var i = 1; i < topFinishes.length; i += 1) {
-                        if (topFinishes[i].time === time) {
-                            players.push(topFinishes[i].name);
+                    var players = [kogMap.topFinishes[0].name];
+                    for (var i = 1; i < kogMap.topFinishes.length; i += 1) {
+                        if (kogMap.topFinishes[i].time === time) {
+                            players.push(kogMap.topFinishes[i].name);
                             continue;
                         }
                         break;
                     }
-                    records.push({
-                        rank: rank,
-                        players: players,
-                        name: name,
-                        category: category,
-                        time: time,
-                        date: new Date()
-                    });
+                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                    var topFinishes = kogMap.topFinishes, rest = __rest(kogMap, ["topFinishes"]);
+                    records.push(__assign(__assign({}, rest), { rank: rank, players: players, time: time, date: new Date() }));
                 }
             });
             saveRecords(records);
@@ -178,14 +189,7 @@ exports.__esModule = true;
                     jsonData = require('./data/topFinishes.json');
                     previousTopFinishes = jsonData.data;
                     jsonRecords = require('../src/data/records.json');
-                    records = jsonRecords.data.map(function (p) {
-                        if (p.category !== 'Solo') {
-                            return p;
-                        }
-                        var mapName = p.name;
-                        var map = previousTopFinishes.filter(function (m) { return m.name === mapName; })[0];
-                        return __assign(__assign({}, p), { category: map.category });
-                    });
+                    records = jsonRecords.data;
                     waitFor = function (ms) {
                         return new Promise(function (resolve) {
                             setTimeout(resolve, ms);

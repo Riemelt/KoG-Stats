@@ -1,6 +1,15 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 exports.__esModule = true;
-exports.convertTime = exports.comparePlayersRanks = exports.comparePlayers = exports.MAP_TYPES = exports.RANK_TYPES = void 0;
+exports.debounceLast = exports.buildUrlPath = exports.convertTime = exports.comparePlayersRanks = exports.comparePlayers = exports.MAP_TYPES = exports.RANK_TYPES = void 0;
 var RANK_TYPES = [
     'rank 1',
     'rank 2',
@@ -52,3 +61,26 @@ function convertTime(time) {
     return result;
 }
 exports.convertTime = convertTime;
+function buildUrlPath(path) {
+    var newPath = location.pathname.split('/');
+    newPath[newPath.length - 1] = path;
+    return newPath.join('/');
+}
+exports.buildUrlPath = buildUrlPath;
+var debounceLast = function (f, ms) {
+    var timer;
+    return function () {
+        var _this = this;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        if (timer)
+            clearTimeout(timer);
+        timer = setTimeout(function () {
+            f.call.apply(f, __spreadArray([_this], args, false));
+            clearTimeout(timer);
+        }, ms);
+    };
+};
+exports.debounceLast = debounceLast;
