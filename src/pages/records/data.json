@@ -2,5 +2,17 @@
   "mapRecords": {
     "withPlayers": true,
     "withDate": true
+  },
+  "categoryMenu": {
+    "categories": [
+      "Total",
+      "Extreme",
+      "Insane",
+      "Hard",
+      "Main",
+      "Easy",
+      "Solo",
+      "Mod"
+    ]
   }
 }

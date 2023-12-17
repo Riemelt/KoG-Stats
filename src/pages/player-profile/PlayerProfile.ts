@@ -3,6 +3,7 @@ import { PlayerProfileOptions } from './types';
 import CategoryMenu from '../../components/category-menu';
 import Pagination from '../../components/pagination';
 import MapRecords from '../../components/map-records';
+import { MapType } from '../../types/types';
 
 class PlayerProfile {
   private className: string;
@@ -38,12 +39,14 @@ class PlayerProfile {
       sortBy: this.options.sortBy,
       ...this.options.categoryMenu,
     };
-    this.categoryMenu = new CategoryMenu(this.$component, categoryMenuOptions);
+    this.categoryMenu = new CategoryMenu(this.$component, {
+      ...categoryMenuOptions,
+      onChange: this.handleMenuChange.bind(this),
+    });
 
     this.mapRecords = new MapRecords(
       this.$component.find(`.js-${this.className}__map-records`),
       {
-        sortBy: this.options.sortBy,
         records: this.options.playerRecords,
       }
     );
@@ -52,12 +55,16 @@ class PlayerProfile {
       this.$component.find(`.js-${this.className}__pagination`)
     );
 
-    this.render();
+    this.render(this.options.sortBy);
   }
 
-  private render() {
+  private handleMenuChange(category: MapType) {
+    this.render(category);
+  }
+
+  private render(category: MapType) {
     this.pagination.render(
-      this.mapRecords.getRecordEntries(),
+      this.mapRecords.generateRecordEntries(category),
       this.mapRecords.render.bind(this.mapRecords)
     );
   }

@@ -7,9 +7,9 @@ class Leaderboard {
   private options: LeaderboardOptions;
   private className: string;
   private $component: JQuery<HTMLElement>;
-  private $playerEntries: JQuery<HTMLElement>;
   private $tableBody: JQuery<HTMLElement>;
   private playerEntries: Array<PlayerEntry>;
+  private activeCategory: MapType = 'Total';
 
   static comparePlayerEntries(mapType: MapType) {
     return function (a: PlayerEntry, b: PlayerEntry) {
@@ -20,28 +20,28 @@ class Leaderboard {
   constructor($parent: JQuery<HTMLElement>, options: LeaderboardOptions) {
     this.options = options;
     this.className = 'leaderboard';
+    this.activeCategory = this.options.sortBy;
     this.$component = $parent.find(`.js-${this.className}`);
     this.$tableBody = this.$component.find(`.js-${this.className}__table-body`);
 
-    this.$playerEntries = this.$component.find(
-      `.js-${this.className}__table-row`
+    this.playerEntries = options.players.map(
+      (player) => new PlayerEntry({ player })
     );
-    this.playerEntries = [];
-    this.$playerEntries.each(this.initPlayerEntry.bind(this));
-
-    if (this.options.sortBy !== 'Total') {
-      this.initLeaderboard();
-    } else {
-      this.playerEntries[0].update('Total', 1);
-      this.playerEntries[1].update('Total', 2);
-      this.playerEntries[2].update('Total', 3);
-    }
   }
 
-  public getPlayerEntries() {
-    return this.playerEntries.filter((playerEntry) =>
-      playerEntry.hasAnyRanks(this.options.sortBy)
-    );
+  public generatePlayerEntries(category: MapType) {
+    this.activeCategory = category;
+
+    const entries = this.playerEntries
+      .filter((player) => player.hasAnyRanks(this.activeCategory))
+      .sort(Leaderboard.comparePlayerEntries(this.activeCategory))
+      .reverse();
+
+    entries.forEach((playerEntry, index) => {
+      playerEntry.update(this.activeCategory, index + 1);
+    });
+
+    return entries;
   }
 
   public render(data: Array<PlayerEntry>) {
@@ -50,35 +50,7 @@ class Leaderboard {
     data.forEach((playerEntry) => {
       const $playerEntry = playerEntry.getHtml();
       this.$tableBody.append($playerEntry);
-      playerEntry.setHandlers();
     });
-  }
-
-  private initLeaderboard() {
-    this.$tableBody.empty();
-    const mapType = this.options.sortBy;
-
-    this.playerEntries = this.playerEntries
-      .sort(Leaderboard.comparePlayerEntries(mapType))
-      .reverse();
-
-    this.playerEntries.forEach((playerEntry, index) => {
-      if (playerEntry.hasAnyRanks(mapType)) {
-        playerEntry.update(mapType, index + 1);
-        const $playerEntry = playerEntry.getHtml();
-        this.$tableBody.append($playerEntry);
-        playerEntry.setHandlers();
-      }
-    });
-  }
-
-  private initPlayerEntry(index: number, element: HTMLElement) {
-    const $element = $(element);
-    this.playerEntries.push(
-      new PlayerEntry($element, {
-        player: this.options.players[index],
-      })
-    );
   }
 }
 

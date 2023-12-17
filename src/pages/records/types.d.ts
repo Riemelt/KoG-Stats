@@ -1,5 +1,10 @@
-import { MapRecordsOptions } from "../../components/map-records/types";
+import { MapRecordsOptions } from '../../components/map-records/types';
+import { MapType } from '../../types/types';
 
 interface RecordsOptions {
-  mapRecords: MapRecordsOptions,
+  mapRecords: MapRecordsOptions;
+  sortBy: MapType;
+  categoryMenu: {
+    categories: Array<MapType>;
+  };
 }

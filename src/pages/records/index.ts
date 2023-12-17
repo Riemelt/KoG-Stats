@@ -1,26 +1,32 @@
-import "../../main-styles";
-import "../../layout";
+import '../../main-styles';
+import '../../layout';
 
-import Records from "./Records";
-import "./records.scss";
-import { MapRecord } from "../../types/types";
-import { RecordsOptions } from "./types";
+import Records from './Records';
+import './records.scss';
+import { MapRecord } from '../../types/types';
+import { RecordsOptions } from './types';
 
-(function($) {
+(function ($) {
   const records: {
-    data: Array<MapRecord>,
-  } = require("../../data/records.json");
+    data: Array<MapRecord>;
+  } = require('../../data/records.json');
 
-  const data = require ("./data.json");
+  const data = require('./data.json');
+
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
+
+  const sortBy = params.sortBy === undefined ? 'Total' : params.sortBy;
 
   const recordsOptions: RecordsOptions = {
+    ...data,
+    sortBy,
     mapRecords: {
       records: records.data.reverse(),
-      sortBy: "Total",
       ...data.mapRecords,
     },
-  }
+  };
 
-  const className = "records";
+  const className = 'records';
   new Records($(`.js-${className}`), recordsOptions);
 })(jQuery);

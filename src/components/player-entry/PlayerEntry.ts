@@ -1,5 +1,5 @@
 import { Category, MapType } from '../../types/types';
-import { RANK_TYPES } from '../../utilities/utilities';
+import { RANK_TYPES, buildUrlPath } from '../../utilities/utilities';
 import { PlayerEntryOptions } from './types';
 
 class PlayerEntry {
@@ -8,17 +8,19 @@ class PlayerEntry {
   private $component: JQuery<HTMLElement>;
   private $rank: JQuery<HTMLElement>;
   private $ranks: JQuery<HTMLElement>;
-  private $name: JQuery<HTMLElement>;
+  private $link: JQuery<HTMLElement>;
 
-  constructor($element: JQuery<HTMLElement>, options: PlayerEntryOptions) {
+  constructor(options: PlayerEntryOptions) {
     this.options = options;
     this.className = 'leaderboard';
-    this.$component = $element;
+    this.$component = this.initHtml();
     this.$rank = this.$component.find(`.js-${this.className}__table-cell-rank`);
     this.$ranks = this.$component.find(
       `.js-${this.className}__table-cell-total-ranks`
     );
-    this.$name = this.$component.find(`.js-${this.className}__table-cell-name`);
+    this.$link = this.$component.find(
+      `.js-${this.className}__table-cell-name-link`
+    );
   }
 
   public getOptions() {
@@ -27,10 +29,6 @@ class PlayerEntry {
 
   public getHtml() {
     return this.$component;
-  }
-
-  public setHandlers() {
-    this.$name.on('click.player-entry-name', this.handleNameClick.bind(this));
   }
 
   public hasAnyRanks(mapType: MapType): boolean {
@@ -55,16 +53,48 @@ class PlayerEntry {
     this.$rank.removeClass(`${this.className}__table-cell-rank_rank${rank}`);
   }
 
-  private handleNameClick() {
+  private initHtml() {
+    const ranksTd = new Array(5)
+      .fill(0)
+      .map(
+        (_, index) => `
+      <td
+        class="${this.className}__table-cell-total-ranks js-${
+          this.className
+        }__table-cell-total-ranks ${
+          this.className
+        }__table-cell-total-ranks_rank${index + 1}">
+        0
+      </td>
+    `
+      )
+      .join('');
+
+    // prettier-ignore
+    return $(`
+        <tr class="${this.className}__table-row js-${this.className}__table-row ${this.className}__table-row_body">
+          <td class="${this.className}__table-cell-rank js-${this.className}__table-cell-rank">
+            ${1}
+          </td>
+          <td class="${this.className}__table-cell-name ${this.className}__table-cell-name_body">
+            <a class="${this.className}__table-cell-name-link js-${this.className}__table-cell-name-link" href="${this.getPlayerProfileUrl(this.options.player.name)}">
+              ${this.options.player.name}
+            </a>
+          </td>
+          ${ranksTd}
+        </tr>
+      `);
+  }
+
+  private getPlayerProfileUrl(name: string) {
     const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set('player', this.options.player.name);
-    const path = location.pathname.split('/');
-    path[path.length - 1] = `player-profile.html?${urlSearchParams.toString()}`;
-    location.href = path.join('/');
+    urlSearchParams.set('player', name);
+    return buildUrlPath(`player-profile.html?${urlSearchParams.toString()}`);
   }
 
   private setRank(rank: number) {
     this.$rank.html(rank.toString());
+    new Array(3).fill(0).forEach((_, index) => this.removeActive(index + 1));
     if (rank >= 1 && rank <= 3) {
       this.makeActive(rank);
     }

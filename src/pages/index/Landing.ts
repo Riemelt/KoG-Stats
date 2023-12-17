@@ -30,7 +30,10 @@ class Landing {
       sortBy: this.options.sortBy,
       ...this.options.categoryMenu,
     };
-    this.categoryMenu = new CategoryMenu(this.$component, categoryMenuOptions);
+    this.categoryMenu = new CategoryMenu(this.$component, {
+      ...categoryMenuOptions,
+      onChange: this.handleMenuChange.bind(this),
+    });
 
     this.leaderboard = new Leaderboard(
       this.$component.find(`.js-${this.className}__leaderboard`),
@@ -42,12 +45,16 @@ class Landing {
 
     this.pagination = new Pagination(this.$pagination);
 
-    this.render();
+    this.render(this.options.sortBy);
   }
 
-  private render() {
+  private handleMenuChange(category: MapType) {
+    this.render(category);
+  }
+
+  private render(category: MapType) {
     this.pagination.render(
-      this.leaderboard.getPlayerEntries(),
+      this.leaderboard.generatePlayerEntries(category),
       this.leaderboard.render.bind(this.leaderboard)
     );
   }

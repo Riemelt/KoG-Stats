@@ -57,14 +57,6 @@ class CategoryMenu {
 
     this.setActiveItem($clickedItem);
     this.options.onChange?.(this.activeCategory);
-
-    // delete
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set(
-      'sortBy',
-      this.options.categories[this.$items.index($clickedItem)]
-    );
-    location.search = urlSearchParams.toString();
   }
 }
 

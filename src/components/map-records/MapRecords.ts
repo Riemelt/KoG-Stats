@@ -1,3 +1,4 @@
+import { MapType } from '../../types/types';
 import { MAP_TYPES } from '../../utilities/utilities';
 import RecordEntry from '../record-entry';
 import { MapRecordsOptions } from './types';
@@ -27,15 +28,9 @@ class MapRecords {
 
   constructor(
     $parent: JQuery<HTMLElement>,
-    {
-      sortBy,
-      records,
-      withPlayers = false,
-      withDate = false,
-    }: MapRecordsOptions
+    { records, withPlayers = false, withDate = false }: MapRecordsOptions
   ) {
     this.options = {
-      sortBy,
       records,
       withPlayers,
       withDate,
@@ -45,28 +40,26 @@ class MapRecords {
     this.$component = $parent.find(`.js-${this.className}`);
     this.$tableBody = this.$component.find(`.js-${this.className}__table-body`);
 
-    this.recordEntries = [];
-    this.options.records.forEach((entry) => {
-      if (
-        entry.category === this.options.sortBy ||
-        this.options.sortBy === 'Total'
-      ) {
-        this.recordEntries.push(
-          new RecordEntry({
-            withDate,
-            record: entry,
-          })
-        );
-      }
-    });
+    this.recordEntries = this.options.records.map(
+      (record) =>
+        new RecordEntry({
+          withDate,
+          record,
+        })
+    );
 
     if (!withPlayers) {
       this.sortRecordEntries();
     }
   }
 
-  public getRecordEntries() {
-    return this.recordEntries;
+  public generateRecordEntries(category: MapType) {
+    const entries = this.recordEntries.filter(
+      (record) =>
+        category === 'Total' || record.getOptions().category === category
+    );
+
+    return entries;
   }
 
   public render(recordEntries: Array<RecordEntry>) {
