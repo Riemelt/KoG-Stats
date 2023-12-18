@@ -40,6 +40,9 @@ import {
 
   function parseTd(items: Array<HTMLElement>, map: KoGMapEntity) {
     const topFinishes: Array<Finish> = [];
+    let rank = 0;
+    let previousTime = -1;
+    let j = 0;
 
     for (let i = 0; i < items.length; i = i + 2) {
       const name = $(items[i + 1].innerHTML).html();
@@ -49,10 +52,18 @@ import {
         throw new Error('Parsing td error');
       }
 
+      if (time !== previousTime) {
+        rank = j;
+        previousTime = time;
+      }
+
       topFinishes.push({
         name,
         time,
+        rank: rank + 1,
       });
+
+      j += 1;
     }
 
     topData.push({
@@ -107,6 +118,24 @@ import {
     });
   }
 
+  function saveTop5Finishes(topData: Array<KoGMap>) {
+    const fs = require('fs');
+    const result = {
+      date: new Date(),
+      data: topData,
+    };
+
+    const json = JSON.stringify(result);
+    fs.writeFile('./data/top5Finishes.json', json, function (error: Error) {
+      if (error) {
+        console.log(`save top5Finishes error: ${error}`);
+        return;
+      }
+
+      console.log('top5Finishes.json saved');
+    });
+  }
+
   function saveRecords(records: MapRecord[]) {
     const fs = require('fs');
     const result = {
@@ -139,16 +168,9 @@ import {
       if (isNewRank) {
         const { time } = kogMap.topFinishes[0];
         const rank = 1;
-        const players = [kogMap.topFinishes[0].name];
-
-        for (let i = 1; i < kogMap.topFinishes.length; i += 1) {
-          if (kogMap.topFinishes[i].time === time) {
-            players.push(kogMap.topFinishes[i].name);
-            continue;
-          }
-
-          break;
-        }
+        const players = kogMap.topFinishes
+          .filter((finish) => finish.time === time)
+          .map((finish) => finish.name);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { topFinishes, ...rest } = kogMap;
@@ -165,6 +187,16 @@ import {
 
     saveRecords(records);
     saveJson(topData);
+
+    const top5Finishes = topData.map((map) => {
+      const top5 = map.topFinishes.filter((finish) => finish.rank <= 5);
+      return {
+        ...map,
+        topFinishes: top5,
+      };
+    });
+
+    saveTop5Finishes(top5Finishes);
   }
 
   const mapsData: Array<KoGMapEntity> = [];

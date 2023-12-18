@@ -25,6 +25,7 @@ interface PlayerRanks {
 interface Finish {
   name: string;
   time: number;
+  rank: number;
 }
 
 interface KoGMapEntity {

@@ -84,16 +84,25 @@ exports.__esModule = true;
         }
         function parseTd(items, map) {
             var topFinishes = [];
+            var rank = 0;
+            var previousTime = -1;
+            var j = 0;
             for (var i = 0; i < items.length; i = i + 2) {
                 var name_1 = $(items[i + 1].innerHTML).html();
                 var time = Number(items[i].innerHTML);
                 if (name_1 === undefined || time === undefined) {
                     throw new Error('Parsing td error');
                 }
+                if (time !== previousTime) {
+                    rank = j;
+                    previousTime = time;
+                }
                 topFinishes.push({
                     name: name_1,
-                    time: time
+                    time: time,
+                    rank: rank + 1
                 });
+                j += 1;
             }
             topData.push(__assign(__assign({}, map), { topFinishes: topFinishes }));
         }
@@ -137,6 +146,21 @@ exports.__esModule = true;
                 console.log('topFinishes.json saved');
             });
         }
+        function saveTop5Finishes(topData) {
+            var fs = require('fs');
+            var result = {
+                date: new Date(),
+                data: topData
+            };
+            var json = JSON.stringify(result);
+            fs.writeFile('./data/top5Finishes.json', json, function (error) {
+                if (error) {
+                    console.log("save top5Finishes error: ".concat(error));
+                    return;
+                }
+                console.log('top5Finishes.json saved');
+            });
+        }
         function saveRecords(records) {
             var fs = require('fs');
             var result = {
@@ -161,23 +185,23 @@ exports.__esModule = true;
                 var isNewRank = previousRankOne === undefined ||
                     previousRankOne.time !== kogMap.topFinishes[0].time;
                 if (isNewRank) {
-                    var time = kogMap.topFinishes[0].time;
+                    var time_1 = kogMap.topFinishes[0].time;
                     var rank = 1;
-                    var players = [kogMap.topFinishes[0].name];
-                    for (var i = 1; i < kogMap.topFinishes.length; i += 1) {
-                        if (kogMap.topFinishes[i].time === time) {
-                            players.push(kogMap.topFinishes[i].name);
-                            continue;
-                        }
-                        break;
-                    }
+                    var players = kogMap.topFinishes
+                        .filter(function (finish) { return finish.time === time_1; })
+                        .map(function (finish) { return finish.name; });
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     var topFinishes = kogMap.topFinishes, rest = __rest(kogMap, ["topFinishes"]);
-                    records.push(__assign(__assign({}, rest), { rank: rank, players: players, time: time, date: new Date() }));
+                    records.push(__assign(__assign({}, rest), { rank: rank, players: players, time: time_1, date: new Date() }));
                 }
             });
             saveRecords(records);
             saveJson(topData);
+            var top5Finishes = topData.map(function (map) {
+                var top5 = map.topFinishes.filter(function (finish) { return finish.rank <= 5; });
+                return __assign(__assign({}, map), { topFinishes: top5 });
+            });
+            saveTop5Finishes(top5Finishes);
         }
         var JSDOM, window, $, jsonData, previousTopFinishes, jsonRecords, records, waitFor, mapsData, topData, count, total, dataMaps, $dataMaps, $cardBodies, mapsLeft_1, error_1, errorMessage;
         return __generator(this, function (_a) {
