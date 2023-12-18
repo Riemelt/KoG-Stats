@@ -159,7 +159,7 @@ exports.__esModule = true;
                 var previousFinishes = (_b = (_a = previousTopFinishes.find(function (map) { return map.name === kogMap.name; })) === null || _a === void 0 ? void 0 : _a.topFinishes) !== null && _b !== void 0 ? _b : [];
                 var previousRankOne = previousFinishes[0];
                 var isNewRank = previousRankOne === undefined ||
-                    previousRankOne.time > kogMap.topFinishes[0].time;
+                    previousRankOne.time !== kogMap.topFinishes[0].time;
                 if (isNewRank) {
                     var time = kogMap.topFinishes[0].time;
                     var rank = 1;

@@ -134,7 +134,7 @@ import {
 
       const isNewRank =
         previousRankOne === undefined ||
-        previousRankOne.time > kogMap.topFinishes[0].time;
+        previousRankOne.time !== kogMap.topFinishes[0].time;
 
       if (isNewRank) {
         const { time } = kogMap.topFinishes[0];
