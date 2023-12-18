@@ -53,13 +53,18 @@ class MapRecords {
     }
   }
 
-  public generateRecordEntries(mapCategory: MapType, mapName: string) {
+  public generateRecordEntries(
+    mapCategory: MapType,
+    mapName: string,
+    playerName = ''
+  ) {
     const entries = this.recordEntries.filter((record) => {
-      const { category, name } = record.getOptions();
+      const { category, name, players } = record.getOptions();
 
       return (
         (mapCategory === 'Total' || category === mapCategory) &&
-        name.toLowerCase().includes(mapName.trim().toLowerCase())
+        this.doesIncludeMap(name, mapName) &&
+        this.doesIncludePlayer(playerName, players)
       );
     });
 
@@ -73,6 +78,19 @@ class MapRecords {
       const $entry = entry.getHtml();
       this.$tableBody.append($entry);
     });
+  }
+
+  private doesIncludeMap(name: string, mapName: string) {
+    return name.toLowerCase().includes(mapName.trim().toLowerCase());
+  }
+
+  private doesIncludePlayer(name: string, players?: string[]) {
+    return (
+      players === undefined ||
+      players?.some((player) =>
+        player.toLowerCase().includes(name.trim().toLowerCase())
+      )
+    );
   }
 
   private sortRecordEntries() {

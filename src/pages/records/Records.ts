@@ -18,8 +18,10 @@ class Records {
   private $categoryMenu: JQuery<HTMLElement>;
   private category: MapType = 'Total';
   private mapName = '';
+  private playerName = '';
   private categoryMenu: CategoryMenu;
   private inputMapName: InputField;
+  private inputPlayerName: InputField;
   private $resetButton: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: RecordsOptions) {
@@ -53,10 +55,21 @@ class Records {
     );
 
     new Expander(this.$component.find(`.js-${this.className}__expander`));
+
     this.inputMapName = new InputField(
       this.$component.find(`.js-${this.className}__input-map-name`),
       {
         onChange: debounceLast(this.handleInputMapNameChange.bind(this), 250),
+      }
+    );
+
+    this.inputPlayerName = new InputField(
+      this.$component.find(`.js-${this.className}__input-player-name`),
+      {
+        onChange: debounceLast(
+          this.handleInputPlayerNameChange.bind(this),
+          250
+        ),
       }
     );
 
@@ -77,9 +90,16 @@ class Records {
 
   private handleResetButtonClick() {
     this.mapName = '';
+    this.playerName = '';
     this.category = 'Total';
     this.inputMapName.setValue(this.mapName);
+    this.inputPlayerName.setValue(this.playerName);
     this.categoryMenu.setCategory(this.category);
+    this.render();
+  }
+
+  private handleInputPlayerNameChange(value: string) {
+    this.playerName = value;
     this.render();
   }
 
@@ -95,7 +115,11 @@ class Records {
 
   private render() {
     this.pagination.render(
-      this.mapRecords.generateRecordEntries(this.category, this.mapName),
+      this.mapRecords.generateRecordEntries(
+        this.category,
+        this.mapName,
+        this.playerName
+      ),
       this.mapRecords.render.bind(this.mapRecords)
     );
   }

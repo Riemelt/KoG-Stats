@@ -20,7 +20,12 @@
   },
   "inputMapName": {
     "title": "Filter by map name",
-    "placeholder": "Name",
+    "placeholder": "Map",
+    "icon": "search"
+  },
+  "inputPlayerName": {
+    "title": "Filter by player name",
+    "placeholder": "Player",
     "icon": "search"
   }
 }

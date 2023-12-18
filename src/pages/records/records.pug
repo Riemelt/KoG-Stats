@@ -26,6 +26,8 @@ block main
             div(class=`${className}__filters`)
               div(class=`${className}__input-map-name js-${className}__input-map-name`)
                 +input-field(data.inputMapName)
+              div(class=`${className}__input-player-name js-${className}__input-player-name`)
+                +input-field(data.inputPlayerName)
             button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__map-records js-${className}__map-records`)
           +map-records(data.mapRecords)

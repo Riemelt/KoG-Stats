@@ -55,17 +55,22 @@ class RecordEntry {
       `;
     }
 
-    const dateString = this.options.record.date ?? '2023-12-16';
-    const date = new Date(dateString);
+    const dateString = this.options.record.date;
+    const date =
+      dateString === undefined ? 'Long time ago' : new Date(dateString);
     const dateTd = this.options.withDate
       ? `
       <td
         class="${this.className}__table-cell-date js-${
           this.className
         }__table-cell-date"
-        title="${date.toString()}"
+        title="${date instanceof Date ? date.toString() : date}"
       >
-        ${moment(Date.parse(date.toString())).fromNow()}
+        ${
+          date instanceof Date
+            ? moment(Date.parse(date.toString())).fromNow()
+            : date
+        }
       </td>
     `
       : '';
