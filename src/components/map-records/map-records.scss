@@ -132,6 +132,14 @@ $className: 'map-records';
     }
   }
 
+  &__table-cell-date,
+  &__table-cell-players,
+  &__table-cell-time {
+    &_no-data {
+      color: grey;
+    }
+  }
+
   &__table-cell-name {
     width: 100%;
     height: 100%;

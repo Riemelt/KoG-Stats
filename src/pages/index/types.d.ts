@@ -1,9 +1,9 @@
-import { MapType, PlayerRanks } from "../../types/types";
+import { KoGMap, MapType } from '../../types/types';
 
 interface LandingOptions {
-  sortBy: MapType,
-  players: Array<PlayerRanks>,
+  sortBy: MapType;
+  topRanks: KoGMap[];
   categoryMenu: {
-    categories: Array<MapType>
-  } 
+    categories: Array<MapType>;
+  };
 }

@@ -8,6 +8,7 @@ block vars
   const layoutClassName = "layout"
   const layoutClassNames = `${layoutClassName} js-${layoutClassName}`
   const layoutData = require("./data.json")
+  const logs = require("../data/logs.json")
 
 doctype html
 html
@@ -15,7 +16,7 @@ html
   body
     div(class=layoutClassNames)
       header(class=`${layoutClassName}__header js-${layoutClassName}__header`)
-        +header(layoutData.header)
+        +header({ ...layoutData.header, hasError: logs.errors.length > 0 })
       main(class=`${layoutClassName}__main`)
         block main
       footer(class=`${layoutClassName}__footer`)

@@ -7,14 +7,24 @@
       },
       "rest": " map record holders"
     },
-    "latestRecords": {
-      "href": "records.html",
-      "title": "Latest records"
-    },
+    "nav": [
+      {
+        "href": "index.html",
+        "title": "Home"
+      },
+      {
+        "href": "maps.html",
+        "title": "Maps"
+      },
+      {
+        "href": "records.html",
+        "title": "Latest records"
+      }
+    ],
     "updateTitle": "Latest update:"
   },
   "footer": {
-    "year": 2022,
+    "year": 2024,
     "credits": "Made by KOF"
   }
 }

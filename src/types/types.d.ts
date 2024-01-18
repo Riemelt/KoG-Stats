@@ -26,6 +26,7 @@ interface Finish {
   name: string;
   time: number;
   rank: number;
+  date?: Date;
 }
 
 interface KoGMapEntity {
@@ -48,7 +49,7 @@ interface PlayersMapRecords {
 interface MapRecord extends KoGMapEntity {
   time: number;
   rank: number;
-  players?: Array<string>;
+  players: Array<string>;
   date?: Date;
 }
 

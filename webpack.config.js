@@ -11,6 +11,7 @@ const entryPoints = {
   index: './pages/index/index.ts',
   records: './pages/records/index.ts',
   'player-profile': './pages/player-profile/index.ts',
+  maps: './pages/maps/index.ts',
 };
 
 const mode =
@@ -45,6 +46,11 @@ module.exports = {
       template: './pages/records/records.pug', // relative path to the HTML files
       filename: './records.html', // output HTML files
       chunks: ['records'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './pages/maps/maps.pug', // relative path to the HTML files
+      filename: './maps.html', // output HTML files
+      chunks: ['maps'],
     }),
   ],
   entry: entryPoints,

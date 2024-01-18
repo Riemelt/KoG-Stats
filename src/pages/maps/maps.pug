@@ -8,25 +8,24 @@ include ../../components/expander/expander
 include ../../components/input-field/input-field
 
 block vars
-  - const title = "Player profile"
+  - const title = "Maps"
 
 block main
   -
-    const className = "player-profile"
+    const className = "maps"
     const data = require("./data.json")
     
   div(class=`${className} js-${className}`)
     +container()
       div(class=`${className}__main`)
-        a(class=`${className}__title js-${className}__title` target="_blank" rel="noopener noreferrer")
-          h1(class=`${className}__title-text js-${className}__title-text`)
+        h1(class=`${className}__title-text`) Maps
         div(class=`${className}__category-menu js-${className}__category-menu`)
-         +category-menu(data.categoryMenu)
+          +category-menu(data.categoryMenu)
         div(class=`${className}__expander js-${className}__expander`)
           +expander(data.expander)
             div(class=`${className}__filters`)
-              div(class=`${className}__input-name js-${className}__input-name`)
-                +input-field(data.inputName)
+              div(class=`${className}__input-map-name js-${className}__input-map-name`)
+                +input-field(data.inputMapName)
             button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__map-records js-${className}__map-records`)
           +map-records(data.mapRecords)

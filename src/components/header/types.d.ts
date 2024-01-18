@@ -1,3 +1,3 @@
 interface HeaderOptions {
-  date: Date,
+  date: Date;
 }

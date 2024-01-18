@@ -1,7 +1,8 @@
 {
   "mapRecords": {
     "withPlayers": true,
-    "withDate": true
+    "withDate": true,
+    "shouldSort": false
   },
   "categoryMenu": {
     "categories": [

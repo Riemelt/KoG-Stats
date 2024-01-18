@@ -1,28 +1,55 @@
-import "../../main-styles";
-import "../../layout";
+import '../../main-styles';
+import Layout from '../../layout';
+import { KoGMap, MapRecord } from '../../types/types';
 
-import PlayerProfile from "./PlayerProfile";
-import "./player-profile.scss";
+import PlayerProfile from './PlayerProfile';
+import './player-profile.scss';
 
-(function($) {
-  const data = require("./data.json");
-  const playersRecords = require("../../data/playerRecords.json");
+(function ($) {
+  const data = require('./data.json');
+  const topFinishes: {
+    data: KoGMap[];
+    date: Date;
+  } = require('../../data/top10Finishes.json');
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
-  
-  const sortBy = params.sortBy === undefined ? "Total" : params.sortBy;
-  const playerName = params.player === undefined ? "" : params.player;
-  const playerRecords = playersRecords[playerName] === undefined ? [] : playersRecords[playerName];
+
+  const playerName = params.player === undefined ? '' : params.player;
+
+  const playerRecords: MapRecord[] = topFinishes.data
+    .filter(({ topFinishes }) =>
+      topFinishes.some(({ name }) => name === playerName)
+    )
+    .map(({ topFinishes, ...rest }) => {
+      const playerFinish = topFinishes.filter(
+        ({ name }) => playerName === name
+      )[0];
+
+      const { time, rank, date } = playerFinish;
+
+      const players = topFinishes
+        .filter((finish) => finish.time === time)
+        .map((finish) => finish.name);
+
+      return {
+        ...rest,
+        time,
+        rank,
+        players,
+        date,
+      };
+    });
 
   const playerProfileData = {
     playerName,
-    sortBy,
     playerRecords,
+    sortBy: 'Total',
     ...data,
-  }
+  };
 
-  const className = "player-profile";
+  new Layout($(`.js-layout`), { header: { date: topFinishes.date } });
+
+  const className = 'player-profile';
   new PlayerProfile($(`.js-${className}`), playerProfileData);
-
 })(jQuery);

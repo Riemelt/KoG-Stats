@@ -1,14 +1,15 @@
 import '../../main-styles';
-import '../../layout';
+import { MapRecord } from '../../types/types';
+import Layout from '../../layout';
 
 import Records from './Records';
 import './records.scss';
-import { MapRecord } from '../../types/types';
 import { RecordsOptions } from './types';
 
 (function ($) {
   const records: {
     data: Array<MapRecord>;
+    date: Date;
   } = require('../../data/records.json');
 
   const data = require('./data.json');
@@ -26,6 +27,8 @@ import { RecordsOptions } from './types';
       ...data.mapRecords,
     },
   };
+
+  new Layout($(`.js-layout`), { header: { date: records.date } });
 
   const className = 'records';
   new Records($(`.js-${className}`), recordsOptions);
