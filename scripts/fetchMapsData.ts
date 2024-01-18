@@ -11,12 +11,14 @@ import {
   const { window } = new JSDOM('');
   const $ = require('jquery')(window);
 
-  const jsonData = require('./data/topFinishes.json');
+  const jsonData = require('../src/data/topFinishes.json');
 
   const previousTopFinishes: Array<KoGMap> = jsonData.data;
 
   const jsonRecords = require('../src/data/records.json');
   const records: MapRecord[] = jsonRecords.data;
+
+  const errors: string[] = [];
 
   const waitFor = (ms: number) => {
     return new Promise((resolve) => {
@@ -40,6 +42,9 @@ import {
 
   function parseTd(items: Array<HTMLElement>, map: KoGMapEntity) {
     const topFinishes: Array<Finish> = [];
+    let rank = 0;
+    let previousTime = -1;
+    let j = 0;
 
     for (let i = 0; i < items.length; i = i + 2) {
       const name = $(items[i + 1].innerHTML).html();
@@ -49,10 +54,18 @@ import {
         throw new Error('Parsing td error');
       }
 
+      if (time !== previousTime) {
+        rank = j;
+        previousTime = time;
+      }
+
       topFinishes.push({
         name,
         time,
+        rank: rank + 1,
       });
+
+      j += 1;
     }
 
     topData.push({
@@ -89,6 +102,23 @@ import {
     });
   }
 
+  function saveLogs() {
+    const fs = require('fs');
+    const result = {
+      errors,
+    };
+
+    const json = JSON.stringify(result);
+    fs.writeFile('../src/data/logs.json', json, function (error: Error) {
+      if (error) {
+        console.log(`logJson error: ${error}`);
+        return;
+      }
+
+      console.log('logs.json saved');
+    });
+  }
+
   function saveJson(topData: Array<KoGMap>) {
     const fs = require('fs');
     const result = {
@@ -97,9 +127,10 @@ import {
     };
 
     const json = JSON.stringify(result);
-    fs.writeFile('./data/topFinishes.json', json, function (error: Error) {
+    fs.writeFile('../src/data/topFinishes.json', json, function (error: Error) {
       if (error) {
         console.log(`saveJson error: ${error}`);
+        errors.push(`saveJson error: ${error}`);
         return;
       }
 
@@ -107,9 +138,33 @@ import {
     });
   }
 
+  function saveTop10Finishes(topData: Array<KoGMap>) {
+    const fs = require('fs');
+    const result = {
+      date: new Date(),
+      data: topData,
+    };
+
+    const json = JSON.stringify(result);
+    fs.writeFile(
+      '../src/data/top10Finishes.json',
+      json,
+      function (error: Error) {
+        if (error) {
+          console.log(`save top10Finishes error: ${error}`);
+          errors.push(`save top10Finishes error: ${error}`);
+          return;
+        }
+
+        console.log('top10Finishes.json saved');
+      }
+    );
+  }
+
   function saveRecords(records: MapRecord[]) {
     const fs = require('fs');
     const result = {
+      date: new Date(),
       data: records,
     };
 
@@ -117,6 +172,7 @@ import {
     fs.writeFile('../src/data/records.json', json, function (error: Error) {
       if (error) {
         console.log(`saveRecords error: ${error}`);
+        errors.push(`saveRecords error: ${error}`);
         return;
       }
 
@@ -139,16 +195,9 @@ import {
       if (isNewRank) {
         const { time } = kogMap.topFinishes[0];
         const rank = 1;
-        const players = [kogMap.topFinishes[0].name];
-
-        for (let i = 1; i < kogMap.topFinishes.length; i += 1) {
-          if (kogMap.topFinishes[i].time === time) {
-            players.push(kogMap.topFinishes[i].name);
-            continue;
-          }
-
-          break;
-        }
+        const players = kogMap.topFinishes
+          .filter((finish) => finish.time === time)
+          .map((finish) => finish.name);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { topFinishes, ...rest } = kogMap;
@@ -163,8 +212,35 @@ import {
       }
     });
 
+    const recordsWithDates = records.filter(({ date }) => date !== undefined);
+    recordsWithDates.forEach(({ time, name, players, date }) => {
+      const mapEntry = topData.find((map) => map.name === name);
+
+      if (mapEntry === undefined) return;
+
+      players?.forEach((playerName) => {
+        const finishEntry = mapEntry.topFinishes.find(
+          (player) => player.name === playerName && player.time === time
+        );
+
+        if (finishEntry === undefined) return;
+
+        finishEntry.date = date;
+      });
+    });
+
     saveRecords(records);
     saveJson(topData);
+
+    const top10Finishes = topData.map((map) => {
+      const top10 = map.topFinishes.filter((finish) => finish.rank <= 10);
+      return {
+        ...map,
+        topFinishes: top10,
+      };
+    });
+
+    saveTop10Finishes(top10Finishes);
   }
 
   const mapsData: Array<KoGMapEntity> = [];
@@ -185,6 +261,9 @@ import {
     total = mapsData.length;
 
     const mapsLeft = new Set(mapsData);
+
+    const startTimer = new Date().getTime();
+    const maxTime = 20 * 60 * 1000;
 
     while (mapsLeft.size > 0) {
       await Promise.all(
@@ -213,6 +292,10 @@ import {
         })
       );
 
+      if (new Date().getTime() - startTimer > maxTime) {
+        throw new Error('max time exceeded');
+      }
+
       if (mapsLeft.size > 0) {
         await waitFor(2000);
       }
@@ -227,5 +310,8 @@ import {
       errorMessage = error.message;
     }
     console.log(`Fetch maps data error: ${errorMessage}`);
+    errors.push(`Fetch maps data error: ${errorMessage}`);
+  } finally {
+    saveLogs();
   }
 })();

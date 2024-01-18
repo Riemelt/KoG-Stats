@@ -1,12 +1,11 @@
 import { MapRecordsOptions } from '../../components/map-records/types';
 import { MapRecord, MapType } from '../../types/types';
 
-interface PlayerProfileOptions {
+interface MapsOptions {
   sortBy: MapType;
-  playerName: string;
-  playerRecords: Array<MapRecord>;
+  maps: MapRecord[];
   categoryMenu: {
-    categories: Array<MapType>;
+    categories: MapType[];
   };
   mapRecords: MapRecordsOptions;
 }

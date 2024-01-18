@@ -10,7 +10,7 @@ $className: 'header';
     flex-wrap: wrap;
     gap: 1.25rem;
     min-height: 6.25rem;
-    padding: .9375rem;
+    padding: 0.9375rem;
     font-family: Segoe, Arial, 'sans-serif';
     font-weight: 700;
     font-size: 1.25rem;
@@ -23,8 +23,39 @@ $className: 'header';
     gap: 1.875rem;
   }
 
-  &__latest-records {
+  &__nav-menu,
+  &__nav-item-wrapper {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+
+    @media (max-width: 500px) {
+      gap: 0.625rem;
+    }
+  }
+
+  &__nav-item-wrapper {
+    &:last-child .#{$className}__nav-item-splitter {
+      display: none;
+    }
+  }
+
+  &__nav-item {
     color: $primary;
+
+    @media (max-width: 500px) {
+      font-size: 0.875rem;
+    }
+  }
+
+  &__nav-item-splitter {
+    width: 2px;
+    height: 40px;
+    background-color: $primary;
+
+    @media (max-width: 500px) {
+      height: 30px;
+    }
   }
 
   &__title {
@@ -33,5 +64,26 @@ $className: 'header';
 
   &__title-highlighted {
     color: $primary;
+  }
+
+  &__update-title,
+  &__update-date {
+    @media (max-width: 500px) {
+      font-size: 0.875rem;
+    }
+  }
+
+  &__error {
+    font-size: 0.875rem;
+    color: rgb(244, 63, 94);
+    display: none;
+
+    @media (max-width: 500px) {
+      font-size: 0.75rem;
+    }
+
+    &_shown {
+      display: initial;
+    }
   }
 }

@@ -8,15 +8,13 @@ import InputField from '../../components/input-field';
 import { MapType } from '../../types/types';
 import { debounceLast } from '../../utilities/utilities';
 
-import { PlayerProfileOptions } from './types';
+import { MapsOptions } from './types';
 
-class PlayerProfile {
+class Maps {
   private className: string;
-  private options: PlayerProfileOptions;
+  private options: MapsOptions;
   private $component: JQuery<HTMLElement>;
   private $categoryMenu: JQuery<HTMLElement>;
-  private $title: JQuery<HTMLElement>;
-  private $titlePlayerName: JQuery<HTMLElement>;
   private mapRecords: MapRecords;
   private pagination: Pagination;
   private category: MapType = 'Total';
@@ -25,22 +23,11 @@ class PlayerProfile {
   private inputName: InputField;
   private $resetButton: JQuery<HTMLElement>;
 
-  constructor($element: JQuery<HTMLElement>, options: PlayerProfileOptions) {
+  constructor($element: JQuery<HTMLElement>, options: MapsOptions) {
     this.options = options;
-    this.className = 'player-profile';
+    this.className = 'maps';
     this.$component = $element;
     this.category = this.options.sortBy;
-
-    this.$title = this.$component.find(`.js-${this.className}__title`);
-    this.$title.attr(
-      'href',
-      `https://kog.tw/#p=players&player=${this.options.playerName}`
-    );
-
-    this.$titlePlayerName = this.$title.find(
-      `.js-${this.className}__title-text`
-    );
-    this.$titlePlayerName.html(`${this.options.playerName}'s map records`);
 
     this.$categoryMenu = this.$component.find(
       `.js-${this.className}__category-menu`
@@ -64,7 +51,7 @@ class PlayerProfile {
 
     new Expander(this.$component.find(`.js-${this.className}__expander`));
     this.inputName = new InputField(
-      this.$component.find(`.js-${this.className}__input-name`),
+      this.$component.find(`.js-${this.className}__input-map-name`),
       {
         onChange: debounceLast(this.handleInputNameChange.bind(this), 250),
       }
@@ -74,7 +61,7 @@ class PlayerProfile {
       this.$component.find(`.js-${this.className}__map-records`),
       {
         ...this.options.mapRecords,
-        records: this.options.playerRecords,
+        records: this.options.maps,
       }
     );
 
@@ -119,4 +106,4 @@ class PlayerProfile {
   }
 }
 
-export default PlayerProfile;
+export default Maps;

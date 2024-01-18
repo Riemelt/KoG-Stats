@@ -47,14 +47,10 @@ class Leaderboard {
     }
 
     return entries.filter((player) => {
-      const hasAnyRanks = player.hasAnyRanks(this.activeCategory);
-      return (
-        hasAnyRanks &&
-        player
-          .getOptions()
-          .name.toLowerCase()
-          .includes(name.trim().toLowerCase())
-      );
+      return player
+        .getOptions()
+        .name.toLowerCase()
+        .includes(name.trim().toLowerCase());
     });
   }
 

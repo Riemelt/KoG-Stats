@@ -84,16 +84,25 @@ exports.__esModule = true;
         }
         function parseTd(items, map) {
             var topFinishes = [];
+            var rank = 0;
+            var previousTime = -1;
+            var j = 0;
             for (var i = 0; i < items.length; i = i + 2) {
                 var name_1 = $(items[i + 1].innerHTML).html();
                 var time = Number(items[i].innerHTML);
                 if (name_1 === undefined || time === undefined) {
                     throw new Error('Parsing td error');
                 }
+                if (time !== previousTime) {
+                    rank = j;
+                    previousTime = time;
+                }
                 topFinishes.push({
                     name: name_1,
-                    time: time
+                    time: time,
+                    rank: rank + 1
                 });
+                j += 1;
             }
             topData.push(__assign(__assign({}, map), { topFinishes: topFinishes }));
         }
@@ -122,6 +131,21 @@ exports.__esModule = true;
                 category: category.trim().toLowerCase() === 'unknown' ? 'Solo' : category
             });
         }
+        function saveLogs(error) {
+            var fs = require('fs');
+            var result = {};
+            if (error) {
+                result.error = error;
+            }
+            var json = JSON.stringify(result);
+            fs.writeFile('../src/data/logs.json', json, function (error) {
+                if (error) {
+                    console.log("logJson error: ".concat(error));
+                    return;
+                }
+                console.log('logs.json saved');
+            });
+        }
         function saveJson(topData) {
             var fs = require('fs');
             var result = {
@@ -129,7 +153,7 @@ exports.__esModule = true;
                 data: topData
             };
             var json = JSON.stringify(result);
-            fs.writeFile('./data/topFinishes.json', json, function (error) {
+            fs.writeFile('../src/data/topFinishes.json', json, function (error) {
                 if (error) {
                     console.log("saveJson error: ".concat(error));
                     return;
@@ -137,9 +161,25 @@ exports.__esModule = true;
                 console.log('topFinishes.json saved');
             });
         }
+        function saveTop10Finishes(topData) {
+            var fs = require('fs');
+            var result = {
+                date: new Date(),
+                data: topData
+            };
+            var json = JSON.stringify(result);
+            fs.writeFile('../src/data/top10Finishes.json', json, function (error) {
+                if (error) {
+                    console.log("save top10Finishes error: ".concat(error));
+                    return;
+                }
+                console.log('top10Finishes.json saved');
+            });
+        }
         function saveRecords(records) {
             var fs = require('fs');
             var result = {
+                date: new Date(),
                 data: records
             };
             var json = JSON.stringify(result);
@@ -161,23 +201,40 @@ exports.__esModule = true;
                 var isNewRank = previousRankOne === undefined ||
                     previousRankOne.time !== kogMap.topFinishes[0].time;
                 if (isNewRank) {
-                    var time = kogMap.topFinishes[0].time;
+                    var time_1 = kogMap.topFinishes[0].time;
                     var rank = 1;
-                    var players = [kogMap.topFinishes[0].name];
-                    for (var i = 1; i < kogMap.topFinishes.length; i += 1) {
-                        if (kogMap.topFinishes[i].time === time) {
-                            players.push(kogMap.topFinishes[i].name);
-                            continue;
-                        }
-                        break;
-                    }
+                    var players = kogMap.topFinishes
+                        .filter(function (finish) { return finish.time === time_1; })
+                        .map(function (finish) { return finish.name; });
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     var topFinishes = kogMap.topFinishes, rest = __rest(kogMap, ["topFinishes"]);
-                    records.push(__assign(__assign({}, rest), { rank: rank, players: players, time: time, date: new Date() }));
+                    records.push(__assign(__assign({}, rest), { rank: rank, players: players, time: time_1, date: new Date() }));
                 }
+            });
+            var recordsWithDates = records.filter(function (_a) {
+                var date = _a.date;
+                return date !== undefined;
+            });
+            recordsWithDates.forEach(function (_a) {
+                var time = _a.time, name = _a.name, players = _a.players, date = _a.date;
+                var mapEntry = topData.find(function (map) { return map.name === name; });
+                if (mapEntry === undefined)
+                    return;
+                players === null || players === void 0 ? void 0 : players.forEach(function (playerName) {
+                    var finishEntry = mapEntry.topFinishes.find(function (player) { return player.name === playerName && player.time === time; });
+                    if (finishEntry === undefined)
+                        return;
+                    finishEntry.date = date;
+                });
             });
             saveRecords(records);
             saveJson(topData);
+            var top10Finishes = topData.map(function (map) {
+                var top10 = map.topFinishes.filter(function (finish) { return finish.rank <= 10; });
+                return __assign(__assign({}, map), { topFinishes: top10 });
+            });
+            saveTop10Finishes(top10Finishes);
+            saveLogs();
         }
         var JSDOM, window, $, jsonData, previousTopFinishes, jsonRecords, records, waitFor, mapsData, topData, count, total, dataMaps, $dataMaps, $cardBodies, mapsLeft_1, error_1, errorMessage;
         return __generator(this, function (_a) {
@@ -186,7 +243,7 @@ exports.__esModule = true;
                     JSDOM = require('jsdom').JSDOM;
                     window = new JSDOM('').window;
                     $ = require('jquery')(window);
-                    jsonData = require('./data/topFinishes.json');
+                    jsonData = require('../src/data/topFinishes.json');
                     previousTopFinishes = jsonData.data;
                     jsonRecords = require('../src/data/records.json');
                     records = jsonRecords.data;
@@ -252,6 +309,7 @@ exports.__esModule = true;
                         errorMessage = error_1.message;
                     }
                     console.log("Fetch maps data error: ".concat(errorMessage));
+                    saveLogs(errorMessage);
                     return [3 /*break*/, 9];
                 case 9: return [2 /*return*/];
             }

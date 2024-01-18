@@ -4,4 +4,6 @@ interface MapRecordsOptions {
   records: Array<MapRecord>;
   withPlayers?: boolean;
   withDate?: boolean;
+  shouldSort?: boolean;
+  withRanks?: boolean;
 }

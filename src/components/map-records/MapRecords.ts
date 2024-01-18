@@ -28,12 +28,19 @@ class MapRecords {
 
   constructor(
     $parent: JQuery<HTMLElement>,
-    { records, withPlayers = false, withDate = false }: MapRecordsOptions
+    {
+      records,
+      withPlayers = false,
+      withDate = false,
+      shouldSort = true,
+      withRanks = true,
+    }: MapRecordsOptions
   ) {
     this.options = {
       records,
       withPlayers,
       withDate,
+      withRanks,
     };
 
     this.className = 'map-records';
@@ -45,10 +52,11 @@ class MapRecords {
         new RecordEntry({
           withDate,
           record,
+          withRanks,
         })
     );
 
-    if (!withPlayers) {
+    if (shouldSort) {
       this.sortRecordEntries();
     }
   }
@@ -84,10 +92,10 @@ class MapRecords {
     return name.toLowerCase().includes(mapName.trim().toLowerCase());
   }
 
-  private doesIncludePlayer(name: string, players?: string[]) {
+  private doesIncludePlayer(name: string, players: string[]) {
     return (
-      players === undefined ||
-      players?.some((player) =>
+      name === '' ||
+      players.some((player) =>
         player.toLowerCase().includes(name.trim().toLowerCase())
       )
     );

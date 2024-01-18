@@ -10,15 +10,18 @@ mixin header(vars)
         },
         rest: "",
       },
-      latestRecords = {
-        href: "/mock-address/change-me",
-        title: "Default",
-      },
+      nav = [],
       updateTitle = "",
+      hasError = false,
     } = vars
 
     const className = "header"
     const classNames = `${className} js-${className}`
+
+    let errorClasses = `${className}__error`
+  
+  if (hasError)
+    - errorClasses += ` ${className}__error_shown`
 
   div(class=classNames)
     +container()
@@ -30,10 +33,16 @@ mixin header(vars)
           )= title.link.content
           span(class=`${className}__title-rest`)= title.rest
         div(class=`${className}__menu`)
-          a(
-            class=`${className}__latest-records`
-            href=latestRecords.href
-          )= latestRecords.title
+          div(class=`${className}__nav-menu`)
+            each item in nav
+              div(class=`${className}__nav-item-wrapper`)
+                a(
+                  class=`${className}__nav-item`
+                  href=item.href
+                )= item.title
+                div(class=`${className}__nav-item-splitter`)
           div(class=`${className}__update`)
             div(class=`${className}__update-title`)= updateTitle
-            div(class=`${className}__update-date js-${className}__update-date`)
+            div(class=`${className}__update-date-wrapper`)
+              div(class=`${className}__update-date js-${className}__update-date`)
+              div(class=errorClasses)= 'Error on update. Contact KOF :('

@@ -1,8 +1,4 @@
 {
-  "mapRecords": {
-    "withPlayers": true,
-    "withDate": true
-  },
   "categoryMenu": {
     "categories": [
       "Total",
@@ -18,9 +14,14 @@
   "expander": {
     "title": "Filtering options"
   },
-  "inputName": {
+  "inputMapName": {
     "title": "Filter by map name",
     "placeholder": "Name",
     "icon": "search"
+  },
+  "mapRecords": {
+    "withPlayers": true,
+    "withDate": true,
+    "withRanks": false
   }
 }
