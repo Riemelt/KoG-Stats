@@ -22,6 +22,6 @@
   "mapRecords": {
     "withPlayers": true,
     "withDate": true,
-    "withRanks": false
+    "isMapsPage": true
   }
 }

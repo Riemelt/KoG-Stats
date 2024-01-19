@@ -33,14 +33,14 @@ class MapRecords {
       withPlayers = false,
       withDate = false,
       shouldSort = true,
-      withRanks = true,
+      isMapsPage = false,
     }: MapRecordsOptions
   ) {
     this.options = {
       records,
       withPlayers,
       withDate,
-      withRanks,
+      isMapsPage,
     };
 
     this.className = 'map-records';
@@ -52,7 +52,7 @@ class MapRecords {
         new RecordEntry({
           withDate,
           record,
-          withRanks,
+          isMapsPage,
         })
     );
 
@@ -75,6 +75,10 @@ class MapRecords {
         this.doesIncludePlayer(playerName, players)
       );
     });
+
+    if (this.options.isMapsPage) {
+      entries.forEach((entry, index) => entry.update(index + 1));
+    }
 
     return entries;
   }

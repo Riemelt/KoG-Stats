@@ -7,15 +7,21 @@ class RecordEntry {
   private options: RecordEntryOptions;
   private className: string;
   private $component: JQuery<HTMLElement>;
+  private $rank: JQuery<HTMLElement>;
 
   constructor(options: RecordEntryOptions) {
     this.options = options;
     this.className = 'map-records';
     this.$component = this.initHtml();
+    this.$rank = this.$component.find(`.js-${this.className}__table-cell-rank`);
   }
 
   public getOptions() {
     return this.options.record;
+  }
+
+  public update(rank: number) {
+    this.$rank.html(`${rank}`);
   }
 
   public getHtml() {
@@ -77,12 +83,21 @@ class RecordEntry {
             : `${this.className}__table-cell-date_no-data`
         }
          js-${this.className}__table-cell-date"
-        title="${date instanceof Date ? date.toString() : date}"
       >
+        <span class="${this.className}__date-text">
+          ${
+            date instanceof Date
+              ? moment(Date.parse(date.toString())).fromNow()
+              : date
+          }
+        </span>
         ${
           date instanceof Date
-            ? moment(Date.parse(date.toString())).fromNow()
-            : date
+            ? `
+            <div class="${this.className}__date-tooltip">
+              ${date instanceof Date ? date.toLocaleDateString('en-GB') : date}
+            </div>`
+            : ''
         }
       </td>
     `
@@ -91,9 +106,9 @@ class RecordEntry {
     // prettier-ignore
     return $(`
       <tr class="${this.className}__table-row js-${this.className}__table-row ${this.className}__table-row_body">
-        ${this.options.withRanks ? `<td class="${this.className}__table-cell-rank js-${this.className}__table-cell-rank ${this.className}__table-cell-rank_rank${this.options.record.rank}">
+        <td class="${this.className}__table-cell-rank js-${this.className}__table-cell-rank ${!this.options.isMapsPage ? `${this.className}__table-cell-rank_rank${this.options.record.rank}` : ''}">
           ${this.options.record.rank}
-        </td>` : ''}
+        </td>
         <td class="${this.className}__table-cell-name">
           <a class="${this.className}__table-cell-name-link" href="${kogLink}" target="_blank" rel="noopener noreferrer">
             ${this.options.record.name}

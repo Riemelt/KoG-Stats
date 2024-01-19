@@ -5,5 +5,5 @@ interface MapRecordsOptions {
   withPlayers?: boolean;
   withDate?: boolean;
   shouldSort?: boolean;
-  withRanks?: boolean;
+  isMapsPage?: boolean;
 }

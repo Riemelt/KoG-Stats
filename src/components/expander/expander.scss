@@ -11,8 +11,12 @@ $className: 'expander';
 
     &:hover {
       transition: box-shadow 0.2s;
-      box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.7);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
       background-image: $primary-gradient-25;
+    }
+
+    @media (max-width: 68.75rem) {
+      padding: 8px;
     }
   }
 
@@ -22,8 +26,12 @@ $className: 'expander';
   }
 
   &__title {
-    font-size: 1.25rem;
+    font-size: 1rem;
     transition: color 0.4s;
+
+    @media (max-width: 68.75rem) {
+      font-size: 12px;
+    }
   }
 
   &__button {
@@ -38,12 +46,16 @@ $className: 'expander';
 
   &__icon {
     color: white;
-    font-size: 1.875rem;
+    font-size: 1.5rem;
     transition: transform 0.4s, color 0.4s;
+
+    @media (max-width: 68.75rem) {
+      font-size: 16px;
+    }
   }
 
   &__body-wrapper {
-    margin-top: 0.9375rem;
+    margin-top: 15px;
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.4s;
@@ -59,6 +71,10 @@ $className: 'expander';
 
   &__body-inside {
     padding: 0.875rem;
+
+    @media (max-width: 1100px) {
+      padding: 0.5rem;
+    }
   }
 
   &_open {

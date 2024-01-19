@@ -12,7 +12,7 @@ class Pagination {
   public render<T>(dataSource?: T[], render?: (data: T[]) => void) {
     this.$component.pagination({
       dataSource,
-      pageSize: 25,
+      pageSize: 50,
       pageRange: 1,
       autoHidePrevious: true,
       autoHideNext: true,

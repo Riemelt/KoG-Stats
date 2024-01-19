@@ -3,7 +3,6 @@ mixin map-records(vars)
     const {
       withPlayers = false,
       withDate = false,
-      withRanks = true,
     } = vars
 
     const className = "map-records"
@@ -16,8 +15,7 @@ mixin map-records(vars)
     table(class=`${className}__table`)
       thead(class=`${className}__table-head`)
         tr(class=`${className}__table-row ${className}__table-row_head`)
-          if (withRanks)
-            th(class=`${className}__table-cell-rank`) #
+          th(class=`${className}__table-cell-rank`) #
           th(class=`${className}__table-cell-name ${className}__table-cell-name_header`) Map
           if (withPlayers)
             th(class=`${className}__table-cell-players`) Players

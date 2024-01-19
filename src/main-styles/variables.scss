@@ -44,7 +44,25 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
 
 @mixin tableProperties() {
   border-collapse: separate;
-  border-spacing: 0.625rem;
+  border-spacing: 0.375rem;
+  display: block;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar {
+    height: 0.625rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgb(24, 24, 24);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(58, 58, 58);
+
+    &:hover {
+      background-color: rgb(49, 49, 49);
+    }
+  }
 
   @media (max-width: 1100px) {
     border-spacing: 0.125rem;
@@ -52,8 +70,8 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
 }
 
 @mixin tableCellProperties() {
-  max-width: 3.125rem;
-  min-width: 3.125rem;
+  max-width: 2.1875rem;
+  min-width: 2.1875rem;
   text-align: center;
 
   @media (max-width: 1100px) {
@@ -63,11 +81,11 @@ $secondary-gradient: linear-gradient(180deg, $green 0%, $sky-blue 100%);
 }
 
 @mixin tableRowProperties() {
-  min-height: 3.125rem;
-  height: 3.125rem;
+  min-height: 2.1875rem;
+  height: 2.1875rem;
 
   @media (max-width: 1100px) {
-    min-height: 1.875rem;
-    height: 1.875rem;
+    min-height: 1.5625rem;
+    height: 1.5625rem;
   }
 }
