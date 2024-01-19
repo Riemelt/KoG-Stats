@@ -131,12 +131,11 @@ exports.__esModule = true;
                 category: category.trim().toLowerCase() === 'unknown' ? 'Solo' : category
             });
         }
-        function saveLogs(error) {
+        function saveLogs() {
             var fs = require('fs');
-            var result = {};
-            if (error) {
-                result.error = error;
-            }
+            var result = {
+                errors: errors
+            };
             var json = JSON.stringify(result);
             fs.writeFile('../src/data/logs.json', json, function (error) {
                 if (error) {
@@ -156,6 +155,7 @@ exports.__esModule = true;
             fs.writeFile('../src/data/topFinishes.json', json, function (error) {
                 if (error) {
                     console.log("saveJson error: ".concat(error));
+                    errors.push("saveJson error: ".concat(error));
                     return;
                 }
                 console.log('topFinishes.json saved');
@@ -171,6 +171,7 @@ exports.__esModule = true;
             fs.writeFile('../src/data/top10Finishes.json', json, function (error) {
                 if (error) {
                     console.log("save top10Finishes error: ".concat(error));
+                    errors.push("save top10Finishes error: ".concat(error));
                     return;
                 }
                 console.log('top10Finishes.json saved');
@@ -186,6 +187,7 @@ exports.__esModule = true;
             fs.writeFile('../src/data/records.json', json, function (error) {
                 if (error) {
                     console.log("saveRecords error: ".concat(error));
+                    errors.push("saveRecords error: ".concat(error));
                     return;
                 }
                 console.log('records.json saved');
@@ -234,9 +236,8 @@ exports.__esModule = true;
                 return __assign(__assign({}, map), { topFinishes: top10 });
             });
             saveTop10Finishes(top10Finishes);
-            saveLogs();
         }
-        var JSDOM, window, $, jsonData, previousTopFinishes, jsonRecords, records, waitFor, mapsData, topData, count, total, dataMaps, $dataMaps, $cardBodies, mapsLeft_1, error_1, errorMessage;
+        var JSDOM, window, $, jsonData, previousTopFinishes, jsonRecords, records, errors, waitFor, mapsData, topData, count, total, dataMaps, $dataMaps, $cardBodies, mapsLeft_1, startTimer, maxTime, error_1, errorMessage;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -247,6 +248,7 @@ exports.__esModule = true;
                     previousTopFinishes = jsonData.data;
                     jsonRecords = require('../src/data/records.json');
                     records = jsonRecords.data;
+                    errors = [];
                     waitFor = function (ms) {
                         return new Promise(function (resolve) {
                             setTimeout(resolve, ms);
@@ -258,7 +260,7 @@ exports.__esModule = true;
                     total = 0;
                     _a.label = 1;
                 case 1:
-                    _a.trys.push([1, 8, , 9]);
+                    _a.trys.push([1, 8, 9, 10]);
                     return [4 /*yield*/, getData('https://kog.tw/get.php?p=maps&p=maps')];
                 case 2:
                     dataMaps = _a.sent();
@@ -269,6 +271,8 @@ exports.__esModule = true;
                     $cardBodies.each(parseCard);
                     total = mapsData.length;
                     mapsLeft_1 = new Set(mapsData);
+                    startTimer = new Date().getTime();
+                    maxTime = 20 * 60 * 1000;
                     _a.label = 3;
                 case 3:
                     if (!(mapsLeft_1.size > 0)) return [3 /*break*/, 7];
@@ -291,6 +295,9 @@ exports.__esModule = true;
                         }))];
                 case 4:
                     _a.sent();
+                    if (new Date().getTime() - startTimer > maxTime) {
+                        throw new Error('max time exceeded');
+                    }
                     if (!(mapsLeft_1.size > 0)) return [3 /*break*/, 6];
                     return [4 /*yield*/, waitFor(2000)];
                 case 5:
@@ -301,7 +308,7 @@ exports.__esModule = true;
                     if (count >= total) {
                         update(topData);
                     }
-                    return [3 /*break*/, 9];
+                    return [3 /*break*/, 10];
                 case 8:
                     error_1 = _a.sent();
                     errorMessage = 'Unknown Error';
@@ -309,9 +316,12 @@ exports.__esModule = true;
                         errorMessage = error_1.message;
                     }
                     console.log("Fetch maps data error: ".concat(errorMessage));
-                    saveLogs(errorMessage);
-                    return [3 /*break*/, 9];
-                case 9: return [2 /*return*/];
+                    errors.push("Fetch maps data error: ".concat(errorMessage));
+                    return [3 /*break*/, 10];
+                case 9:
+                    saveLogs();
+                    return [7 /*endfinally*/];
+                case 10: return [2 /*return*/];
             }
         });
     });
