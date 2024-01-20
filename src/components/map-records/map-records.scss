@@ -279,6 +279,10 @@ $className: 'map-records';
     }
   }
 
+  &__table-cell-name {
+    white-space: nowrap;
+  }
+
   &__table-cell-name,
   &__table-cell-authors {
     height: 100%;

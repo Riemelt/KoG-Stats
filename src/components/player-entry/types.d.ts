@@ -1,5 +1,5 @@
-import { PlayerRanks } from "../../types/types";
+import { PlayerRanks } from '../../types/types';
 
 interface PlayerEntryOptions {
-  player: PlayerRanks,
+  player: PlayerRanks;
 }

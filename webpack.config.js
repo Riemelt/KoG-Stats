@@ -11,6 +11,7 @@ const entryPoints = {
   index: './pages/index/index.ts',
   records: './pages/records/index.ts',
   'player-profile': './pages/player-profile/index.ts',
+  'map-profile': './pages/map-profile/index.ts',
   maps: './pages/maps/index.ts',
 };
 
@@ -51,6 +52,11 @@ module.exports = {
       template: './pages/maps/maps.pug', // relative path to the HTML files
       filename: './maps.html', // output HTML files
       chunks: ['maps'],
+    }),
+    new HtmlWebpackPlugin({
+      template: './pages/map-profile/map-profile.pug', // relative path to the HTML files
+      filename: './map-profile.html', // output HTML files
+      chunks: ['map-profile'],
     }),
   ],
   entry: entryPoints,

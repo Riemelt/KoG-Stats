@@ -6,7 +6,7 @@ $className: 'records';
 
   &__main {
     width: 100%;
-    padding: 3.125rem 0;
+    padding: 1.25rem 0;
   }
 
   &__title-text {
@@ -17,7 +17,7 @@ $className: 'records';
   }
 
   &__category-menu {
-    margin-top: 2.5rem;
+    margin-top: 0.625rem;
   }
 
   &__expander {
@@ -30,8 +30,14 @@ $className: 'records';
 
   &__filters {
     display: flex;
-    flex-direction: column;
     gap: 0.9375rem;
+    flex-wrap: wrap;
+  }
+
+  &__input-map-name,
+  &__input-player-name,
+  &__input-author-name {
+    width: 20rem;
   }
 
   &__reset-button {

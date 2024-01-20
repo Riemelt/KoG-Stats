@@ -1,39 +1,26 @@
-$className: 'player-profile';
+$className: 'map-profile';
 
 .#{$className} {
   flex-grow: 1;
   width: 100%;
 
   &__main {
+    width: 100%;
     padding: 1.25rem 0;
-  }
-
-  &__title {
-    width: fit-content;
-    display: block;
-    margin: 0 auto;
-    transition: color 0.2s;
-
-    &:hover {
-      color: $primary;
-      transition: color 0.2s;
-    }
   }
 
   &__title-text {
     font-size: 1.875rem;
     font-weight: 700;
-  }
-
-  &__category-menu {
-    margin-top: 0.625rem;
+    display: flex;
+    justify-content: center;
   }
 
   &__expander {
-    margin: 1.875rem 0.625rem 0;
+    margin: 0.625rem 0.625rem 0;
 
     @media (max-width: 1100px) {
-      margin: 1.875rem 0.125rem 0;
+      margin: 0.625rem 0.125rem 0;
     }
   }
 
@@ -43,9 +30,7 @@ $className: 'player-profile';
     flex-wrap: wrap;
   }
 
-  &__input-map-name,
-  &__input-player-name,
-  &__input-author-name {
+  &__input-player-name {
     width: 20rem;
   }
 
@@ -63,13 +48,13 @@ $className: 'player-profile';
     }
   }
 
-  &__map-records {
+  &__map {
+    width: 100%;
     padding-top: 0.625rem;
   }
 
-  &__pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 2.5rem;
+  &__map-finishes {
+    width: 100%;
+    padding-top: 0.625rem;
   }
 }

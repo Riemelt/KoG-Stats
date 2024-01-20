@@ -2,10 +2,14 @@ mixin expander(vars = {})
   -
     const {
       title = '',
+      isOpen = true,
     } = vars
 
     const className = 'expander'
-    const classNames = `${className} js-${className}`
+    let classNames = `${className} js-${className}`
+
+  if (isOpen)
+    - classNames += ` ${className}_open`
 
   div(class=classNames)
     div(class=`${className}__header js-${className}__header`)

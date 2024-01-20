@@ -5,7 +5,7 @@ $className: 'maps';
   width: 100%;
 
   &__main {
-    padding: 3.125rem 0;
+    padding: 1.25rem 0;
     width: 100%;
   }
 
@@ -17,7 +17,7 @@ $className: 'maps';
   }
 
   &__category-menu {
-    margin-top: 2.5rem;
+    margin-top: 0.625rem;
   }
 
   &__expander {
@@ -30,8 +30,14 @@ $className: 'maps';
 
   &__filters {
     display: flex;
-    flex-direction: column;
     gap: 0.9375rem;
+    flex-wrap: wrap;
+  }
+
+  &__input-map-name,
+  &__input-player-name,
+  &__input-author-name {
+    width: 20rem;
   }
 
   &__reset-button {

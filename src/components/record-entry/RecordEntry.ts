@@ -34,6 +34,12 @@ class RecordEntry {
     return buildUrlPath(`player-profile.html?${urlSearchParams.toString()}`);
   }
 
+  private getMapProfileUrl(name: string) {
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set('map', name);
+    return buildUrlPath(`map-profile.html?${urlSearchParams.toString()}`);
+  }
+
   private initStar(isNotActive: boolean) {
     return `
       <span class="${this.className}__star material-icons-outlined ${
@@ -52,7 +58,6 @@ class RecordEntry {
   }
 
   private initHtml() {
-    const kogLink = `https://kog.tw/#p=maps&map=${this.options.record.name}`;
     const mapCategory = this.options.record.category.toLowerCase();
     const timeConverted =
       this.options.record.time === undefined
@@ -170,7 +175,7 @@ class RecordEntry {
           ${this.options.record.rank}
         </td>
         <td class="${this.className}__table-cell-name">
-          <a class="${this.className}__table-cell-name-link" href="${kogLink}" target="_blank" rel="noopener noreferrer">
+          <a class="${this.className}__table-cell-name-link" href="${this.getMapProfileUrl(this.options.record.name)}">
             ${this.options.record.name}
           </a>
         </td>

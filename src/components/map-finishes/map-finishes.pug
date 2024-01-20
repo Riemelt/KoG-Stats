@@ -1,0 +1,15 @@
+mixin map-finishes(vars = {})
+  -
+    const className = "map-finishes"
+    let classNames = `${className} js-${className}`
+
+  div(class=classNames)
+    table(class=`${className}__table`)
+      thead(class=`${className}__table-head`)
+        tr(class=`${className}__table-row ${className}__table-row_head`)
+          th(class=`${className}__table-cell-rank`) #
+          th(class=`${className}__table-cell-name ${className}__table-cell-name_header`) Player
+          th(class=`${className}__table-cell-date`) Updated
+          th(class=`${className}__table-cell-time-diff`) Diff
+          th(class=`${className}__table-cell-time`) Time
+      tbody(class=`${className}__table-body js-${className}__table-body`)

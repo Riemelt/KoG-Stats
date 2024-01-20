@@ -68,18 +68,18 @@ class MapRecords {
   }
 
   public generateRecordEntries({
-    mapCategory,
-    mapName,
+    mapCategory = 'Total',
+    mapName = '',
     playerName = '',
     author = '',
   }: {
-    mapCategory: MapType;
-    mapName: string;
+    mapCategory?: MapType;
+    mapName?: string;
     playerName?: string;
     author?: string;
   }) {
     const entries = this.recordEntries.filter((record) => {
-      const { category, name, players, authors } = record.getOptions();
+      const { category, name, players = [], authors } = record.getOptions();
 
       return (
         (mapCategory === 'Total' || category === mapCategory) &&

@@ -15,17 +15,17 @@
     "title": "Filtering options"
   },
   "inputMapName": {
-    "title": "Filter by map name",
+    "title": "Filter by map",
     "placeholder": "Map",
     "icon": "search"
   },
   "inputPlayerName": {
-    "title": "Filter by player name",
+    "title": "Filter by player",
     "placeholder": "Player",
     "icon": "search"
   },
   "inputAuthorName": {
-    "title": "Filter by author name",
+    "title": "Filter by author",
     "placeholder": "Author",
     "icon": "search"
   },

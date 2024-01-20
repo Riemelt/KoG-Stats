@@ -29,10 +29,10 @@ class Landing {
   private leaderboard: Leaderboard;
   private pagination: Pagination;
   private category: MapType = 'Total';
-  private name = '';
+  private player = '';
   private $resetButton: JQuery<HTMLElement>;
   private categoryMenu: CategoryMenu;
-  private inputName: InputField;
+  private inputPlayerName: InputField;
 
   constructor($element: JQuery<HTMLElement>, options: LandingOptions) {
     this.options = options;
@@ -59,8 +59,9 @@ class Landing {
     };
 
     new Expander(this.$component.find(`.js-${this.className}__expander`));
-    this.inputName = new InputField(
-      this.$component.find(`.js-${this.className}__input-name`),
+
+    this.inputPlayerName = new InputField(
+      this.$component.find(`.js-${this.className}__input-player-name`),
       {
         onChange: debounceLast(this.handleInputNameChange.bind(this), 250),
       }
@@ -146,15 +147,15 @@ class Landing {
   }
 
   private handleResetButtonClick() {
-    this.name = '';
+    this.player = '';
     this.category = 'Total';
-    this.inputName.setValue(this.name);
+    this.inputPlayerName.setValue(this.player);
     this.categoryMenu.setCategory(this.category);
     this.render();
   }
 
   private handleInputNameChange(value: string) {
-    this.name = value;
+    this.player = value;
     this.render(false);
   }
 
@@ -167,7 +168,7 @@ class Landing {
     this.pagination.render(
       this.leaderboard.generatePlayerEntries(
         this.category,
-        this.name,
+        this.player,
         shouldUpdate
       ),
       this.leaderboard.render.bind(this.leaderboard)

@@ -13,8 +13,8 @@ type Category = {
   [key in Rank]: number;
 };
 
-type Categories = {
-  [key in MapType]: Category;
+type Categories<T = Category> = {
+  [key in MapType]: T;
 };
 
 interface PlayerRanks {
@@ -49,7 +49,7 @@ interface PlayersMapRecords {
 interface MapRecord extends KoGMapEntity {
   time: number;
   rank: number;
-  players: Array<string>;
+  players?: Array<string>;
   date?: Date;
 }
 

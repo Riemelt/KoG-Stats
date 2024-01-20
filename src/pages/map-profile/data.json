@@ -1,16 +1,4 @@
 {
-  "categoryMenu": {
-    "categories": [
-      "Total",
-      "Extreme",
-      "Insane",
-      "Hard",
-      "Main",
-      "Easy",
-      "Solo",
-      "Mod"
-    ]
-  },
   "expander": {
     "title": "Filtering options"
   },
@@ -18,5 +6,12 @@
     "title": "Filter by player",
     "placeholder": "Player",
     "icon": "search"
+  },
+  "mapProfile": {
+    "withPlayers": true,
+    "withDate": true,
+    "isMapsPage": true,
+    "withAuthors": true,
+    "withReleaseDate": true
   }
 }
