@@ -37,6 +37,12 @@ $className: 'player-profile';
     }
   }
 
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+  }
+
   &__reset-button {
     margin-top: 0.9375rem;
     cursor: pointer;

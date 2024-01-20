@@ -34,6 +34,23 @@ class RecordEntry {
     return buildUrlPath(`player-profile.html?${urlSearchParams.toString()}`);
   }
 
+  private initStar(isNotActive: boolean) {
+    return `
+      <span class="${this.className}__star material-icons-outlined ${
+      isNotActive ? `${this.className}__star_not-active` : ''
+    }">star</span>
+    `;
+  }
+
+  private initStars(stars: number) {
+    const starsHtml = new Array(5)
+      .fill(0)
+      .map((_, index) => this.initStar(stars - index <= 0))
+      .join('');
+
+    return starsHtml;
+  }
+
   private initHtml() {
     const kogLink = `https://kog.tw/#p=maps&map=${this.options.record.name}`;
     const mapCategory = this.options.record.category.toLowerCase();
@@ -72,6 +89,14 @@ class RecordEntry {
       `;
     }
 
+    const authorsTd = this.options.withAuthors
+      ? `
+      <td class="${this.className}__table-cell-authors">
+        ${this.options.record.authors.join(', ')}
+      </td>
+    `
+      : '';
+
     const dateString = this.options.record.date;
     const date = dateString === undefined ? 'no data' : new Date(dateString);
     const dateTd = this.options.withDate
@@ -103,6 +128,41 @@ class RecordEntry {
     `
       : '';
 
+    const releaseDateString = this.options.record.releaseDate;
+    const releaseDate = new Date(releaseDateString);
+    const releaseDateTd = this.options.withReleaseDate
+      ? `
+        <td
+          class="${this.className}__table-cell-date ${
+          releaseDate.toString() !== 'Invalid Date'
+            ? ''
+            : `${this.className}__table-cell-date_no-data`
+        }
+           js-${this.className}__table-cell-date"
+        >
+          <span class="${this.className}__date-text">
+            ${
+              releaseDate.toString() !== 'Invalid Date'
+                ? moment(Date.parse(releaseDate.toString())).fromNow()
+                : 'no data'
+            }
+          </span>
+          ${
+            releaseDate.toString() !== 'Invalid Date'
+              ? `
+              <div class="${this.className}__date-tooltip">
+                ${
+                  releaseDate.toString() !== 'Invalid Date'
+                    ? releaseDate.toLocaleDateString('en-GB')
+                    : releaseDate
+                }
+              </div>`
+              : ''
+          }
+        </td>
+      `
+      : '';
+
     // prettier-ignore
     return $(`
       <tr class="${this.className}__table-row js-${this.className}__table-row ${this.className}__table-row_body">
@@ -114,9 +174,23 @@ class RecordEntry {
             ${this.options.record.name}
           </a>
         </td>
+        ${authorsTd}
         ${playersTd}
+        ${releaseDateTd}
         <td class="${this.className}__table-cell-category ${this.className}__table-cell-category_${mapCategory} js-${this.className}__table-cell-category">
-          ${this.options.record.category}
+          <div class="${this.className}__category-wrapper">
+            <div class="${this.className}__category-title">
+              ${this.options.record.category}
+            </div>
+            <div class="${this.className}__category-stats">
+              <div class="${this.className}__map-points">
+                ${this.options.record.points} point${this.options.record.points > 1 ? 's' : ''}
+              </div>
+              <div class="${this.className}__map-stars">
+                ${this.initStars(this.options.record.stars)}
+              </div>
+            </div>
+          </di>
         </td>
         ${dateTd}
         <td class="${this.className}__table-cell-time js-${this.className}__table-cell-time ${timeConverted === 'unfinished' ? `${this.className}__table-cell-time_no-data` : ''}">

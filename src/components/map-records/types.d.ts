@@ -6,4 +6,6 @@ interface MapRecordsOptions {
   withDate?: boolean;
   shouldSort?: boolean;
   isMapsPage?: boolean;
+  withAuthors?: boolean;
+  withReleaseDate?: boolean;
 }

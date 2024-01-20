@@ -2,7 +2,9 @@
   "mapRecords": {
     "withPlayers": true,
     "withDate": true,
-    "shouldSort": false
+    "shouldSort": false,
+    "withAuthors": true,
+    "withReleaseDate": true
   },
   "categoryMenu": {
     "categories": [
@@ -27,6 +29,11 @@
   "inputPlayerName": {
     "title": "Filter by player name",
     "placeholder": "Player",
+    "icon": "search"
+  },
+  "inputAuthorName": {
+    "title": "Filter by author name",
+    "placeholder": "Author",
     "icon": "search"
   }
 }

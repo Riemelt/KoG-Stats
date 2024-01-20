@@ -1,7 +1,9 @@
 {
   "mapRecords": {
     "withPlayers": true,
-    "withDate": true
+    "withDate": true,
+    "withAuthors": true,
+    "withReleaseDate": true
   },
   "categoryMenu": {
     "categories": [
@@ -18,9 +20,19 @@
   "expander": {
     "title": "Filtering options"
   },
-  "inputName": {
+  "inputMapName": {
     "title": "Filter by map name",
-    "placeholder": "Name",
+    "placeholder": "Map",
+    "icon": "search"
+  },
+  "inputPlayerName": {
+    "title": "Filter by player name",
+    "placeholder": "Player",
+    "icon": "search"
+  },
+  "inputAuthorName": {
+    "title": "Filter by author name",
+    "placeholder": "Author",
     "icon": "search"
   }
 }

@@ -16,12 +16,24 @@
   },
   "inputMapName": {
     "title": "Filter by map name",
-    "placeholder": "Name",
+    "placeholder": "Map",
+    "icon": "search"
+  },
+  "inputPlayerName": {
+    "title": "Filter by player name",
+    "placeholder": "Player",
+    "icon": "search"
+  },
+  "inputAuthorName": {
+    "title": "Filter by author name",
+    "placeholder": "Author",
     "icon": "search"
   },
   "mapRecords": {
     "withPlayers": true,
     "withDate": true,
-    "isMapsPage": true
+    "isMapsPage": true,
+    "withAuthors": true,
+    "withReleaseDate": true
   }
 }

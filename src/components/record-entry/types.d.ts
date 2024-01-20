@@ -4,4 +4,6 @@ interface RecordEntryOptions {
   record: MapRecord;
   withDate: boolean;
   isMapsPage: boolean;
+  withAuthors: boolean;
+  withReleaseDate: boolean;
 }

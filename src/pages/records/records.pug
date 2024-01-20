@@ -28,6 +28,8 @@ block main
                 +input-field(data.inputMapName)
               div(class=`${className}__input-player-name js-${className}__input-player-name`)
                 +input-field(data.inputPlayerName)
+              div(class=`${className}__input-author-name js-${className}__input-author-name`)
+                +input-field(data.inputAuthorName)
             button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__map-records js-${className}__map-records`)
           +map-records(data.mapRecords)

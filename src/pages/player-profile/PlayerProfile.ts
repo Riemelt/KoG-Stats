@@ -20,9 +20,13 @@ class PlayerProfile {
   private mapRecords: MapRecords;
   private pagination: Pagination;
   private category: MapType = 'Total';
-  private name = '';
+  private mapName = '';
+  private playerName = '';
+  private author = '';
   private categoryMenu: CategoryMenu;
-  private inputName: InputField;
+  private inputMapName: InputField;
+  private inputPlayerName: InputField;
+  private inputAuthorName: InputField;
   private $resetButton: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: PlayerProfileOptions) {
@@ -63,10 +67,31 @@ class PlayerProfile {
     );
 
     new Expander(this.$component.find(`.js-${this.className}__expander`));
-    this.inputName = new InputField(
-      this.$component.find(`.js-${this.className}__input-name`),
+
+    this.inputMapName = new InputField(
+      this.$component.find(`.js-${this.className}__input-map-name`),
       {
-        onChange: debounceLast(this.handleInputNameChange.bind(this), 250),
+        onChange: debounceLast(this.handleInputMapNameChange.bind(this), 250),
+      }
+    );
+
+    this.inputPlayerName = new InputField(
+      this.$component.find(`.js-${this.className}__input-player-name`),
+      {
+        onChange: debounceLast(
+          this.handleInputPlayerNameChange.bind(this),
+          250
+        ),
+      }
+    );
+
+    this.inputAuthorName = new InputField(
+      this.$component.find(`.js-${this.className}__input-author-name`),
+      {
+        onChange: debounceLast(
+          this.handleInputAuthorNameChange.bind(this),
+          250
+        ),
       }
     );
 
@@ -94,15 +119,29 @@ class PlayerProfile {
   }
 
   private handleResetButtonClick() {
-    this.name = '';
+    this.mapName = '';
+    this.playerName = '';
+    this.author = '';
     this.category = 'Total';
-    this.inputName.setValue(this.name);
+    this.inputMapName.setValue(this.mapName);
+    this.inputPlayerName.setValue(this.playerName);
+    this.inputAuthorName.setValue(this.author);
     this.categoryMenu.setCategory(this.category);
     this.render();
   }
 
-  private handleInputNameChange(value: string) {
-    this.name = value;
+  private handleInputPlayerNameChange(value: string) {
+    this.playerName = value;
+    this.render();
+  }
+
+  private handleInputMapNameChange(value: string) {
+    this.mapName = value;
+    this.render();
+  }
+
+  private handleInputAuthorNameChange(value: string) {
+    this.author = value;
     this.render();
   }
 
@@ -113,7 +152,12 @@ class PlayerProfile {
 
   private render() {
     this.pagination.render(
-      this.mapRecords.generateRecordEntries(this.category, this.name),
+      this.mapRecords.generateRecordEntries({
+        mapCategory: this.category,
+        mapName: this.mapName,
+        playerName: this.playerName,
+        author: this.author,
+      }),
       this.mapRecords.render.bind(this.mapRecords)
     );
   }

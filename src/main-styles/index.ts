@@ -1,4 +1,4 @@
-import 'material-icons/iconfont/outlined.css';
+import 'material-icons/iconfont/material-icons.css';
 
 import './fonts.scss';
 import '../assets/favicons';

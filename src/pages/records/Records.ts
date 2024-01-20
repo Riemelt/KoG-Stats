@@ -19,9 +19,11 @@ class Records {
   private category: MapType = 'Total';
   private mapName = '';
   private playerName = '';
+  private author = '';
   private categoryMenu: CategoryMenu;
   private inputMapName: InputField;
   private inputPlayerName: InputField;
+  private inputAuthorName: InputField;
   private $resetButton: JQuery<HTMLElement>;
 
   constructor($element: JQuery<HTMLElement>, options: RecordsOptions) {
@@ -73,6 +75,16 @@ class Records {
       }
     );
 
+    this.inputAuthorName = new InputField(
+      this.$component.find(`.js-${this.className}__input-author-name`),
+      {
+        onChange: debounceLast(
+          this.handleInputAuthorNameChange.bind(this),
+          250
+        ),
+      }
+    );
+
     this.pagination = new Pagination(
       this.$component.find(`.js-${this.className}__pagination`)
     );
@@ -91,9 +103,11 @@ class Records {
   private handleResetButtonClick() {
     this.mapName = '';
     this.playerName = '';
+    this.author = '';
     this.category = 'Total';
     this.inputMapName.setValue(this.mapName);
     this.inputPlayerName.setValue(this.playerName);
+    this.inputAuthorName.setValue(this.author);
     this.categoryMenu.setCategory(this.category);
     this.render();
   }
@@ -108,6 +122,11 @@ class Records {
     this.render();
   }
 
+  private handleInputAuthorNameChange(value: string) {
+    this.author = value;
+    this.render();
+  }
+
   private handleMenuChange(category: MapType) {
     this.category = category;
     this.render();
@@ -115,11 +134,12 @@ class Records {
 
   private render() {
     this.pagination.render(
-      this.mapRecords.generateRecordEntries(
-        this.category,
-        this.mapName,
-        this.playerName
-      ),
+      this.mapRecords.generateRecordEntries({
+        mapCategory: this.category,
+        mapName: this.mapName,
+        playerName: this.playerName,
+        author: this.author,
+      }),
       this.mapRecords.render.bind(this.mapRecords)
     );
   }

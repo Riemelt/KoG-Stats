@@ -3,6 +3,8 @@ mixin map-records(vars)
     const {
       withPlayers = false,
       withDate = false,
+      withAuthors = false,
+      withReleaseDate = false,
     } = vars
 
     const className = "map-records"
@@ -17,8 +19,12 @@ mixin map-records(vars)
         tr(class=`${className}__table-row ${className}__table-row_head`)
           th(class=`${className}__table-cell-rank`) #
           th(class=`${className}__table-cell-name ${className}__table-cell-name_header`) Map
+          if (withAuthors)
+            th(class=`${className}__table-cell-authors ${className}__table-cell-name_authors`) Authors
           if (withPlayers)
             th(class=`${className}__table-cell-players`) Players
+          if (withReleaseDate)
+            th(class=`${className}__table-cell-release`) Released
           th(class=`${className}__table-cell-category`) Category
           if (withDate)
             th(class=`${className}__table-cell-date`) Updated

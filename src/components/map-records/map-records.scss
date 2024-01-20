@@ -30,7 +30,9 @@ $className: 'map-records';
   &__table-cell-category,
   &__table-cell-time,
   &__table-cell-players,
-  &__table-cell-date {
+  &__table-cell-date,
+  &__table-cell-authors,
+  &__table-cell-release {
     background-image: $primary-gradient-10;
   }
 
@@ -59,53 +61,147 @@ $className: 'map-records';
   }
 
   &__table-cell-category {
-    max-width: 6.25rem;
-    min-width: 6.25rem;
+    max-width: 7.5rem;
+    min-width: 7.5rem;
     text-align: center;
 
     &_insane {
-      color: rgb(244, 63, 94);
       border: 0.125rem solid rgb(244, 63, 94);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(244, 63, 94);
+        }
+      }
     }
 
     &_hard {
-      color: rgb(251, 191, 36);
       border: 0.125rem solid rgb(251, 191, 36);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(251, 191, 36);
+        }
+      }
     }
 
     &_main {
-      color: rgb(56, 189, 248);
       border: 0.125rem solid rgb(56, 189, 248);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(56, 189, 248);
+        }
+      }
     }
 
     &_easy {
-      color: rgb(52, 211, 153);
       border: 0.125rem solid rgb(52, 211, 153);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(52, 211, 153);
+        }
+      }
     }
 
     &_mod {
-      color: white;
       border: 0.125rem solid white;
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: white;
+        }
+      }
     }
 
     &_extreme {
-      color: rgb(217 70 239);
       border: 0.125rem solid rgb(217 70 239);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(217 70 239);
+        }
+      }
     }
 
     &_solo {
-      color: rgb(249 115 22);
       border: 0.125rem solid rgb(249 115 22);
+
+      .#{$className} {
+        &__star,
+        &__category-title,
+        &__map-points {
+          color: rgb(249 115 22);
+        }
+      }
+    }
+
+    .#{$className} {
+      &__star_not-active {
+        color: grey;
+      }
     }
 
     @media (max-width: 1100px) {
-      max-width: 3.75rem;
-      min-width: 3.75rem;
+      max-width: 90px;
+      min-width: 90px;
+    }
+  }
+
+  &__category-title {
+    line-height: 1rem;
+
+    @media (max-width: 1100px) {
+      line-height: 0.75rem;
+    }
+  }
+
+  &__category-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.3125rem;
+  }
+
+  &__map-points {
+    font-size: 0.625rem;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 1100px) {
+      font-size: 0.5rem;
+    }
+  }
+
+  &__map-stars {
+    display: flex;
+    align-items: center;
+  }
+
+  &__star {
+    font-size: 0.5rem;
+
+    @media (max-width: 1100px) {
+      font-size: 0.375rem;
     }
   }
 
   &__table-cell-time,
-  &__table-cell-date {
+  &__table-cell-date,
+  &__table-cell-release {
     padding: 0 0.375rem;
     min-width: 5rem;
     text-align: center;
@@ -121,7 +217,8 @@ $className: 'map-records';
     }
   }
 
-  &__table-cell-date {
+  &__table-cell-date,
+  &__table-cell-release {
     position: relative;
   }
 
@@ -176,21 +273,16 @@ $className: 'map-records';
     }
 
     @media (max-width: 1100px) {
-      transform: translate(-50%, -3.75rem);
-      font-size: 10px;
+      padding: 0.125rem;
+      transform: translate(-50%, -2.5rem);
+      font-size: 0.625rem;
     }
   }
 
-  &__table-cell-name {
-    width: 100%;
+  &__table-cell-name,
+  &__table-cell-authors {
     height: 100%;
     text-align: left;
-  }
-
-  &_with-players {
-    .#{$className}__table-cell-name {
-      width: 25%;
-    }
   }
 
   &__player-link {
@@ -213,11 +305,12 @@ $className: 'map-records';
 
   &__table-cell-name_header,
   &__table-cell-name-link,
-  &__table-cell-players {
-    padding: 0.3125rem 1.25rem;
+  &__table-cell-players,
+  &__table-cell-authors {
+    padding: 0.3125rem 0.625rem;
 
     @media (max-width: 1100px) {
-      padding: 0 0.625rem;
+      padding: 0 0.5rem;
     }
 
     @media (max-width: 500px) {

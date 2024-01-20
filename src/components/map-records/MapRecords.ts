@@ -34,6 +34,8 @@ class MapRecords {
       withDate = false,
       shouldSort = true,
       isMapsPage = false,
+      withAuthors = false,
+      withReleaseDate = false,
     }: MapRecordsOptions
   ) {
     this.options = {
@@ -41,6 +43,8 @@ class MapRecords {
       withPlayers,
       withDate,
       isMapsPage,
+      withAuthors,
+      withReleaseDate,
     };
 
     this.className = 'map-records';
@@ -53,6 +57,8 @@ class MapRecords {
           withDate,
           record,
           isMapsPage,
+          withAuthors,
+          withReleaseDate,
         })
     );
 
@@ -61,18 +67,25 @@ class MapRecords {
     }
   }
 
-  public generateRecordEntries(
-    mapCategory: MapType,
-    mapName: string,
-    playerName = ''
-  ) {
+  public generateRecordEntries({
+    mapCategory,
+    mapName,
+    playerName = '',
+    author = '',
+  }: {
+    mapCategory: MapType;
+    mapName: string;
+    playerName?: string;
+    author?: string;
+  }) {
     const entries = this.recordEntries.filter((record) => {
-      const { category, name, players } = record.getOptions();
+      const { category, name, players, authors } = record.getOptions();
 
       return (
         (mapCategory === 'Total' || category === mapCategory) &&
         this.doesIncludeMap(name, mapName) &&
-        this.doesIncludePlayer(playerName, players)
+        this.doesIncludePlayer(playerName, players) &&
+        this.doesIncludePlayer(author, authors)
       );
     });
 

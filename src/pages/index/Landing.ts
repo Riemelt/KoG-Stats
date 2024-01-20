@@ -11,7 +11,6 @@ import {
   KoGMap,
   MapType,
   PlayerRanks,
-  PlayersMapRecords,
 } from '../../types/types';
 import {
   RANK_TYPES,
