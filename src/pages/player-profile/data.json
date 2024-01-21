@@ -34,5 +34,13 @@
     "title": "Filter by author",
     "placeholder": "Author",
     "icon": "search"
+  },
+  "inputTiedPlayersFrom": {
+    "title": "Tied players from",
+    "type": "number"
+  },
+  "inputTiedPlayersTo": {
+    "title": "Tied players to",
+    "type": "number"
   }
 }

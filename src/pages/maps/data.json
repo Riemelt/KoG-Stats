@@ -35,5 +35,13 @@
     "isMapsPage": true,
     "withAuthors": true,
     "withReleaseDate": true
+  },
+  "inputTiedPlayersFrom": {
+    "title": "Tied players from",
+    "type": "number"
+  },
+  "inputTiedPlayersTo": {
+    "title": "Tied players to",
+    "type": "number"
   }
 }

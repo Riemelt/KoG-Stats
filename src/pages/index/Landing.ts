@@ -12,11 +12,7 @@ import {
   MapType,
   PlayerRanks,
 } from '../../types/types';
-import {
-  RANK_TYPES,
-  comparePlayers,
-  debounceLast,
-} from '../../utilities/utilities';
+import { RANK_TYPES, debounceLast } from '../../utilities/utilities';
 
 import { LandingOptions } from './types';
 
@@ -33,6 +29,10 @@ class Landing {
   private $resetButton: JQuery<HTMLElement>;
   private categoryMenu: CategoryMenu;
   private inputPlayerName: InputField;
+  private inputTiedPlayersFrom: InputField;
+  private inputTiedPlayersTo: InputField;
+  private tiedPlayersFrom: number | null = null;
+  private tiedPlayersTo: number | null = null;
 
   constructor($element: JQuery<HTMLElement>, options: LandingOptions) {
     this.options = options;
@@ -67,6 +67,26 @@ class Landing {
       }
     );
 
+    this.inputTiedPlayersFrom = new InputField(
+      this.$component.find(`.js-${this.className}__input-tied-players-from`),
+      {
+        onChange: debounceLast(
+          this.handleInputTiedPlayersFromChange.bind(this),
+          250
+        ),
+      }
+    );
+
+    this.inputTiedPlayersTo = new InputField(
+      this.$component.find(`.js-${this.className}__input-tied-players-to`),
+      {
+        onChange: debounceLast(
+          this.handleInputTiedPlayersToChange.bind(this),
+          250
+        ),
+      }
+    );
+
     this.categoryMenu = new CategoryMenu(
       this.$categoryMenu,
       categoryMenuOptions
@@ -86,7 +106,11 @@ class Landing {
     this.render();
   }
 
-  private calcPlayersTopRanks(topRanks: KoGMap[]) {
+  private calcPlayersTopRanks(
+    topRanks: KoGMap[],
+    tiedPlayersFrom: number | null = this.tiedPlayersFrom,
+    tiedPlayersTo: number | null = this.tiedPlayersTo
+  ) {
     const playersTopRanks: {
       [key: string]: Categories;
     } = {};
@@ -99,7 +123,17 @@ class Landing {
           playersTopRanks[name] = this.initMapTypes();
         }
 
-        if (rank <= 5) {
+        const playersAmountWithSameRank = topFinishes.filter(
+          (finish) => finish.rank === rank
+        ).length;
+
+        const from =
+          tiedPlayersFrom === null ||
+          playersAmountWithSameRank >= tiedPlayersFrom;
+        const to =
+          tiedPlayersTo === null || playersAmountWithSameRank <= tiedPlayersTo;
+
+        if (rank <= 5 && from && to) {
           playersTopRanks[name][map.category][RANK_TYPES[rank - 1]] += 1;
           playersTopRanks[name]['Total'][RANK_TYPES[rank - 1]] += 1;
         }
@@ -113,7 +147,7 @@ class Landing {
       categories: value,
     }));
 
-    return playersTopRanksArray.sort(comparePlayers('Total')).reverse();
+    return playersTopRanksArray;
   }
 
   private initRankTypes(): Category {
@@ -151,12 +185,39 @@ class Landing {
     this.category = 'Total';
     this.inputPlayerName.setValue(this.player);
     this.categoryMenu.setCategory(this.category);
+
+    this.tiedPlayersFrom = null;
+    this.inputTiedPlayersFrom.setValue('');
+
+    this.tiedPlayersTo = null;
+    this.inputTiedPlayersTo.setValue('');
+
+    const records = this.calcPlayersTopRanks(this.options.topRanks);
+    this.leaderboard.updateCategories(records);
     this.render();
   }
 
   private handleInputNameChange(value: string) {
     this.player = value;
     this.render(false);
+  }
+
+  private handleInputTiedPlayersFromChange(value: string) {
+    const num = parseInt(value);
+    const from = Number.isNaN(num) ? null : num;
+    this.tiedPlayersFrom = from;
+    const records = this.calcPlayersTopRanks(this.options.topRanks);
+    this.leaderboard.updateCategories(records);
+    this.render();
+  }
+
+  private handleInputTiedPlayersToChange(value: string) {
+    const num = parseInt(value);
+    const to = Number.isNaN(num) ? null : num;
+    this.tiedPlayersTo = to;
+    const records = this.calcPlayersTopRanks(this.options.topRanks);
+    this.leaderboard.updateCategories(records);
+    this.render();
   }
 
   private handleMenuChange(category: MapType) {

@@ -72,17 +72,27 @@ class MapRecords {
     mapName = '',
     playerName = '',
     author = '',
+    tiedPlayersFrom = null,
+    tiedPlayersTo = null,
   }: {
     mapCategory?: MapType;
     mapName?: string;
     playerName?: string;
     author?: string;
+    tiedPlayersFrom?: number | null;
+    tiedPlayersTo?: number | null;
   }) {
     const entries = this.recordEntries.filter((record) => {
       const { category, name, players = [], authors } = record.getOptions();
 
+      const from =
+        tiedPlayersFrom === null || players.length >= tiedPlayersFrom;
+      const to = tiedPlayersTo === null || players.length <= tiedPlayersTo;
+
       return (
         (mapCategory === 'Total' || category === mapCategory) &&
+        from &&
+        to &&
         this.doesIncludeMap(name, mapName) &&
         this.doesIncludePlayer(playerName, players) &&
         this.doesIncludePlayer(author, authors)

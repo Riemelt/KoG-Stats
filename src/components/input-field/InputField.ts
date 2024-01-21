@@ -17,7 +17,7 @@ class InputField {
     this.setHandlers();
   }
 
-  public setValue(value: string) {
+  public setValue(value: string | number) {
     this.$input.val(value);
   }
 

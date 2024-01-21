@@ -18,5 +18,13 @@
     "title": "Filter by player",
     "placeholder": "Player",
     "icon": "search"
+  },
+  "inputTiedPlayersFrom": {
+    "title": "Tied players from",
+    "type": "number"
+  },
+  "inputTiedPlayersTo": {
+    "title": "Tied players to",
+    "type": "number"
   }
 }

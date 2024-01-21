@@ -31,6 +31,11 @@ block main
                 +input-field(data.inputPlayerName)
               div(class=`${className}__input-author-name js-${className}__input-author-name`)
                 +input-field(data.inputAuthorName)
+              div(class=`${className}__input-tied-players`)
+                div(class=`${className}__input-tied-players-from js-${className}__input-tied-players-from`)
+                  +input-field(data.inputTiedPlayersFrom)
+                div(class=`${className}__input-tied-players-to js-${className}__input-tied-players-to`)
+                  +input-field(data.inputTiedPlayersTo)
             button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__map-records js-${className}__map-records`)
           +map-records(data.mapRecords)

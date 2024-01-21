@@ -1,7 +1,7 @@
 import PlayerEntry from '../player-entry';
 import { LeaderboardOptions } from './types';
 import { comparePlayersRanks } from '../../utilities/utilities';
-import { MapType } from '../../types/types';
+import { MapType, PlayerRanks } from '../../types/types';
 
 class Leaderboard {
   private options: LeaderboardOptions;
@@ -26,6 +26,21 @@ class Leaderboard {
 
     this.playerEntries = options.players.map(
       (player) => new PlayerEntry({ player })
+    );
+  }
+
+  public updateCategories(ranks: PlayerRanks[]) {
+    ranks.sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
+    this.playerEntries.sort((a, b) =>
+      a.getOptions().name > b.getOptions().name
+        ? 1
+        : a.getOptions().name < b.getOptions().name
+        ? -1
+        : 0
+    );
+
+    this.playerEntries.forEach((entry, index) =>
+      entry.updateCategories(ranks[index].categories)
     );
   }
 

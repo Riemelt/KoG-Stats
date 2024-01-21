@@ -25,6 +25,11 @@ block main
             div(class=`${className}__filters`)
               div(class=`${className}__input-player-name js-${className}__input-player-name`)
                 +input-field(data.inputPlayerName)
+              div(class=`${className}__input-tied-players`)
+                div(class=`${className}__input-tied-players-from js-${className}__input-tied-players-from`)
+                  +input-field(data.inputTiedPlayersFrom)
+                div(class=`${className}__input-tied-players-to js-${className}__input-tied-players-to`)
+                  +input-field(data.inputTiedPlayersTo)
             button(class=`${className}__reset-button js-${className}__reset-button`) Reset
         div(class=`${className}__leaderboard js-${className}__leaderboard`)
           +leaderboard()

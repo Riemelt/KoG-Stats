@@ -1,4 +1,4 @@
-import { Category, MapType } from '../../types/types';
+import { Categories, Category, MapType } from '../../types/types';
 import { RANK_TYPES, buildUrlPath } from '../../utilities/utilities';
 import { PlayerEntryOptions } from './types';
 
@@ -37,6 +37,10 @@ class PlayerEntry {
       if (ranks > 0) return true;
     }
     return false;
+  }
+
+  public updateCategories(categories: Categories) {
+    this.options.player.categories = categories;
   }
 
   public update(sortBy: MapType, rank: number) {

@@ -36,8 +36,15 @@ $className: 'maps';
 
   &__input-map-name,
   &__input-player-name,
-  &__input-author-name {
+  &__input-author-name,
+  &__input-tied-players {
     width: 20rem;
+  }
+
+  &__input-tied-players {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.9375rem;
   }
 
   &__reset-button {

@@ -28,6 +28,10 @@ class PlayerProfile {
   private inputPlayerName: InputField;
   private inputAuthorName: InputField;
   private $resetButton: JQuery<HTMLElement>;
+  private inputTiedPlayersFrom: InputField;
+  private inputTiedPlayersTo: InputField;
+  private tiedPlayersFrom: number | null = null;
+  private tiedPlayersTo: number | null = null;
 
   constructor($element: JQuery<HTMLElement>, options: PlayerProfileOptions) {
     this.options = options;
@@ -95,6 +99,26 @@ class PlayerProfile {
       }
     );
 
+    this.inputTiedPlayersFrom = new InputField(
+      this.$component.find(`.js-${this.className}__input-tied-players-from`),
+      {
+        onChange: debounceLast(
+          this.handleInputTiedPlayersFromChange.bind(this),
+          250
+        ),
+      }
+    );
+
+    this.inputTiedPlayersTo = new InputField(
+      this.$component.find(`.js-${this.className}__input-tied-players-to`),
+      {
+        onChange: debounceLast(
+          this.handleInputTiedPlayersToChange.bind(this),
+          250
+        ),
+      }
+    );
+
     this.mapRecords = new MapRecords(
       this.$component.find(`.js-${this.className}__map-records`),
       {
@@ -127,6 +151,13 @@ class PlayerProfile {
     this.inputPlayerName.setValue(this.playerName);
     this.inputAuthorName.setValue(this.author);
     this.categoryMenu.setCategory(this.category);
+
+    this.tiedPlayersFrom = null;
+    this.inputTiedPlayersFrom.setValue('');
+
+    this.tiedPlayersTo = null;
+    this.inputTiedPlayersTo.setValue('');
+
     this.render();
   }
 
@@ -145,6 +176,22 @@ class PlayerProfile {
     this.render();
   }
 
+  private handleInputTiedPlayersFromChange(value: string) {
+    const num = parseInt(value);
+    const from = Number.isNaN(num) ? null : num;
+    this.tiedPlayersFrom = from;
+
+    this.render();
+  }
+
+  private handleInputTiedPlayersToChange(value: string) {
+    const num = parseInt(value);
+    const to = Number.isNaN(num) ? null : num;
+    this.tiedPlayersTo = to;
+
+    this.render();
+  }
+
   private handleMenuChange(category: MapType) {
     this.category = category;
     this.render();
@@ -157,6 +204,8 @@ class PlayerProfile {
         mapName: this.mapName,
         playerName: this.playerName,
         author: this.author,
+        tiedPlayersFrom: this.tiedPlayersFrom,
+        tiedPlayersTo: this.tiedPlayersTo,
       }),
       this.mapRecords.render.bind(this.mapRecords)
     );
