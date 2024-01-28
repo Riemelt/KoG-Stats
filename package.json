@@ -9,7 +9,8 @@
     "build": "set NODE_ENV=production&&webpack",
     "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "jest",
+    "start:server": "npx ts-node server.ts"
   },
   "keywords": [
     "Kog",
@@ -28,6 +29,7 @@
     "@msgpack/msgpack": "^2.8.0",
     "@types/jest": "^29.1.2",
     "@types/jquery": "^3.5.14",
+    "@types/jsdom": "^21.1.6",
     "@types/webpack-env": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",

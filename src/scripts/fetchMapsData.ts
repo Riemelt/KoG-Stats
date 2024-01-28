@@ -1,11 +1,23 @@
+import { JSDOM } from 'jsdom';
 import * as fs from 'fs';
+
+const { window } = new JSDOM('');
+const $ = require('jquery')(window);
+
 import {
   KoGMapEntity,
   KoGMap,
   Finish,
   MapType,
   MapRecord,
-} from '../src/types/types';
+} from '../types/types';
+import { MAP_TYPES } from '../utilities/utilities';
+
+const waitFor = (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
 
 async function getData(url = '') {
   const response = await fetch(url);
@@ -21,7 +33,11 @@ async function getData(url = '') {
   return html;
 }
 
-function parseTd(items: Array<HTMLElement>, map: KoGMapEntity) {
+function parseTd(
+  topData: KoGMap[],
+  items: Array<HTMLElement>,
+  map: KoGMapEntity
+) {
   const topFinishes: Array<Finish> = [];
   let rank = 0;
   let previousTime = -1;
@@ -55,14 +71,26 @@ function parseTd(items: Array<HTMLElement>, map: KoGMapEntity) {
   });
 }
 
-function parseCard(_: unknown, element: HTMLElement) {
+function isMapType(map: string): map is MapType {
+  return (
+    MAP_TYPES.some((mapType) => mapType === map) ||
+    map.trim().toLowerCase() === 'unknown'
+  );
+}
+
+function parseCard(mapsData: KoGMapEntity[], _: unknown, element: HTMLElement) {
   const $card = $(element);
   const $name = $card.find('h4');
   const name = $name.html();
   const $listGroupItems = $card.find('.list-group-item');
   const items = $listGroupItems.toArray();
   const stars = $(items[0]).find('.bi-star-fill').length;
-  const category: MapType = items[1].innerHTML;
+  const category = items[1].innerHTML;
+
+  if (!isMapType(category)) {
+    throw new Error('Parsing card category error');
+  }
+
   const points = Number.parseInt(`${items[2].innerHTML}`.trim());
   const authors = `${items[3].innerHTML}`.trim().split(', ');
   const releaseDate = `${$card.find('.card-footer').html()}`.trim().slice(-10);
@@ -81,77 +109,78 @@ function parseCard(_: unknown, element: HTMLElement) {
   });
 }
 
-function saveLogs() {
+function saveLogs(errors: string[]) {
   const result = {
     errors,
   };
 
-  const json = JSON.stringify(result);
-  fs.writeFile('../src/data/logs.json', json, function (error: Error) {
-    if (error) {
-      console.log(`logJson error: ${error}`);
-      return;
-    }
+  try {
+    const json = JSON.stringify(result);
+    fs.writeFileSync('./src/data/logs.json', json);
 
     console.log('logs.json saved');
-  });
+  } catch (error) {
+    console.log(`logJson error: ${error}`);
+  }
 }
 
-function saveJson(topData: Array<KoGMap>) {
+function saveJson(topData: Array<KoGMap>, errors: string[]) {
   const result = {
     date: new Date(),
     data: topData,
   };
 
-  const json = JSON.stringify(result);
-  fs.writeFile('../src/data/topFinishes.json', json, function (error: Error) {
-    if (error) {
-      console.log(`saveJson error: ${error}`);
-      errors.push(`saveJson error: ${error}`);
-      return;
-    }
+  try {
+    const json = JSON.stringify(result);
+    fs.writeFileSync('./src/data/topFinishes.json', json);
 
     console.log('topFinishes.json saved');
-  });
+  } catch (error) {
+    console.log(`saveJson error: ${error}`);
+    errors.push(`saveJson error: ${error}`);
+  }
 }
 
-function saveTop10Finishes(topData: Array<KoGMap>) {
+function saveTop10Finishes(topData: Array<KoGMap>, errors: string[]) {
   const result = {
     date: new Date(),
     data: topData,
   };
 
-  const json = JSON.stringify(result);
-  fs.writeFile('../src/data/top10Finishes.json', json, function (error: Error) {
-    if (error) {
-      console.log(`save top10Finishes error: ${error}`);
-      errors.push(`save top10Finishes error: ${error}`);
-      return;
-    }
+  try {
+    const json = JSON.stringify(result);
+    fs.writeFileSync('./src/data/top10Finishes.json', json);
 
     console.log('top10Finishes.json saved');
-  });
+  } catch (error) {
+    console.log(`save top10Finishes error: ${error}`);
+    errors.push(`save top10Finishes error: ${error}`);
+  }
 }
 
-function saveRecords(records: MapRecord[]) {
+function saveRecords(records: MapRecord[], errors: string[]) {
   const result = {
     date: new Date(),
     data: records,
   };
 
-  const json = JSON.stringify(result);
-  fs.writeFile('../src/data/records.json', json, function (error: Error) {
-    if (error) {
-      console.log(`saveRecords error: ${error}`);
-      errors.push(`saveRecords error: ${error}`);
-      return;
-    }
+  try {
+    const json = JSON.stringify(result);
+    fs.writeFileSync('./src/data/records.json', json);
 
     console.log('records.json saved');
-  });
+  } catch (error) {
+    console.log(`saveRecords error: ${error}`);
+    errors.push(`saveRecords error: ${error}`);
+  }
 }
 
-function update(topData: KoGMap[]) {
+function update(
+  topData: KoGMap[],
+  previousTopFinishes: KoGMap[],
+  records: MapRecord[],
+  errors: string[]
+) {
   topData.forEach((kogMap) => {
     if (kogMap.topFinishes.length <= 0) return;
     const previousFinishes =
@@ -200,8 +229,8 @@ function update(topData: KoGMap[]) {
     });
   });
 
-  saveRecords(records);
-  saveJson(topData);
+  saveRecords(records, errors);
+  saveJson(topData, errors);
 
   const top10Finishes = topData.map((map) => {
     const top10 = map.topFinishes.filter((finish) => finish.rank <= 10);
@@ -211,28 +240,33 @@ function update(topData: KoGMap[]) {
     };
   });
 
-  saveTop10Finishes(top10Finishes);
+  saveTop10Finishes(top10Finishes, errors);
+}
+
+function readTopFinishes() {
+  try {
+    const jsonData = fs.readFileSync('./src/data/topFinishes.json', 'utf8');
+    const topFinishes = JSON.parse(jsonData);
+    return topFinishes;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Cannot read topFinishes.json');
+  }
+}
+
+function readRecords() {
+  try {
+    const jsonData = fs.readFileSync('./src/data/records.json', 'utf8');
+    const records = JSON.parse(jsonData);
+    return records;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Cannot read records.json');
+  }
 }
 
 export async function fetchMapsData() {
-  const { JSDOM } = require('jsdom');
-  const { window } = new JSDOM('');
-  const $ = require('jquery')(window);
-
-  const jsonData = require('../src/data/topFinishes.json');
-
-  const previousTopFinishes: Array<KoGMap> = jsonData.data;
-
-  const jsonRecords = require('../src/data/records.json');
-  const records: MapRecord[] = jsonRecords.data;
-
   const errors: string[] = [];
-
-  const waitFor = (ms: number) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-  };
 
   const mapsData: Array<KoGMapEntity> = [];
   const topData: Array<KoGMap> = [];
@@ -241,6 +275,12 @@ export async function fetchMapsData() {
   let total = 0;
 
   try {
+    const topFinishes = readTopFinishes();
+    const previousTopFinishes: Array<KoGMap> = topFinishes.data;
+
+    const jsonRecords = readRecords();
+    const records: MapRecord[] = jsonRecords.data;
+
     const dataMaps = await getData('https://kog.tw/get.php?p=maps&p=maps');
 
     const $dataMaps = $(dataMaps);
@@ -248,7 +288,9 @@ export async function fetchMapsData() {
     if ($cardBodies.length === 0)
       throw new Error('HTML parsing map cards error');
 
-    $cardBodies.each(parseCard);
+    $cardBodies.each((index: number, element: HTMLElement) =>
+      parseCard(mapsData, index, element)
+    );
     total = mapsData.length;
 
     const mapsLeft = new Set(mapsData);
@@ -270,7 +312,7 @@ export async function fetchMapsData() {
               }
 
               const tdArray = $td.toArray();
-              parseTd(tdArray, map);
+              parseTd(topData, tdArray, map);
               count++;
               mapsLeft.delete(map);
 
@@ -293,7 +335,7 @@ export async function fetchMapsData() {
     }
 
     if (count >= total) {
-      update(topData);
+      update(topData, previousTopFinishes, records, errors);
     }
   } catch (error) {
     let errorMessage = 'Unknown Error';
@@ -303,6 +345,6 @@ export async function fetchMapsData() {
     console.log(`Fetch maps data error: ${errorMessage}`);
     errors.push(`Fetch maps data error: ${errorMessage}`);
   } finally {
-    saveLogs();
+    saveLogs(errors);
   }
 }
