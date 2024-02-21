@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "./dist-server/",
     "noImplicitAny": true,
     "module": "nodenext",
     "target": "es6",

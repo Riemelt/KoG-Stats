@@ -10,7 +10,8 @@
     "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext .ts",
     "test": "jest",
-    "start:server": "npx ts-node server.ts"
+    "build:server": "tsc server.ts --outDir dist-server",
+    "start:server": "node ./dist-server/server.js"
   },
   "keywords": [
     "Kog",
