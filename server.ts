@@ -35,6 +35,7 @@ const saveTestJson = (bob: number[]) => {
 
 const process = async () => {
   await fetchMapsData();
+
   //const test = readTestJson();
   //const bob = test.bob ?? [1];
   //bob.push(bob.length + 1);
@@ -44,9 +45,6 @@ const process = async () => {
 
   execSync('npm run build');
   console.log(`Built at ${new Date()}`);
-
-  execSync('npm run deploy');
-  console.log(`Deployed at ${new Date()}`);
 };
 
 (async function () {
