@@ -1,3 +1,0 @@
-interface LayoutOptions {
-  header: HeaderOptions,
-}
