@@ -45,6 +45,9 @@ const process = async () => {
 
   execSync('npm run build');
   console.log(`Built at ${new Date()}`);
+
+  //execSync('npm run deploy');
+  //console.log(`Built at ${new Date()}`);
 };
 
 (async function () {

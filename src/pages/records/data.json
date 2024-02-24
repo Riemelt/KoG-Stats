@@ -4,7 +4,7 @@
     "withDate": true,
     "shouldSort": false,
     "withAuthors": true,
-    "withReleaseDate": true
+    "withReleaseDate": false
   },
   "categoryMenu": {
     "categories": [
