@@ -2,58 +2,95 @@
 
 import { fetchMapsData } from './src/scripts/fetchMapsData';
 import { execSync } from 'child_process';
+import 'dotenv/config';
+import { WebhookClient } from 'discord.js';
+import { convertTime } from './src/utilities/utilities';
 
 const ONE_MINUTE = 60 * 1000;
 const MINUTES = 30;
 
-//const readTestJson = () => {
-//  try {
-//    const jsonData = fs.readFileSync('./src/data/test.json', 'utf8');
-//    const test = JSON.parse(jsonData);
-//    return test;
-//  } catch (error) {
-//    console.log(error);
-//    throw new Error('Cannot read test.json');
-//  }
-//};
-//
-//const saveTestJson = (bob: number[]) => {
-//  const result = {
-//    bob,
-//    date: new Date(),
-//    data: 'test',
-//  };
-//
-//  try {
-//    const json = JSON.stringify(result);
-//    fs.writeFileSync('./src/data/test.json', json);
-//    console.log('test.json saved');
-//  } catch (error) {
-//    console.log(`saveJson error: ${error}`);
-//  }
-//};
+const reportsWebHookClient = new WebhookClient({
+  url: process.env.REPORTS_WEB_HOOK ?? '',
+});
 
-const process = async () => {
-  await fetchMapsData();
+const recordsWebHookClient = new WebhookClient({
+  url: process.env.RECORDS_WEB_HOOK ?? '',
+});
 
-  //const test = readTestJson();
-  //const bob = test.bob ?? [1];
-  //bob.push(bob.length + 1);
-  //console.log(bob);
-  //console.log('new ver');
-  //saveTestJson(bob);
+const doProcess = async () => {
+  const parseStartTime = new Date().getTime();
+  const { count, total, errors, newRecords } = await fetchMapsData();
+  const parseEndTime = new Date().getTime();
+  const parseTime = convertTime(
+    Math.round((parseEndTime - parseStartTime) / 1000)
+  );
+
+  const buildStartTime = new Date().getTime();
 
   execSync('npm run build');
   console.log(`Built at ${new Date()}`);
 
+  const buildEndTime = new Date().getTime();
+  const buildTime = convertTime(
+    Math.round((buildEndTime - buildStartTime) / 1000)
+  );
+
+  const errorsStr = errors.length > 0 ? errors.join(', ') : '';
+  const errorMessage = errorsStr.length > 0 ? `**Errors: ${errorsStr}**` : '';
+  const parseMessage = `Parsing time: ${parseTime}`;
+  const buildMessage = `Build time: ${buildTime}`;
+  const totalCountMessage = `Parsed ${count}/${total} maps`;
+  const newRecordsSummaryMessage =
+    newRecords.length > 0 ? `New records: ${newRecords.length}` : '';
+
+  const reportArr = [
+    totalCountMessage,
+    parseMessage,
+    buildMessage,
+    newRecordsSummaryMessage,
+    errorMessage,
+  ]
+    .filter((str) => str.length > 0)
+    .join(' | ');
+
+  reportsWebHookClient.send(reportArr);
+
+  const url = process.env.DOMAIN;
+
+  if (newRecords.length > 0) {
+    const recordsMessage = newRecords
+      .map(({ timeDiff, nextBestTime, time, players, category, name }) => {
+        const timeConverted = convertTime(time);
+        const improvementMessage =
+          timeDiff === null || nextBestTime === null
+            ? `(**only** finish!)`
+            : `(next best time: ${convertTime(
+                nextBestTime
+              )} — **${timeDiff.toFixed(2)}%** improvement!)`;
+
+        const playersMessage = players
+          ?.map((player) => {
+            return `[${player}](${url}/player-profile?player=${player})`;
+          })
+          .join(` & `);
+
+        const mapMessage = `[${name}](${url}/map-profile?map=${name})`;
+
+        return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
+      })
+      .join('\n');
+
+    recordsWebHookClient.send(recordsMessage);
+  }
+
   //execSync('npm run deploy');
-  //console.log(`Built at ${new Date()}`);
+  //console.log(`Deployed at ${new Date()}`);
 };
 
 (async function () {
-  process();
+  doProcess();
 
   setInterval(() => {
-    process();
+    doProcess();
   }, ONE_MINUTE * MINUTES);
 })();

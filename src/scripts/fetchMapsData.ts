@@ -179,7 +179,10 @@ function update(
   topData: KoGMap[],
   previousTopFinishes: KoGMap[],
   records: MapRecord[],
-  errors: string[]
+  errors: string[],
+  newRecords: Array<
+    MapRecord & { timeDiff: number | null; nextBestTime: number | null }
+  >
 ) {
   topData.forEach((kogMap) => {
     if (kogMap.topFinishes.length <= 0) return;
@@ -201,6 +204,22 @@ function update(
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { topFinishes, ...rest } = kogMap;
+
+      const timeDiff =
+        previousRankOne === undefined
+          ? null
+          : ((previousRankOne.time - time) / time) * 100;
+
+      newRecords.push({
+        ...rest,
+        rank,
+        players,
+        time,
+        date: new Date(),
+        timeDiff,
+        nextBestTime:
+          previousRankOne === undefined ? null : previousRankOne.time,
+      });
 
       records.push({
         ...rest,
@@ -270,6 +289,9 @@ export async function fetchMapsData() {
 
   const mapsData: Array<KoGMapEntity> = [];
   const topData: Array<KoGMap> = [];
+  const newRecords: Array<
+    MapRecord & { timeDiff: number | null; nextBestTime: number | null }
+  > = [];
 
   let count = 0;
   let total = 0;
@@ -335,7 +357,7 @@ export async function fetchMapsData() {
     }
 
     if (count >= total) {
-      update(topData, previousTopFinishes, records, errors);
+      update(topData, previousTopFinishes, records, errors, newRecords);
     }
   } catch (error) {
     let errorMessage = 'Unknown Error';
@@ -347,4 +369,6 @@ export async function fetchMapsData() {
   } finally {
     saveLogs(errors);
   }
+
+  return { count, total, errors, newRecords };
 }
