@@ -58,8 +58,8 @@ const doProcess = async () => {
   const url = process.env.DOMAIN;
 
   if (newRecords.length > 0) {
-    const recordsMessage = newRecords
-      .map(({ timeDiff, nextBestTime, time, players, category, name }) => {
+    const recordsMessages = newRecords.map(
+      ({ timeDiff, nextBestTime, time, players, category, name }) => {
         const timeConverted = convertTime(time);
         const improvementMessage =
           timeDiff === null || nextBestTime === null
@@ -77,10 +77,34 @@ const doProcess = async () => {
         const mapMessage = `[${name}](${url}/map-profile?map=${name})`;
 
         return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
-      })
-      .join('\n');
+      }
+    );
 
-    recordsWebHookClient.send(recordsMessage);
+    const messages: string[] = [];
+    let currentMessage = '';
+
+    while (recordsMessages.length > 0) {
+      const record = recordsMessages.pop() ?? '';
+      if (currentMessage.length + record.length > 1900) {
+        messages.push(currentMessage);
+        currentMessage = '';
+      }
+
+      if (currentMessage) {
+        currentMessage = `${currentMessage}\n${record}`;
+        continue;
+      }
+
+      currentMessage = record;
+    }
+
+    if (currentMessage) {
+      messages.push(currentMessage);
+    }
+
+    messages.forEach((message) => {
+      recordsWebHookClient.send(message);
+    });
   }
 
   //execSync('npm run deploy');
