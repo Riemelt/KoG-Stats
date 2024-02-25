@@ -4,7 +4,7 @@
   "description": "Kog map record holders",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --env NODE_ENV=development serve --open",
+    "start": "webpack serve --open --env NODE_ENV=development",
     "dev": "webpack --env NODE_ENV=development",
     "build": "webpack --env NODE_ENV=production",
     "deploy": "gh-pages -d dist",
