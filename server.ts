@@ -70,11 +70,15 @@ const doProcess = async () => {
 
         const playersMessage = players
           ?.map((player) => {
-            return `[${player}](${url}/player-profile?player=${player})`;
+            return `[${player}](${url}/player-profile?player=${encodeURIComponent(
+              player
+            )})`;
           })
           .join(` & `);
 
-        const mapMessage = `[${name}](${url}/map-profile?map=${name})`;
+        const mapMessage = `[${name}](${url}/map-profile?map=${encodeURIComponent(
+          name
+        )})`;
 
         return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
       }
