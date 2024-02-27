@@ -328,9 +328,20 @@ export async function fetchMapsData() {
             (data) => {
               const $data = $(data);
               const $td = $data.find('td');
+              const $table = $data.find('.table');
+              const $name = $data.find('.col .card .card-header .my-0');
+              const name = $name.html();
+
+              if (name !== map.name) {
+                throw new Error(`Map name ${name} not equal to ${map.name}`);
+              }
+
+              if ($table.length !== 3) {
+                throw new Error(`Table for ${map.name} is not loaded`);
+              }
 
               if ($td.length > 198) {
-                throw new Error('Unexpected td length');
+                throw new Error(`Unexpected td length in ${map.name}`);
               }
 
               const tdArray = $td.toArray();
