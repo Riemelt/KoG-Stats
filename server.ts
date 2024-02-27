@@ -1,4 +1,4 @@
-//import * as fs from 'fs';
+import * as fs from 'fs';
 
 import { fetchMapsData } from './src/scripts/fetchMapsData';
 import { execSync } from 'child_process';
@@ -17,6 +17,19 @@ const recordsWebHookClient = new WebhookClient({
   url: process.env.RECORDS_WEB_HOOK ?? '',
 });
 
+const copyFiles = () => {
+  fs.copyFileSync('./src/data/logs.json', './src/data/logs-temp.json');
+  fs.copyFileSync('./src/data/records.json', './src/data/records-temp.json');
+  fs.copyFileSync(
+    './src/data/topFinishes.json',
+    './src/data/topFinishes-temp.json'
+  );
+  fs.copyFileSync(
+    './src/data/top10Finishes.json',
+    './src/data/top10Finishes-temp.json'
+  );
+};
+
 const doProcess = async () => {
   const parseStartTime = new Date().getTime();
   const { count, total, errors, newRecords } = await fetchMapsData();
@@ -26,9 +39,17 @@ const doProcess = async () => {
   );
 
   const buildStartTime = new Date().getTime();
-
-  execSync('npm run build');
-  console.log(`Built at ${new Date()}`);
+  try {
+    execSync('npm run build');
+    console.log(`Built at ${new Date()}`);
+  } catch (error) {
+    errors.push(`build error`);
+    try {
+      copyFiles();
+    } catch (error) {
+      errors.push(`copying files error`);
+    }
+  }
 
   const buildEndTime = new Date().getTime();
   const buildTime = convertTime(
