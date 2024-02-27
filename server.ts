@@ -1,7 +1,7 @@
 import * as fs from 'fs';
+import shell from 'shelljs';
 
 import { fetchMapsData } from './src/scripts/fetchMapsData';
-import { execSync } from 'child_process';
 import 'dotenv/config';
 import { WebhookClient } from 'discord.js';
 import { convertTime } from './src/utilities/utilities';
@@ -40,7 +40,7 @@ const doProcess = async () => {
 
   const buildStartTime = new Date().getTime();
   try {
-    execSync('npm run build');
+    shell.exec('npm run build');
     console.log(`Built at ${new Date()}`);
   } catch (error) {
     errors.push(`build error`);
