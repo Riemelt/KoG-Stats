@@ -47,7 +47,7 @@ const doProcess = async () => {
 
   const buildStartTime = new Date().getTime();
 
-  const { code } = shell.exec('npm run build', {
+  const { code } = shell.exec('webpack --env NODE_ENV=production', {
     timeout: 1000 * 600,
     maxBuffer: 1024 * 1024 * 10,
     async: false,
