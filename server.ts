@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import shell from 'shelljs';
+import { execSync } from 'child_process';
 
 import { fetchMapsData } from './src/scripts/fetchMapsData';
 import 'dotenv/config';
@@ -47,13 +47,10 @@ const doProcess = async () => {
 
   const buildStartTime = new Date().getTime();
 
-  const { code } = shell.exec('webpack --env NODE_ENV=production', {
-    timeout: 1000 * 600,
-    maxBuffer: 1024 * 1024 * 10,
-    async: false,
+  execSync('webpack --env NODE_ENV=production', {
+    timeout: 1000 * 60 * 15,
+    maxBuffer: 1024 * 1024 * 100,
   });
-
-  console.log(`Exit code: ${code}`);
 
   const buildEndTime = new Date().getTime();
   const buildTime = Math.round((buildEndTime - buildStartTime) / 1000);
