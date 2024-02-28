@@ -39,98 +39,104 @@ const doProcess = async () => {
   );
 
   const buildStartTime = new Date().getTime();
-  try {
-    shell.exec('npm run build');
-    console.log(`Built at ${new Date()}`);
-  } catch (error) {
-    errors.push(`build error`);
-    try {
-      copyFiles();
-    } catch (error) {
-      errors.push(`copying files error`);
-    }
-  }
+  shell.exec('npm run build', { async: true }, function (code, stdout, stderr) {
+    console.log('Exit code:', code);
+    console.log('Program output:', stdout);
+    console.log('Program stderr:', stderr);
 
-  const buildEndTime = new Date().getTime();
-  const buildTime = convertTime(
-    Math.round((buildEndTime - buildStartTime) / 1000)
-  );
+    if (code !== 0) {
+      errors.push(`build error with code ${code}`);
 
-  const errorsStr = errors.length > 0 ? errors.join(', ') : '';
-  const errorMessage = errorsStr.length > 0 ? `**Errors: ${errorsStr}**` : '';
-  const parseMessage = `Parsing time: ${parseTime}`;
-  const buildMessage = `Build time: ${buildTime}`;
-  const totalCountMessage = `Parsed ${count}/${total} maps`;
-  const newRecordsSummaryMessage =
-    newRecords.length > 0 ? `New records: ${newRecords.length}` : '';
-
-  const reportArr = [
-    totalCountMessage,
-    parseMessage,
-    buildMessage,
-    newRecordsSummaryMessage,
-    errorMessage,
-  ]
-    .filter((str) => str.length > 0)
-    .join(' | ');
-
-  reportsWebHookClient.send(reportArr);
-
-  const url = process.env.DOMAIN;
-
-  if (newRecords.length > 0) {
-    const recordsMessages = newRecords.map(
-      ({ timeDiff, nextBestTime, time, players, category, name }) => {
-        const timeConverted = convertTime(time);
-        const improvementMessage =
-          timeDiff === null || nextBestTime === null
-            ? `(**only** finish!)`
-            : `(next best time: ${convertTime(
-                nextBestTime
-              )} — **${timeDiff.toFixed(2)}%** improvement!)`;
-
-        const playersMessage = players
-          ?.map((player) => {
-            return `[${player}](${url}/player-profile?player=${encodeURIComponent(
-              player
-            )})`;
-          })
-          .join(` & `);
-
-        const mapMessage = `[${name}](${url}/map-profile?map=${encodeURIComponent(
-          name
-        )})`;
-
-        return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
+      try {
+        copyFiles();
+      } catch (error) {
+        errors.push(`copying files error`);
       }
+    } else {
+      console.log(`Built at ${new Date()}`);
+    }
+
+    const buildEndTime = new Date().getTime();
+    const buildTime = convertTime(
+      Math.round((buildEndTime - buildStartTime) / 1000)
     );
 
-    const messages: string[] = [];
-    let currentMessage = '';
+    const errorsStr = errors.length > 0 ? errors.join(', ') : '';
+    const errorMessage = errorsStr.length > 0 ? `**Errors: ${errorsStr}**` : '';
+    const parseMessage = `Parsing time: ${parseTime}`;
+    const buildMessage = `Build time: ${buildTime}`;
+    const totalCountMessage = `Parsed ${count}/${total} maps`;
+    const newRecordsSummaryMessage =
+      newRecords.length > 0 ? `New records: ${newRecords.length}` : '';
 
-    while (recordsMessages.length > 0) {
-      const record = recordsMessages.pop() ?? '';
-      if (currentMessage.length + record.length > 1900) {
-        messages.push(currentMessage);
-        currentMessage = '';
+    const reportArr = [
+      totalCountMessage,
+      parseMessage,
+      buildMessage,
+      newRecordsSummaryMessage,
+      errorMessage,
+    ]
+      .filter((str) => str.length > 0)
+      .join(' | ');
+
+    reportsWebHookClient.send(reportArr);
+
+    const url = process.env.DOMAIN;
+
+    if (newRecords.length > 0) {
+      const recordsMessages = newRecords.map(
+        ({ timeDiff, nextBestTime, time, players, category, name }) => {
+          const timeConverted = convertTime(time);
+          const improvementMessage =
+            timeDiff === null || nextBestTime === null
+              ? `(**only** finish!)`
+              : `(next best time: ${convertTime(
+                  nextBestTime
+                )} — **${timeDiff.toFixed(2)}%** improvement!)`;
+
+          const playersMessage = players
+            ?.map((player) => {
+              return `[${player}](${url}/player-profile?player=${encodeURIComponent(
+                player
+              )})`;
+            })
+            .join(` & `);
+
+          const mapMessage = `[${name}](${url}/map-profile?map=${encodeURIComponent(
+            name
+          )})`;
+
+          return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
+        }
+      );
+
+      const messages: string[] = [];
+      let currentMessage = '';
+
+      while (recordsMessages.length > 0) {
+        const record = recordsMessages.pop() ?? '';
+        if (currentMessage.length + record.length > 1900) {
+          messages.push(currentMessage);
+          currentMessage = '';
+        }
+
+        if (currentMessage) {
+          currentMessage = `${currentMessage}\n${record}`;
+          continue;
+        }
+
+        currentMessage = record;
       }
 
       if (currentMessage) {
-        currentMessage = `${currentMessage}\n${record}`;
-        continue;
+        messages.push(currentMessage);
       }
 
-      currentMessage = record;
+      messages.forEach((message) => {
+        recordsWebHookClient.send(message);
+      });
     }
-
-    if (currentMessage) {
-      messages.push(currentMessage);
-    }
-
-    messages.forEach((message) => {
-      recordsWebHookClient.send(message);
-    });
-  }
+  });
 
   //execSync('npm run deploy');
   //console.log(`Deployed at ${new Date()}`);
