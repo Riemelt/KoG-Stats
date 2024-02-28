@@ -47,13 +47,13 @@ const doProcess = async () => {
 
   const buildStartTime = new Date().getTime();
 
-  shell.exec(
-    'npm run build',
-    { timeout: 1000 * 600, maxBuffer: 1024 * 1024 * 10 },
-    function (code) {
-      console.log('Exit code:', code);
-    }
-  );
+  const { code } = shell.exec('npm run build', {
+    timeout: 1000 * 600,
+    maxBuffer: 1024 * 1024 * 10,
+    async: false,
+  });
+
+  console.log(`Exit code: ${code}`);
 
   const buildEndTime = new Date().getTime();
   const buildTime = Math.round((buildEndTime - buildStartTime) / 1000);
