@@ -30,6 +30,19 @@ const copyFiles = () => {
   );
 };
 
+const doBuild = (): boolean => {
+  try {
+    execSync('webpack --env NODE_ENV=production', {
+      timeout: 1000 * 60 * 15,
+      maxBuffer: 1024 * 1024 * 100,
+    });
+  } catch (error) {
+    return doBuild();
+  }
+
+  return true;
+};
+
 const doProcess = async () => {
   const parseStartTime = new Date().getTime();
   const { count, total, errors, newRecords } = await fetchMapsData();
@@ -47,10 +60,7 @@ const doProcess = async () => {
 
   const buildStartTime = new Date().getTime();
 
-  execSync('webpack --env NODE_ENV=production', {
-    timeout: 1000 * 60 * 15,
-    maxBuffer: 1024 * 1024 * 100,
-  });
+  doBuild();
 
   const buildEndTime = new Date().getTime();
   const buildTime = Math.round((buildEndTime - buildStartTime) / 1000);
