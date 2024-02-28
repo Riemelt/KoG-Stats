@@ -5,10 +5,9 @@ import { fetchMapsData } from './src/scripts/fetchMapsData';
 import 'dotenv/config';
 import { WebhookClient } from 'discord.js';
 import { convertTime } from './src/utilities/utilities';
-import { MapRecord } from './src/types/types';
 
 const ONE_MINUTE = 60 * 1000;
-const MINUTES = 15;
+const MINUTES = 30;
 
 const reportsWebHookClient = new WebhookClient({
   url: process.env.REPORTS_WEB_HOOK ?? '',
@@ -31,30 +30,14 @@ const copyFiles = () => {
   );
 };
 
-const doProcess = async (
-  scriptParseTime?: number,
-  scriptBuildTime?: number,
-  resultOptions?: {
-    count: number;
-    total: number;
-    errors: string[];
-    newRecords: (MapRecord & {
-      timeDiff: number | null;
-      nextBestTime: number | null;
-    })[];
-  }
-) => {
+const doProcess = async () => {
   const parseStartTime = new Date().getTime();
-  const { count, total, errors, newRecords } = resultOptions
-    ? resultOptions
-    : await fetchMapsData();
+  const { count, total, errors, newRecords } = await fetchMapsData();
   const parseEndTime = new Date().getTime();
-  const parseTime =
-    (scriptParseTime ?? 0) + Math.round((parseEndTime - parseStartTime) / 1000);
-
+  const parseTime = Math.round((parseEndTime - parseStartTime) / 1000);
   const parseTimeConverted = convertTime(parseTime);
 
-  if (errors.length && resultOptions === undefined) {
+  if (errors.length) {
     try {
       copyFiles();
     } catch (error) {
@@ -64,103 +47,101 @@ const doProcess = async (
 
   const buildStartTime = new Date().getTime();
 
-  shell.exec('npm run build', { async: true }, function (code) {
-    const buildEndTime = new Date().getTime();
-    const buildTime =
-      (scriptBuildTime ?? 0) +
-      Math.round((buildEndTime - buildStartTime) / 1000);
-    const buildTimeConverted = convertTime(buildTime);
-
-    if (code !== 0) {
-      console.log(`Built failed with code ${code}`);
-      doProcess(parseTime, buildTime, { count, total, errors, newRecords });
-      return;
+  shell.exec(
+    'npm run build',
+    { timeout: 1000 * 600, maxBuffer: 1024 * 1024 * 10 },
+    function (code) {
+      console.log('Exit code:', code);
     }
+  );
 
-    console.log(`Built at ${new Date()}`);
+  const buildEndTime = new Date().getTime();
+  const buildTime = Math.round((buildEndTime - buildStartTime) / 1000);
+  const buildTimeConverted = convertTime(buildTime);
 
-    const errorsStr = errors.length > 0 ? errors.join(', ') : '';
-    const errorMessage = errorsStr.length > 0 ? `**Errors: ${errorsStr}**` : '';
-    const parseMessage = `Parsing time: ${parseTimeConverted}`;
-    const buildMessage = `Build time: ${buildTimeConverted}`;
-    const totalCountMessage = `Parsed ${count}/${total} maps`;
-    const newRecordsSummaryMessage =
-      newRecords.length > 0 ? `New records: ${newRecords.length}` : '';
+  console.log(`Built at ${new Date()}`);
 
-    const reportArr = [
-      totalCountMessage,
-      parseMessage,
-      buildMessage,
-      newRecordsSummaryMessage,
-      errorMessage,
-    ]
-      .filter((str) => str.length > 0)
-      .join(' | ');
+  const errorsStr = errors.length > 0 ? errors.join(', ') : '';
+  const errorMessage = errorsStr.length > 0 ? `**Errors: ${errorsStr}**` : '';
+  const parseMessage = `Parsing time: ${parseTimeConverted}`;
+  const buildMessage = `Build time: ${buildTimeConverted}`;
+  const totalCountMessage = `Parsed ${count}/${total} maps`;
+  const newRecordsSummaryMessage =
+    newRecords.length > 0 ? `New records: ${newRecords.length}` : '';
 
-    reportsWebHookClient.send(reportArr);
+  const reportArr = [
+    totalCountMessage,
+    parseMessage,
+    buildMessage,
+    newRecordsSummaryMessage,
+    errorMessage,
+  ]
+    .filter((str) => str.length > 0)
+    .join(' | ');
 
-    const url = process.env.DOMAIN;
+  reportsWebHookClient.send(reportArr);
 
-    if (newRecords.length > 0) {
-      const recordsMessages = newRecords.map(
-        ({ timeDiff, nextBestTime, time, players, category, name }) => {
-          const timeConverted = convertTime(time);
-          const improvementMessage =
-            timeDiff === null || nextBestTime === null
-              ? `(**only** finish!)`
-              : `(next best time: ${convertTime(
-                  nextBestTime
-                )} — **${timeDiff.toFixed(2)}%** improvement!)`;
+  const url = process.env.DOMAIN;
 
-          const playersMessage = players
-            ?.map((player) => {
-              return `[${player}](${url}/player-profile?player=${encodeURIComponent(
-                player
-              )})`;
-            })
-            .join(` & `);
+  if (newRecords.length > 0) {
+    const recordsMessages = newRecords.map(
+      ({ timeDiff, nextBestTime, time, players, category, name }) => {
+        const timeConverted = convertTime(time);
+        const improvementMessage =
+          timeDiff === null || nextBestTime === null
+            ? `(**only** finish!)`
+            : `(next best time: ${convertTime(
+                nextBestTime
+              )} — **${timeDiff.toFixed(2)}%** improvement!)`;
 
-          const mapMessage = `[${name}](${url}/map-profile?map=${encodeURIComponent(
-            name
-          )})`;
+        const playersMessage = players
+          ?.map((player) => {
+            return `[${player}](${url}/player-profile?player=${encodeURIComponent(
+              player
+            )})`;
+          })
+          .join(` & `);
 
-          return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
-        }
-      );
+        const mapMessage = `[${name}](${url}/map-profile?map=${encodeURIComponent(
+          name
+        )})`;
 
-      const messages: string[] = [];
-      let currentMessage = '';
+        return `:trophy: New record on [${category}] ${mapMessage}: ${timeConverted} ${playersMessage} ${improvementMessage}`;
+      }
+    );
 
-      while (recordsMessages.length > 0) {
-        const record = recordsMessages.pop() ?? '';
-        if (currentMessage.length + record.length > 1900) {
-          messages.push(currentMessage);
-          currentMessage = '';
-        }
+    const messages: string[] = [];
+    let currentMessage = '';
 
-        if (currentMessage) {
-          currentMessage = `${currentMessage}\n${record}`;
-          continue;
-        }
-
-        currentMessage = record;
+    while (recordsMessages.length > 0) {
+      const record = recordsMessages.pop() ?? '';
+      if (currentMessage.length + record.length > 1900) {
+        messages.push(currentMessage);
+        currentMessage = '';
       }
 
       if (currentMessage) {
-        messages.push(currentMessage);
+        currentMessage = `${currentMessage}\n${record}`;
+        continue;
       }
 
-      messages.forEach((message) => {
-        recordsWebHookClient.send(message);
-      });
-
-      setTimeout(() => {
-        doProcess();
-      }, ONE_MINUTE * MINUTES);
+      currentMessage = record;
     }
-  });
+
+    if (currentMessage) {
+      messages.push(currentMessage);
+    }
+
+    messages.forEach((message) => {
+      recordsWebHookClient.send(message);
+    });
+  }
 };
 
 (async function () {
   doProcess();
+
+  setInterval(() => {
+    doProcess();
+  }, ONE_MINUTE * MINUTES);
 })();
