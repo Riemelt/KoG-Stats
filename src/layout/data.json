@@ -19,6 +19,12 @@
       {
         "href": "records.html",
         "title": "Latest records"
+      },
+      {
+        "isExternal": true,
+        "href": "https://docs.google.com/spreadsheets/d/13dDh93LgqUBuYwtB2g5ht2HK2JQS1PmS/edit#gid=1585243495",
+        "title": "Players settings",
+        "description": "(by Mixi & Renz)"
       }
     ],
     "updateTitle": "Latest update:"

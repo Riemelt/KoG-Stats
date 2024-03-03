@@ -36,10 +36,15 @@ mixin header(vars)
           div(class=`${className}__nav-menu`)
             each item in nav
               div(class=`${className}__nav-item-wrapper`)
-                a(
-                  class=`${className}__nav-item`
-                  href=item.href
-                )= item.title
+                div(class=`${className}__nav-item-title-wrapper`)
+                  a(
+                    class=`${className}__nav-item`
+                    href=item.href
+                    target=item.isExternal ? "_blank" : ""
+                    rel=item.isExternal ? "noreferrer" : ""
+                  )= item.title
+                    if (item.description)
+                      div(class=`${className}__nav-item-description`)= item.description
                 div(class=`${className}__nav-item-splitter`)
           div(class=`${className}__update`)
             div(class=`${className}__update-title`)= updateTitle
